@@ -1,9 +1,10 @@
-from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 from django.template.loader import render_to_string
+from django.core.urlresolvers import resolve
 
 from search.views import home_page
+from search.models import Keyword
 
 class HomePageTest(TestCase):
 
@@ -30,3 +31,22 @@ class HomePageTest(TestCase):
             {'new_search_keyword': 'A new search keyword'}
         )
         self.assertEqual(response.content.decode(), expected_html)
+
+class KeywordModelTest
+
+    def test_saving_and_retrieving_keywords(self):
+        first_keyword = Keyword()
+        first_keyword.text = 'This is a keyword'
+        first_keyword.save()
+
+        second_keyword = Keyword()
+        second_keyword.text = 'Keyword the second'
+        second_keyword.save()
+
+        saved_keywords = Keyword.objects.all()
+        self.assertEqual(saved_keywords.count(), 2)
+
+        first_saved_keyword = saved_keywords[0]
+        second_saved_keyword = saved_keywords[1]
+        self.assertEqual(first_saved_keyword.text, 'This is a keyword')
+        self.assertEqual(second_saved_keyword.text, 'Keyword the second')

@@ -32,7 +32,7 @@ class NewVisitorTest(unittest.TestCase):
         # The page updates and now provides the search term in a table
         table = self.browser.find_element_by_id('id_recipe_search_results')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: chicken soup', [row.text for row in rows])
+        self.assertIn('chicken soup', [row.text for row in rows])
 
 
         self.fail('Finish the test!')
