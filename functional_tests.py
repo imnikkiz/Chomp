@@ -27,17 +27,12 @@ class NewVisitorTest(unittest.TestCase):
 
         # User can search for 'chicken soup'
         inputbox.send_keys('chicken soup')
-
-        # User can hit enter
         inputbox.send_keys(Keys.ENTER)
 
         # The page updates and now provides the search term in a table
         table = self.browser.find_element_by_id('id_recipe_search_results')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == 'chicken soup' for row in rows),
-            "New to-do item did not appear in table"
-        )
+        self.assertIn('1: chicken soup', [row.text for row in rows])
 
 
         self.fail('Finish the test!')
