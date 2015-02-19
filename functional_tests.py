@@ -1,4 +1,5 @@
 from selenium import webdriver 
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase): 
@@ -16,7 +17,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Recipes', self.browser.title)
         
         # User can find a search box
-        header_text = self.browser.find_element_by_tag_name('h1').header_text
+        header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Search', header_text)
         inputbox = self.browser.find_element_by_id('id_search_box')
         self.assertEqual(
@@ -32,12 +33,13 @@ class NewVisitorTest(unittest.TestCase):
 
         # The page updates and now provides the search term in a table
         table = self.browser.find_element_by_id('id_recipe_search_results')
-        rows = table.find_element_by_tag_name('tr')
+        rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == 'chicken soup' for row in rows)
+            any(row.text == 'chicken soup' for row in rows),
+            "New to-do item did not appear in table"
         )
 
-        
+
         self.fail('Finish the test!')
     # User can view search results for 3-10 recipes
 
