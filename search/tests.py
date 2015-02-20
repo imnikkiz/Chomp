@@ -32,7 +32,7 @@ class HomePageTest(TestCase):
         )
         self.assertEqual(response.content.decode(), expected_html)
 
-class KeywordModelTest
+class KeywordModelTest(TestCase):
 
     def test_saving_and_retrieving_keywords(self):
         first_keyword = Keyword()

@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class Keyword(models.Model):
+    text = models.TextField(default='')
