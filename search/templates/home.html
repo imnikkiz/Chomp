@@ -10,8 +10,8 @@
         </form> 
 
         <table id="id_recipe_search_results">
-            {% for name in recipe_list %}
-            <tr><td>{{ name }}</td></tr>
+            {% for name, yummly_id in recipe_list %}
+            <tr><td><a href="/recipe/{{yummly_id}}">{{ name }}</a></td></tr>
             {% endfor %}
         </table>
     </body>
