@@ -6,11 +6,9 @@ YUMMLY_APP_KEY = os.environ['YUMMLY_APP_KEY']
 
 
 class Search(models.Model):
-    keyword = models.CharField(max_length=200)
+    keyword = models.CharField(max_length=200, default='')
 
     def search_by_keyword(self, keyword):
-        self.keyword = keyword
-
         keyword = keyword.strip()
         keyword = keyword.split(' ')
         keyword = '+'.join(keyword)
@@ -35,8 +33,8 @@ class Search(models.Model):
 
 
 class Recipe(models.Model):
-    name = models.CharField(max_length=200)
-    yummly_id = models.CharField(max_length=300)
+    name = models.CharField(max_length=200, default='')
+    yummly_id = models.CharField(max_length=300, default='')
 
     
     # def get_recipe_by_yummly_id(self, recipe_id):
