@@ -10,7 +10,9 @@
         </form> 
 
         <table id="id_recipe_search_results">
-            <tr><td>{{ new_search_keyword }}</td></tr>
+            {% for name in recipe_list %}
+            <tr><td>{{ name }}</td></tr>
+            {% endfor %}
         </table>
     </body>
 </html>
