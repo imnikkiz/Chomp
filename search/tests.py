@@ -25,12 +25,21 @@ class HomePageTest(TestCase):
 
         response = home_page(request)
         
+        self.assertEqual(Keyword.objects.count(), 1)
+        new_keyword = Keyword.objects.first()
+        self.assertEqual(new_keyword.text, 'A new search keyword')
         self.assertIn('A new search keyword', response.content.decode())
+
         expected_html = render_to_string(
             'home.html',
             {'new_search_keyword': 'A new search keyword'}
         )
         self.assertEqual(response.content.decode(), expected_html)
+
+    def test_home_page_only_saves_items_when_necessary(self):
+        request = HttpRequest()
+        home_page(request)
+        self.assertEqual(Keyword.objects.count(), 0)
 
 class KeywordModelTest(TestCase):
 
