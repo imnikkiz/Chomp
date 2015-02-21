@@ -19,5 +19,3 @@ def home_page(request):
     return render(request, 'home.html', {
         'recipe_list': recipe_list
     })
-
-#TODO redirect after POST

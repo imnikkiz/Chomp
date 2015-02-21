@@ -11,7 +11,7 @@
 
         <table id="id_recipe_search_results">
             {% for recipe in recipe_list %}
-            <tr><td><a href="/recipe/?recipe={{yummly_id}}">{{ recipe.name }}</a></td></tr>
+            <tr><td><a href="/recipe/?recipe={{recipe.yummly_id}}">{{ recipe.name }}</a></td></tr>
             {% endfor %}
         </table>
     </body>

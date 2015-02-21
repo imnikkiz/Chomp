@@ -6,6 +6,7 @@ from django.core.urlresolvers import resolve
 from search.views import home_page
 from search.models import Search, Recipe
 
+
 class HomePageTest(TestCase):
 
     def test_root_url_resolves_to_home_page_view(self):
@@ -62,12 +63,35 @@ class SearchModelTest(TestCase):
         self.assertEqual(new_search.keyword, 'chicken soup')
         self.assertTrue(new_search.response)
 
-class APIRequestTest(TestCase):
-
-    def test_sending_and_receiving_searches(self):
-        new_search = Search()
-        new_search.search_by_keyword('cookies')
-
         url = 'http://www.yummly.com/recipes/'
         self.assertEqual(new_search.response['attribution']['url'], url)
 
+class RecipeModelTest(TestCase):
+
+    def test_saving_and_retrieving_recipes(self):
+        first_recipe = Recipe()
+        first_recipe.yummly_id = 'Cucumber-Fries-603764'
+        first_recipe.save() 
+
+        second_recipe = Recipe()
+        second_recipe.yummly_id = 'Healthy-Cucumber-Tomato-Salad-1006346'
+        second_recipe.save()
+
+        saved_recipes = Recipe.objects.all()
+        self.assertEqual(saved_recipes.count(), 2)
+
+        first_saved_recipe = saved_recipes[0]
+        second_saved_recipe = saved_recipes[1]
+        self.assertEqual(first_saved_recipe.yummly_id, 'Cucumber-Fries-603764')
+        self.assertEqual(second_saved_recipe.yummly_id, 'Healthy-Cucumber-Tomato-Salad-1006346') 
+
+    def test_getting_recipe_by_yummly_id(self):
+        new_recipe = Recipe()
+        yummly_id = 'Cucumber-Fries-603764'
+        new_recipe.get_recipe_by_yummly_id(yummly_id)
+
+        self.assertEqual(new_recipe.name, 'Cucumber Fries')
+        self.assertEqual(new_recipe.yummly_id, 'Cucumber-Fries-603764')
+
+        logo = 'http://static.yummly.com/api-logo.png'
+        self.assertEqual(new_recipe.response['attribution']['logo'], logo)

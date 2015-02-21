@@ -13,11 +13,14 @@ class Recipe(models.Model):
         # Make Yummly API get recipe request
         params = {'_app_id': YUMMLY_APP_ID,
                   '_app_key': YUMMLY_APP_KEY}
-        recipe = requests.get(
+        recipe_response = requests.get(
             ("http://api.yummly.com/v1/api/recipe/%s" % yummly_id),
             params=params).json()
 
-        self.name = recipe.get('name')
+        self.response = recipe_response
+
+        self.name = self.response.get('name')
+        self.yummly_id = yummly_id
         # servings_as_string = recipe.get('yield')
         # number_of_servings = recipe.get('numberOfServings')
         # time_string = recipe.get('totalTime')
