@@ -27,30 +27,23 @@ class HomePageTest(TestCase):
 
         self.assertEqual(Search.objects.count(), 1)
         new_search = Search.objects.first()
-        self.assertEqual(new_search.keyword, 'chicken soup')
-
-    def test_home_page_redirects_after_POSt(self):
-        request = HttpRequest()
-        request.method = "POST"
-        request.POST['search_keyword_text'] = 'chicken soup'
-
-        response = home_page(request)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')        
+        self.assertEqual(new_search.keyword, 'chicken soup') 
 
     def test_home_page_only_saves_searches_when_necessary(self):
         request=HttpRequest()
         home_page(request)
         self.assertEqual(Search.objects.count(), 0)
 
+
 class SearchModelTest(TestCase):
 
     def test_saving_and_retrieving_searches(self):
-        first_search = Search('chicken soup')
+        first_search = Search()
+        first_search.keyword = 'chicken soup'
         first_search.save() 
 
-        second_search = Search('cookies')
+        second_search = Search()
+        second_search.keyword = 'cookies'
         second_search.save()
 
         saved_searches = Search.objects.all()
@@ -61,6 +54,20 @@ class SearchModelTest(TestCase):
         self.assertEqual(first_saved_search.keyword, 'chicken soup')
         self.assertEqual(second_saved_search.keyword, 'cookies') 
 
+    def test_searching_by_keyword(self):
+        new_search = Search()
+        keyword = 'chicken soup'
+        new_search.search_by_keyword(keyword)
+
+        self.assertEqual(new_search.keyword, 'chicken soup')
+        self.assertTrue(new_search.response)
+
 class APIRequestTest(TestCase):
+
     def test_sending_and_receiving_searches(self):
         new_search = Search()
+        new_search.search_by_keyword('cookies')
+
+        url = 'http://www.yummly.com/recipes/'
+        self.assertEqual(new_search.response['attribution']['url'], url)
+

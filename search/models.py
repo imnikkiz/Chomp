@@ -23,6 +23,7 @@ class Recipe(models.Model):
         # time_string = recipe.get('totalTime')
         # time_int = recipe.get('totalTimeInSeconds')
         # yummly_id = recipe.get('id')
+        self.save()
 
     
     def __unicode__(self):
@@ -49,6 +50,7 @@ class Search(models.Model):
             params=params).json()
 
         self.response = recipes_from_yummly
+        self.save()
 
 
     def __unicode__(self):
