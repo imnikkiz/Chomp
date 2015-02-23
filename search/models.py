@@ -5,8 +5,14 @@ YUMMLY_APP_ID = os.environ['YUMMLY_APP_ID']
 YUMMLY_APP_KEY = os.environ['YUMMLY_APP_KEY']
 
 class Recipe(models.Model):
-    name = models.CharField(max_length=200, default='')
+    name = models.CharField(max_length=200, default='', )
     yummly_id = models.CharField(max_length=300, default='')
+    servings_as_string = models.CharField(max_length=100, default='', null=True, blank=True)
+    number_of_servings = models.IntegerField(null=True, blank=True)
+    time_string = models.CharField(max_length=100, default='', null=True, blank=True)
+    time_int = models.IntegerField(null=True, blank=True)
+    lil_img = models.CharField(max_length=300, default = '', null=True, blank=True)
+    big_img = models.CharField(max_length=300, default = '', null=True, blank=True)
 
     def get_recipe_by_yummly_id(self, yummly_id):
 
@@ -21,11 +27,13 @@ class Recipe(models.Model):
 
         self.name = self.response.get('name')
         self.yummly_id = yummly_id
-        # servings_as_string = recipe.get('yield')
-        # number_of_servings = recipe.get('numberOfServings')
-        # time_string = recipe.get('totalTime')
-        # time_int = recipe.get('totalTimeInSeconds')
-        # yummly_id = recipe.get('id')
+        self.servings_as_string = self.response.get('yield')
+        self.number_of_servings = self.response.get('numberOfServings')
+        self.time_string = self.response.get('totalTime')
+        self.time_int = self.response.get('totalTimeInSeconds')
+        all_images = self.response.get('images')[0]
+        self.lil_img = all_images.get('hostedSmallUrl')
+        self.big_img = all_images.get('hostedLargeUrl')
         self.save()
 
     

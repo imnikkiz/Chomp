@@ -29,10 +29,9 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys('chicken soup')
         inputbox.send_keys(Keys.ENTER)
 
-    # User can view search results for 3 recipes
-    def test_can_view_search_results(self):
-        # recipe_results = self.browser.find_element_by_id('id_recipe_search_results').header_text
-        # self.assertIn('')
+        # User can view search results for 3 recipes
+        recipe_results = self.browser.find_element_by_id('id_recipe_search_results').header_text
+        self.assertIn('chicken', recipe_results)
         
         self.fail('Finish the test!')
 

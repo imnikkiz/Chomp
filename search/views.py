@@ -10,7 +10,7 @@ def home_page(request):
         new_search = Search.objects.create()
         new_search.search_by_keyword(keyword=request.POST['search_keyword_text'])
 
-        for recipe in new_search.response['matches']:
+        for recipe in new_search.response['matches'][0:3]:
             new_recipe = Recipe.objects.create()
             new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
             new_search.recipes.add(new_recipe)
