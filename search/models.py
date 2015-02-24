@@ -81,11 +81,9 @@ class Search(models.Model):
         return self.keyword
 
 def link_ingredient_to_recipe(recipe_id):
-    print "This got called"
     this_recipe = Recipe.objects.get(id=recipe_id)
     ingredient_lines = this_recipe.response.get('ingredientLines')
     for line in ingredient_lines:
         ingredient = Ingredient.objects.create(recipe_id=recipe_id)
         ingredient.ingredient_string = line
         ingredient.save()
-        print ingredient
