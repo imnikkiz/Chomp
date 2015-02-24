@@ -1,18 +1,15 @@
-<html>
-    <head>
-        <title>Search Recipes</title>
-    </head>
-    <body>
-        <h1>Search Recipes</h1>
-        <form method="Post">
-            <input name="search_keyword_text" id="id_search_box" placeholder="Search for recipes" />
-            {% csrf_token %}
-        </form> 
+{% extends "base_generic.html" %}
+{% block title %}Search Recipes{% endblock %}
+{% block content %}
+    <h1>Search Recipes</h1>
+    <form method="Post">
+        <input name="search_keyword_text" id="id_search_box" placeholder="Search for recipes" />
+        {% csrf_token %}
+    </form> 
 
-        <table id="id_recipe_search_results">
-            {% for recipe in recipe_list %}
-            <tr><td><img src="{{recipe.lil_img}}"><a href="/recipe/{{recipe.id}}/">{{ recipe.name }}</a></td></tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+    <div class="row" id="id_recipe_search_results">
+        {% for recipe in recipe_list %}
+        <div class="col-xs-4"><img src="{{recipe.lil_img}}"><br><a href="/recipe/{{recipe.id}}/">{{ recipe.name }}</a></div>
+        {% endfor %}
+    </div>
+{% endblock %}

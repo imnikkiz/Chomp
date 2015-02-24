@@ -7,15 +7,20 @@ def home_page(request):
     recipe_list = []
 
     if request.method == 'POST':
-        new_search = Search.objects.create()
-        new_search.search_by_keyword(keyword=request.POST['search_keyword_text'])
+        keyword = request.POST['search_keyword_text']
+        if Search.objects.filter(keyword=keyword):
+            this_search = Search.objects.get(keyword=keyword)
+            recipe_list = this_search.recipes.all()
+        else:
+            new_search = Search.objects.create()
+            new_search.search_by_keyword(keyword=keyword)
 
-        for recipe in new_search.response['matches'][0:3]:
-            new_recipe = Recipe.objects.create()
-            new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
-            new_search.recipes.add(new_recipe)
-            recipe_list.append(new_recipe)
-            link_ingredient_to_recipe(new_recipe.id)
+            for recipe in new_search.response['matches'][0:3]:
+                new_recipe = Recipe.objects.create()
+                new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
+                new_search.recipes.add(new_recipe)
+                recipe_list.append(new_recipe)
+                link_ingredient_to_recipe(new_recipe.id)
 
     return render(request, 'home.html', {
         'recipe_list': recipe_list

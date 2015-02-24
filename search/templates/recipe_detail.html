@@ -1,20 +1,17 @@
-<html>
-    <head>
-        <title>{{ recipe.name }}</title>
-    </head>
-    <body>
-        <h1>{{ recipe.name }}</h1>
-        <img src='{{ recipe.big_img }}'>
-        <p>Servings:<br>
-            {{ recipe.servings_as_string }}<br>
-            <br>
-            Time:<br>
-            {{ recipe.time_string }}<br>
-            <br>
-            Ingredients:<br>
-            {% for ingredient in ingredients %}
-            {{ingredient}}<br>
-            {% endfor %}
-        </p>
-    </body>
-</html>
+{% extends "base_generic.html" %}
+{% block title %}{{ recipe.name }}{% endblock %}
+{% block content %}
+    <h1>{{ recipe.name }}</h1>
+    <img src='{{ recipe.big_img }}'>
+    <p>Servings:<br>
+        {{ recipe.servings_as_string }}<br>
+        <br>
+        Time:<br>
+        {{ recipe.time_string }}<br>
+        <br>
+        Ingredients:<br>
+        {% for ingredient in ingredients %}
+        {{ingredient}}<br>
+        {% endfor %}
+    </p>
+{% endblock %}
