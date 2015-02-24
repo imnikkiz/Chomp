@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from search.models import Search, Recipe
+from django.http import HttpResponse
 
 def home_page(request):
     """ Add search keyword to database, return list of recipe names."""
@@ -18,4 +19,12 @@ def home_page(request):
 
     return render(request, 'home.html', {
         'recipe_list': recipe_list
+    })
+
+def recipe_details(request, recipe_id):
+    recipe_id = recipe_id
+    this_recipe = Recipe.objects.get(id=recipe_id)
+
+    return render(request, 'recipe_detail.html', {
+        'recipe': this_recipe
     })
