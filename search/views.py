@@ -37,5 +37,11 @@ def recipe_details(request, recipe_id):
         'ingredients': ingredient_list
     })
 
-def view_recipes(request, recipe_id):
-    pass
+def view_recipes(request):
+    if request.method == 'POST':
+        this_recipe_id = request.POST['recipe_id']
+        this_recipe = Recipe.objects.get(id=this_recipe_id)
+        # flash('Recipe added!')
+        # add to db
+        
+    return render(request, 'my_recipes.html')
