@@ -1,6 +1,5 @@
-from django.shortcuts import redirect, render
-from search.models import Search, Recipe
-from django.http import HttpResponse
+from django.shortcuts import render
+from search.models import Search, Recipe, link_ingredient_to_recipe
 
 def home_page(request):
     """ Add search keyword to database, return list of recipe names."""
@@ -16,6 +15,7 @@ def home_page(request):
             new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
             new_search.recipes.add(new_recipe)
             recipe_list.append(new_recipe)
+            link_ingredient_to_recipe(new_recipe.id)
 
     return render(request, 'home.html', {
         'recipe_list': recipe_list
@@ -25,6 +25,9 @@ def recipe_details(request, recipe_id):
     recipe_id = recipe_id
     this_recipe = Recipe.objects.get(id=recipe_id)
 
+    ingredient_list = this_recipe.ingredients.all()
+
     return render(request, 'recipe_detail.html', {
-        'recipe': this_recipe
+        'recipe': this_recipe,
+        'ingredients': ingredient_list
     })

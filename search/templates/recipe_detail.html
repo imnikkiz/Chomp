@@ -11,6 +11,9 @@
             Time:<br>
             {{ recipe.time_string }}<br>
             <br>
+            {% for ingredient in ingredients %}
+            {{ingredient}}<br>
+            {% endfor %}
         </p>
     </body>
 </html>
