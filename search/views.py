@@ -36,3 +36,6 @@ def recipe_details(request, recipe_id):
         'recipe': this_recipe,
         'ingredients': ingredient_list
     })
+
+def view_recipes(request, recipe_id):
+    pass

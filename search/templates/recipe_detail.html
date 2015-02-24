@@ -14,4 +14,8 @@
         {{ingredient}}<br>
         {% endfor %}
     </p>
+    <form action="/myrecipes">
+        <input type="hidden" name="recipe_id" value={{ recipe.id }}>
+        <input type="submit" class="btn btn-default" value="Add to My Recipes">
+    </form>
 {% endblock %}
