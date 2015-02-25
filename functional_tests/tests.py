@@ -55,3 +55,4 @@ class NewVisitorTest(LiveServerTestCase):
     # User can export shopping list 
         # via email
         # via SMS
+        

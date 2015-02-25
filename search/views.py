@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from search.models import Search, Recipe, link_ingredient_to_recipe
+from search.models import Search, Recipe
 
 
 def home_page(request):
@@ -13,13 +13,13 @@ def home_page(request):
         # Keyword not in database
         if not Search.objects.filter(keyword=keyword):
             new_search = Search.objects.create()
-            new_search.search_by_keyword(keyword=keyword)
+            search_response = new_search.search_by_keyword(keyword=keyword)
 
-            for recipe in new_search.response['matches']:
+            for recipe in search_response['matches']:
                 new_recipe = Recipe.objects.create()
                 new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
+                new_recipe.link_ingredients_to_recipe()
                 new_search.recipes.add(new_recipe)
-                link_ingredient_to_recipe(new_recipe.id)
 
         this_search = Search.objects.get(keyword=keyword)
         recipe_list = this_search.recipes.all()[:3]
