@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+    <h1>Register</h1>
+    {% if registered %}
+        Thank you for registering!
+        <a href="/">Return to the homepage.</a><br>
+    {% else %}
+        <form id="user_form" method="POST" action="/register/">
+            {{ user_form.as_p }}
+            <input type="submit" name="submit" value="Register">
+            {% csrf_token %}
+        </form>
+    {% endif %}
+{% endblock %}
