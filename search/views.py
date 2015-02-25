@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from search.models import Search, Recipe, link_ingredient_to_recipe
 
+
 def home_page(request):
     """ Add search keyword to database, return list of recipe names."""
     
@@ -23,12 +24,13 @@ def home_page(request):
         this_search = Search.objects.get(keyword=keyword)
         recipe_list = this_search.recipes.all()[:3]
 
-
-
+        # TODO: view more results
+        # TODO: after 10th result, option to find more
 
     return render(request, 'home.html', {
         'recipe_list': recipe_list
     })
+
 
 def recipe_details(request, recipe_id):
     recipe_id = recipe_id
@@ -40,6 +42,7 @@ def recipe_details(request, recipe_id):
         'recipe': this_recipe,
         'ingredients': ingredient_list
     })
+
 
 def view_recipes(request):
     if request.method == 'POST':

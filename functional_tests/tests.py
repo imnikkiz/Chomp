@@ -1,8 +1,9 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver 
 from selenium.webdriver.common.keys import Keys
-import unittest
 
-class NewVisitorTest(unittest.TestCase): 
+
+class NewVisitorTest(LiveServerTestCase): 
     
     def setUp(self): 
         self.browser = webdriver.Firefox()
@@ -13,7 +14,7 @@ class NewVisitorTest(unittest.TestCase):
 
     # User can search for a recipe 
     def test_can_search_for_a_recipe(self):
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         self.assertIn('Recipes', self.browser.title)
         
         # User can find a search box
@@ -29,8 +30,11 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys('chicken soup')
         inputbox.send_keys(Keys.ENTER)
 
+        # User can view search results for 3 recipes
+        recipe_results = self.browser.find_element_by_id('id_recipe_search_results').text
+        self.assertIn('Chicken', recipe_results)
+        
         self.fail('Finish the test!')
-    # User can view search results for 3-10 recipes
 
     # User can select a recipe and view all ingredients and instructions
 
@@ -51,6 +55,3 @@ class NewVisitorTest(unittest.TestCase):
     # User can export shopping list 
         # via email
         # via SMS
-
-if __name__ == '__main__':
-    unittest.main()

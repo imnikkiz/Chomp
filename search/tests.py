@@ -31,7 +31,8 @@ class HomePageTest(TestCase):
         self.assertEqual(new_search.keyword, 'chicken soup') 
 
     def test_home_page_only_saves_searches_when_necessary(self):
-        request=HttpRequest()
+        # No POST request
+        request = HttpRequest()
         home_page(request)
         self.assertEqual(Search.objects.count(), 0)
 
@@ -65,6 +66,7 @@ class SearchModelTest(TestCase):
 
         url = 'http://www.yummly.com/recipes/'
         self.assertEqual(new_search.response['attribution']['url'], url)
+
 
 class RecipeModelTest(TestCase):
 
