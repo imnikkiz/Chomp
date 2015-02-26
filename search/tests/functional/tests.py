@@ -1,4 +1,4 @@
-from django.test import LiveServerTestCase, Client
+from django.test import LiveServerTestCase
 from selenium import webdriver 
 from selenium.webdriver.common.keys import Keys
 
@@ -68,9 +68,6 @@ class NewUserTest(LiveServerTestCase):
         
 class WriteMoreTests(LiveServerTestCase):
 
-    def tests_succeed(self):
-        self.fail('Finish the test!')
-
     # User can select a recipe and view all ingredients and instructions
 
     # User can save recipe to recipe book
@@ -90,4 +87,6 @@ class WriteMoreTests(LiveServerTestCase):
     # User can export shopping list 
         # via email
         # via SMS
-        
+
+    def tests_succeed(self):
+        self.fail('Finish the test!')

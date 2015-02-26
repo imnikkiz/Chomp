@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from jsonfield import JSONField
 import os, requests
 
 YUMMLY_APP_ID = os.environ['YUMMLY_APP_ID']
