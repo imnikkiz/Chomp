@@ -20,9 +20,8 @@ class NewUserTest(LiveServerTestCase):
 
 
         # new user can register
-        register_link = self.browser.find_element_by_link_text('Register Here')
-        register_link.click()
-        self.assertIn('Register', self.browser.title)
+        register_button = self.browser.find_element_by_id('register_button')
+        register_button.click()
 
         self.browser.find_element_by_id('id_username').send_keys('Username')
         self.browser.find_element_by_id('id_email').send_keys('email@email.com')
@@ -64,9 +63,8 @@ class NewUserTest(LiveServerTestCase):
         for recipe in recipe_results:
             self.assertIn('Chicken', recipe.text)
         self.browser.implicitly_wait(1)
-        
-        
-class WriteMoreTests(LiveServerTestCase):
+
+        self.fail('Finish the test!')
 
     # User can select a recipe and view all ingredients and instructions
 
@@ -88,5 +86,3 @@ class WriteMoreTests(LiveServerTestCase):
         # via email
         # via SMS
 
-    def tests_succeed(self):
-        self.fail('Finish the test!')
