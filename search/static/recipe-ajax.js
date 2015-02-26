@@ -5,7 +5,7 @@ function showLogin(evt) {
 $('#login_button').on('click', showLogin);
 
 function showRegister(evt) {
-    $("#register").load("/register");
+    $("#register-text").load("/register");
 }
 
 $('#register_button').on('click', showRegister);
