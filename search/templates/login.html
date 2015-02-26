@@ -1,6 +1,3 @@
-{% extends "base_generic.html" %}
-{% block title %}Login{% endblock %}
-{% block content %}
     <h1>Login</h1>
     <form id="login_form" method="POST" action="/login/">
         Username: <input type="text" name="username" value="" size="50" id="id_username"><br>
@@ -8,4 +5,3 @@
         <input type="submit" value="submit" id="id_submit">
         {% csrf_token %}
     </form>
-{% endblock %}
