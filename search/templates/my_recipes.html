@@ -2,4 +2,9 @@
 {% block title %}My Recipes{% endblock %}
 {% block content %}
     <h1>You've reached My Recipes!</h1>
+    <form action="/planner/" method="POST">
+        <input type="hidden" name="recipe_id" value={{ recipe.id }}>
+        <input type="submit" class="btn btn-default" value="Add to Planner">
+        {% csrf_token %}
+    </form>
 {% endblock %}

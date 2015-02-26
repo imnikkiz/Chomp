@@ -91,7 +91,7 @@ def recipe_details(request, recipe_id):
     })
 
 
-def view_recipes(request):
+def my_recipes(request):
     if request.method == 'POST':
         this_recipe_id = request.POST['recipe_id']
         this_recipe = Recipe.objects.get(id=this_recipe_id)
@@ -99,4 +99,11 @@ def view_recipes(request):
         # add to db
 
     return render(request, 'my_recipes.html')
+
+def planner(request):
+    return render(request, 'planner.html', {})
+
+def shopping_list(request):
+    return render(request, 'shopping_list.html', {})
+
 
