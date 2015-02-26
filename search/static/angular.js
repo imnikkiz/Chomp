@@ -4,7 +4,7 @@ angular.module("demoApp", ['ngRoute'])
             .when('/', {
                 template: '<h1>Hi!</h1>' })
             .when('/login', {
-                templateURL: 'login.html' })
+                templateUrl: 'login' })
             .when('/register', {
-                templateURL: 'register.html'});
+                template: 'register.html'});
         });
