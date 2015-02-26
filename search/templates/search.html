@@ -2,7 +2,7 @@
 {% block title %}Search Recipes{% endblock %}
 {% block content %}
     <h1>Search Recipes</h1>
-    <form method="Post">
+    <form method="Post" action="results_page">
         <input name="search_keyword_text" id="id_search_box" placeholder="Search for recipes" />
         {% csrf_token %}
     </form> 

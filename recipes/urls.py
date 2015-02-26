@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'^my_recipes/$', 'search.views.view_recipes', name='my_recipes'),
     url(r'^register/$', 'search.views.register', name='register'),
     url(r'^login/$', 'search.views.login_user', name='login'),
+    url(r'^results_page$', 'search.views.results_page', name='results'),
     # url(r'^blog/', include('blog.urls')),
 
     # url(r'^admin/', include(admin.site.urls)),
