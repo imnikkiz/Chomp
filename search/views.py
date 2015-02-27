@@ -48,7 +48,6 @@ def login_user(request):
     else:
         return render_to_response('login.html', {}, context)
 
-
 def search_page(request):
     return render(request, 'search.html')
 

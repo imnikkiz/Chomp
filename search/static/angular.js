@@ -1,4 +1,4 @@
-angular.module("demoApp", ['ngRoute'])
+angular.module("homeRoute", ['ngRoute'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -6,5 +6,18 @@ angular.module("demoApp", ['ngRoute'])
             .when('/login', {
                 templateUrl: 'login' })
             .when('/register', {
-                template: 'register.html'});
+                templateUrl: 'register'});
+        });
+
+angular.module("recipeRoute", ['ngRoute'])
+    .config(function ($routeProvider) {
+        $routeProvider
+            .when('/my_recipes', {
+                templateUrl: 'my_recipes' })
+            .when('/search', {
+                templateUrl: 'search_page' })
+            .when('/planner', {
+                templateUrl: 'planner'})
+            .when('/shopping_list', {
+                templateUrl: 'shopping_list'});
         });

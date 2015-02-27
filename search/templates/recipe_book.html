@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+{% block title %}My Recipes{% endblock %}
+{% block content %}
+
+<div ng-app="recipeRoute">
+    <a href="#/my_recipes">My Recipes</a>
+    <a href="#/search">Search</a>
+    <a href="#/planner">Planner</a>
+    <a href="#/shopping_list">Shopping List</a>
+    <div ng-view></div>
+</div>
+
+{% endblock %}
