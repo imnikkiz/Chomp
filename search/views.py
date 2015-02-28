@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from models import Search, Recipe
 from forms import UserForm
+import json
 
 
 def home_page(request):
@@ -30,23 +31,27 @@ def register(request):
          'registered': registered},
         context)
 
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def login_user(request):
-    context = RequestContext(request)
+    print "WTF"
+    print request
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/search_page')
-            else:
-                return HttpResponse("Your account is disabled.")
-        else:
-            return HttpResponse("Invalid username or password.")
+        print "WTF v2"
+        user = json.loads(request.body)
+        username = user['username']
+        password = user['password']
+        # username = request.POST['username']
+        # password = request.POST['password']
+        print username, password
+        # user = authenticate(username=username, password=password)
+        # if user:
+        #     if user.is_active:
+        #         login(request, user)
+        return render_to_response('login.html', {})
     else:
-        return render_to_response('login.html', {}, context)
+        return render_to_response('login.html', {})
 
 def search_page(request):
     return render(request, 'search.html')

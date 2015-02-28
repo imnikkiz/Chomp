@@ -1,7 +1,20 @@
+<div ng-controller="loginCtrl as ctrl">  
     <h1>Login</h1>
-    <form id="login_form" method="POST" action="/login/">
-        Username: <input type="text" name="username" value="" size="50" id="id_username"><br>
-        Password: <input type="password" name="password" value="" size="50" id="id_password"><br>
-        <input type="submit" value="submit" id="id_submit">
+    <form name="loginForm"
+          ng-submit="ctrl.login()">
+        <input type="text" 
+               placeholder="username" 
+               ng-model="ctrl.user.username"
+               required>
+        <br>
+        <input type="password" 
+               placeholder="password"
+               ng-model="ctrl.user.password"
+               required>
+        <br>
+        <input type="submit" 
+               value="submit" 
+               ng-disabled="loginForm.$invalid">
         {% csrf_token %}
     </form>
+</div>
