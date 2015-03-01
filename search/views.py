@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from models import Search, Recipe
 from forms import UserForm
 import json
@@ -35,21 +35,20 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def login_user(request):
-    print "WTF"
-    print request
     if request.method == 'POST':
-        print "WTF v2"
         user = json.loads(request.body)
         username = user['username']
         password = user['password']
-        # username = request.POST['username']
-        # password = request.POST['password']
-        print username, password
-        # user = authenticate(username=username, password=password)
-        # if user:
-        #     if user.is_active:
-        #         login(request, user)
-        return render_to_response('login.html', {})
+        user = authenticate(username=username, password=password)
+        if user:
+            print user
+            print "User is valid."
+            if user.is_active:
+                print "User is active."
+                login(request, user)
+                print "User is logged in."
+                print user
+                return HttpResponse(json.dumps(user))
     else:
         return render_to_response('login.html', {})
 

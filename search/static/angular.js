@@ -12,15 +12,13 @@ angular.module("homeRoute", ['ngRoute'])
     .controller("loginCtrl", ['$http', function($http){
         var self = this;
         self.login = function() {
-            console.log(self.user);
-//             $http({
-//     method: 'POST',
-//     url: '/login/',
-//     data: "message=" + 'kitten',
-//     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-// });
-            // $http.post('/login/', '{"a":"b"}');
-            $http.post('/login/', self.user);
+            $http.post('/login/', self.user).
+            success(function (response) {
+                alert(response);
+            }).
+            error(function (error) {
+                alert(error);
+            });
         };
     }]);
 
