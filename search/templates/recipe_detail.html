@@ -4,15 +4,42 @@
     <h1>{{ recipe.name }}</h1>
     <img src='{{ recipe.big_img }}'>
     <p>Servings:<br>
-        {{ recipe.servings_as_string }}<br>
-        <br>
-        Time:<br>
-        {{ recipe.time_string }}<br>
-        <br>
-        Ingredients:<br>
+        {% if recipe.servings_as_string %}
+        {{ recipe.servings_as_string }}
+        {% elif recipe.number_of_servings %}
+        Serves {{ recipe.number_of_servings }}
+        {% endif %}
+    </p>
+    <p>Time:<br>
+        {% if recipe.time_string %}
+        {{ recipe.time_string }}
+        {% endif %}
+    </p>
+    <p>Ingredients:<br>
         {% for ingredient in ingredients %}
         {{ingredient}}<br>
         {% endfor %}
+        <br>
+        {% if recipe.courses.all %}
+            Course:<br>
+            {% for course in recipe.courses.all %}
+            {{course}}<br>
+            {% endfor %}
+        {% endif %}
+        <br>
+        {% if recipe.cuisines.all %}
+            Cuisine:<br>
+            {% for cuisine in recipe.cuisines.all %}
+            {{cuisine}}<br>
+            {% endfor %}
+        {% endif %}
+        <br>
+        {% if recipe.holidays.all %}
+            Holidays:<br>
+            {% for holiday in recipe.holidays.all %}
+            {{holiday}}<br>
+            {% endfor %}
+        {% endif %}
     </p>
     <form action="/my_recipes/" method="POST">
         <input type="hidden" name="recipe_id" value={{ recipe.id }}>

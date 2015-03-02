@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Hi</title>
+    <title>Search Recipes</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -17,23 +17,21 @@
     <script src="static/angular.js"></script>
 
 </head>
-<body ng-app="homeRoutingApp">
+<body ng-app="recipeRoutingApp">
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12" id="content">
 
-                <a href="#/">Home</a>
-                <a href="#/login">Login</a>
-                <a href="#/register">Register</a>
+                <a href="#/search_page">Search</a>
+                <a href="#/my_recipes">My Recipes</a>
+                <a href="#/planner">Planner</a>
+                <a href="#/shopping_list">Shopping List</a>
                 <div ng-view></div>
       
             </div>
         </div>
     </div>
-
-    
-
 
 </body>
 </html>

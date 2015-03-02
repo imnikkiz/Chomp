@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
-from models import Search, Recipe
+from models import Search, Recipe, UserProfile
 from forms import UserForm
 
 
@@ -19,6 +19,8 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
+            user_profile = UserProfile(user=user)
+            user_profile.save()
             registered = True
             return render_to_response('login.html', {}, context)
         else:
@@ -41,7 +43,7 @@ def login_user(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/search_page')
+                return HttpResponseRedirect('/recipe_main')
             else:
                 return HttpResponse("Your account is disabled.")
         else:
@@ -49,6 +51,8 @@ def login_user(request):
     else:
         return render_to_response('login.html', {}, context)
 
+def recipe_main(request):
+    return render(request, 'recipe_main.html', {})
 
 def search_page(request):
     return render(request, 'search.html')
@@ -59,7 +63,16 @@ def results_page(request):
         keyword = request.POST['search_keyword_text']
 
         # Keyword not in database
-        if not Search.objects.filter(keyword=keyword):
+        search_exists = Search.objects.filter(keyword=keyword).first()
+        if search_exists:
+            search_has_recipes = search_exists.recipes.first()
+            if search_has_recipes:
+                pass
+            else:
+                search_exists.delete()
+                search_exists = False
+
+        if not search_exists:
             new_search = Search.objects.create()
             search_response = new_search.search_by_keyword(keyword=keyword)
 
@@ -67,6 +80,7 @@ def results_page(request):
                 new_recipe = Recipe.objects.create()
                 new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
                 new_recipe.link_ingredients_to_recipe()
+                new_recipe.assign_attributes_to_recipe()
                 new_search.recipes.add(new_recipe)
 
         this_search = Search.objects.get(keyword=keyword)
@@ -93,13 +107,20 @@ def recipe_details(request, recipe_id):
 
 
 def my_recipes(request):
+    print "got here"
+    this_user = request.user
+    print this_user
+    this_user_profile = UserProfile.objects.get(user=this_user)
+    print this_user_profile
     if request.method == 'POST':
         this_recipe_id = request.POST['recipe_id']
-        this_recipe = Recipe.objects.get(id=this_recipe_id)
-        # flash('Recipe added!')
-        # add to db
+        this_user_profile.add_recipe_to_profile(this_recipe_id)
+    recipe_list = this_user_profile.recipes.all()[:10]
+    print recipe_list
 
-    return render(request, 'my_recipes.html')
+    return render(request, 'my_recipes.html', {
+        'recipe_list': recipe_list
+        })
 
 def planner(request):
     return render(request, 'planner.html', {})

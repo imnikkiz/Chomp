@@ -7,14 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('search', '0001_initial'),
+        ('search', '0003_course_cuisine_holiday'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='keyword',
-            name='text',
-            field=models.TextField(default=b''),
-            preserve_default=True,
+        migrations.RemoveField(
+            model_name='recipe',
+            name='time_int',
         ),
     ]

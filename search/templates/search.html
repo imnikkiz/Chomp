@@ -1,6 +1,4 @@
-{% extends "base_generic.html" %}
-{% block title %}Search Recipes{% endblock %}
-{% block content %}
+<div>
     <h1>Search Recipes</h1>
     <form method="Post" action="results_page">
         <input name="search_keyword_text" id="id_search_box" placeholder="Search for recipes" />
@@ -12,5 +10,5 @@
         <div class="col-xs-4"><img src="{{recipe.lil_img}}"><br><a href="/recipe/{{recipe.id}}/">{{ recipe.name }}</a></div>
         {% endfor %}
     </div>
-    <br>
-{% endblock %}
+</div>
+

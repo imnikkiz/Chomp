@@ -12,10 +12,15 @@ class Recipe(models.Model):
     servings_as_string = models.CharField(max_length=100, default='', null=True, blank=True)
     number_of_servings = models.IntegerField(null=True, blank=True)
     time_string = models.CharField(max_length=100, default='', null=True, blank=True)
-    time_int = models.IntegerField(null=True, blank=True)
     lil_img = models.CharField(max_length=300, default='', null=True, blank=True)
     big_img = models.CharField(max_length=300, default='', null=True, blank=True)
 
+    def convert_seconds_int_to_string(self, time_in_seconds):
+        minutes, seconds = divmod(time_in_seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+        if hours:
+            return "%d hr %d min" % (hours, minutes)
+        return "%d min" % minutes
 
     def get_recipe_by_yummly_id(self, yummly_id):
 
@@ -28,17 +33,36 @@ class Recipe(models.Model):
 
         self.name = recipe_response.get('name')
         self.yummly_id = yummly_id
+
+        # Servings
         self.servings_as_string = recipe_response.get('yield')
         self.number_of_servings = recipe_response.get('numberOfServings')
-        self.time_string = recipe_response.get('totalTime')
-        self.time_int = recipe_response.get('totalTimeInSeconds')
+        
+        # Time
+        total_time = recipe_response.get('totalTime')
+        if type(total_time) is str:
+            self.time_string = total_time
+        elif type(total_time) is int:
+            self.time_string = self.convert_seconds_int_to_string(total_time)
+        else:
+            seconds_int = recipe_response.get('totalTimeInSeconds')
+            self.time_string = self.convert_seconds_int_to_string(seconds_int)
+
+        # Ingredients, see link_ingredients_to_recipe
         self.ingredient_lines = recipe_response.get('ingredientLines')
 
+        # Attributes, see assign_attributes_to_recipe
+        self.attributes_dict = recipe_response.get('attributes')
+
+        # Images
         all_images = recipe_response.get('images')[0]
         self.lil_img = all_images.get('hostedSmallUrl')
+        self.med_img = all_images.get('hostedMediumUrl')
         self.big_img = all_images.get('hostedLargeUrl')
 
         self.save()
+
+
 
 
     def link_ingredients_to_recipe(self):
@@ -46,6 +70,44 @@ class Recipe(models.Model):
             ingredient = Ingredient.objects.create(recipe_id=self.id)
             ingredient.ingredient_string = line
             ingredient.save()
+
+    def assign_attributes_to_recipe(self):
+        holiday_list = self.attributes_dict.get('holiday')
+        if holiday_list:
+            for holiday in holiday_list:
+                holiday_entry = Holiday.objects.filter(name=holiday).first()
+                if holiday_entry:
+                    holiday_entry.recipes.add(self)
+                else: 
+                    holiday = Holiday(name=holiday)
+                    holiday.save()
+                    holiday.recipes.add(self)
+        
+        course_list = self.attributes_dict.get('course')
+        if course_list:
+            for course in course_list:
+                course_entry = Course.objects.filter(name=course).first()
+                if course_entry:
+                    course_entry.recipes.add(self)
+                else:
+                    course = Course(name=course)
+                    course.save()
+                    course.recipes.add(self)
+        
+        cuisine_list = self.attributes_dict.get('cuisine')
+        if cuisine_list:
+            for cuisine in cuisine_list:
+                cuisine_entry = Cuisine.objects.filter(name=cuisine).first()
+                if cuisine_entry:
+                    cuisine_entry.recipes.add(self)
+                else:
+                    cuisine = Cuisine(name=cuisine)
+                    cuisine.save()
+                    cuisine.recipes.add(self)
+                    
+                    
+
+
 
 
     def __unicode__(self):
@@ -60,6 +122,33 @@ class Ingredient(models.Model):
 
     def __unicode__(self):
         return self.ingredient_string
+
+class Holiday(models.Model):
+    name = models.CharField(max_length=100, default='', null=True, blank=True)
+    recipes = models.ManyToManyField(Recipe, 
+                               related_name="holidays") 
+
+
+    def __unicode__(self):
+        return self.name
+
+class Course(models.Model):
+    name = models.CharField(max_length=100, default='', null=True, blank=True)
+    recipes = models.ManyToManyField(Recipe, 
+                               related_name="courses") 
+
+
+    def __unicode__(self):
+        return self.name
+
+class Cuisine(models.Model):
+    name = models.CharField(max_length=100, default='', null=True, blank=True)
+    recipes = models.ManyToManyField(Recipe, 
+                               related_name="cuisines") 
+
+
+    def __unicode__(self):
+        return self.name
 
 
 class Search(models.Model):
@@ -92,9 +181,14 @@ class Search(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, 
+                                related_name="user_profile")
     recipes = models.ManyToManyField(Recipe,
                                      related_name="profiles")
+
+    def add_recipe_to_profile(self, recipe_id):
+        this_recipe = Recipe.objects.get(id=recipe_id)
+        self.recipes.add(this_recipe)
 
 
     def __unicode__(self):
