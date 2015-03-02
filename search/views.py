@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
-from models import Search, Recipe, UserProfile
+from models import Search, Recipe, UserProfile, Collection
 from forms import UserForm
 
 
@@ -107,14 +107,14 @@ def recipe_details(request, recipe_id):
 
 
 def my_recipes(request):
-    print "got here"
     this_user = request.user
-    print this_user
     this_user_profile = UserProfile.objects.get(user=this_user)
-    print this_user_profile
     if request.method == 'POST':
         this_recipe_id = request.POST['recipe_id']
-        this_user_profile.add_recipe_to_profile(this_recipe_id)
+        this_recipe = Recipe.objects.get(id=this_recipe_id)
+        new_collection = Collection(user_profile=this_user_profile,
+                                    recipe=this_recipe)
+        new_collection.save()
     recipe_list = this_user_profile.recipes.all()[:10]
     print recipe_list
 

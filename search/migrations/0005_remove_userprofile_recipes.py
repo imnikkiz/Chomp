@@ -7,12 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('search', '0013_auto_20150224_2358'),
+        ('search', '0004_remove_recipe_time_int'),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='search',
-            name='response',
+            model_name='userprofile',
+            name='recipes',
         ),
     ]

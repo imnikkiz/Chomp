@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('search', '0009_ingredient'),
+        ('search', '0006_auto_20150302_2323'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ingredient',
-            name='recipe',
-            field=models.ForeignKey(related_name='ingredients', to='search.Recipe'),
+            model_name='collection',
+            name='date_planned',
+            field=models.DateField(null=True, blank=True),
             preserve_default=True,
         ),
     ]

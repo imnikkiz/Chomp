@@ -46,7 +46,8 @@ class Recipe(models.Model):
             self.time_string = self.convert_seconds_int_to_string(total_time)
         else:
             seconds_int = recipe_response.get('totalTimeInSeconds')
-            self.time_string = self.convert_seconds_int_to_string(seconds_int)
+            if seconds_int:
+                self.time_string = self.convert_seconds_int_to_string(seconds_int)
 
         # Ingredients, see link_ingredients_to_recipe
         self.ingredient_lines = recipe_response.get('ingredientLines')
@@ -61,9 +62,6 @@ class Recipe(models.Model):
         self.big_img = all_images.get('hostedLargeUrl')
 
         self.save()
-
-
-
 
     def link_ingredients_to_recipe(self):
         for line in self.ingredient_lines:
@@ -105,11 +103,6 @@ class Recipe(models.Model):
                     cuisine.save()
                     cuisine.recipes.add(self)
                     
-                    
-
-
-
-
     def __unicode__(self):
         return self.name
 
@@ -119,33 +112,32 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe, 
                                related_name="ingredients") 
 
-
     def __unicode__(self):
         return self.ingredient_string
+
 
 class Holiday(models.Model):
     name = models.CharField(max_length=100, default='', null=True, blank=True)
     recipes = models.ManyToManyField(Recipe, 
                                related_name="holidays") 
 
-
     def __unicode__(self):
         return self.name
+
 
 class Course(models.Model):
     name = models.CharField(max_length=100, default='', null=True, blank=True)
     recipes = models.ManyToManyField(Recipe, 
                                related_name="courses") 
 
-
     def __unicode__(self):
         return self.name
+
 
 class Cuisine(models.Model):
     name = models.CharField(max_length=100, default='', null=True, blank=True)
     recipes = models.ManyToManyField(Recipe, 
                                related_name="cuisines") 
-
 
     def __unicode__(self):
         return self.name
@@ -157,7 +149,6 @@ class Search(models.Model):
     keyword = models.CharField(max_length=200, default='')
     recipes = models.ManyToManyField(Recipe, 
                                      related_name="searches")
-
 
     def search_by_keyword(self, keyword):
         self.keyword = keyword
@@ -175,7 +166,6 @@ class Search(models.Model):
             params=params).json()
         return recipes_from_yummly
 
-
     def __unicode__(self):
         return self.keyword
 
@@ -184,12 +174,17 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, 
                                 related_name="user_profile")
     recipes = models.ManyToManyField(Recipe,
-                                     related_name="profiles")
+                                     related_name="profiles",
+                                     through="Collection")
 
     def add_recipe_to_profile(self, recipe_id):
         this_recipe = Recipe.objects.get(id=recipe_id)
         self.recipes.add(this_recipe)
 
-
     def __unicode__(self):
         return self.user.username
+
+class Collection(models.Model):
+    user_profile = models.ForeignKey(UserProfile)
+    recipe = models.ForeignKey(Recipe)
+    date_planned = models.DateField(null=True, blank=True)
