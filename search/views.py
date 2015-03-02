@@ -21,6 +21,7 @@ def register(request):
             user.set_password(user.password)
             user.save()
             registered = True
+            return render_to_response('login.html', {}, context)
         else:
             print user_form.errors
     else:
