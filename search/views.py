@@ -43,13 +43,9 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user:
             print user
-            print "User is valid."
             if user.is_active:
-                print "User is active."
                 login(request, user)
-                print "User is logged in."
-                print user
-                return HttpResponse(json.dumps(user))
+                return HttpResponseRedirect('search_page')
     else:
         return render_to_response('login.html', {})
 
