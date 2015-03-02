@@ -112,9 +112,11 @@ def my_recipes(request):
     if request.method == 'POST':
         this_recipe_id = request.POST['recipe_id']
         this_recipe = Recipe.objects.get(id=this_recipe_id)
-        new_collection = Collection(user_profile=this_user_profile,
-                                    recipe=this_recipe)
-        new_collection.save()
+        has_recipe = this_user_profile.recipes.filter(id=this_recipe_id).first()
+        if not has_recipe:
+            new_collection = Collection(user_profile=this_user_profile,
+                                        recipe=this_recipe)
+            new_collection.save()
     recipe_list = this_user_profile.recipes.all()[:10]
     print recipe_list
 
