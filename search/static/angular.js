@@ -6,5 +6,5 @@ angular.module("demoApp", ['ngRoute'])
             .when('/login', {
                 templateUrl: 'login' })
             .when('/register', {
-                template: 'register.html'});
+                templateUrl: 'register'});
         });
