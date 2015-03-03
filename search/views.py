@@ -107,8 +107,7 @@ def recipe_details(request, recipe_id):
 
 
 def my_recipes(request):
-    this_user = request.user
-    this_user_profile = UserProfile.objects.get(user=this_user)
+    this_user_profile = UserProfile.objects.get(user=request.user)
     if request.method == 'POST':
         this_recipe_id = request.POST['recipe_id']
         this_recipe = Recipe.objects.get(id=this_recipe_id)
@@ -118,16 +117,34 @@ def my_recipes(request):
                                         recipe=this_recipe)
             new_collection.save()
     recipe_list = this_user_profile.recipes.all()[:10]
-    print recipe_list
 
     return render(request, 'my_recipes.html', {
         'recipe_list': recipe_list
         })
 
 def planner(request):
-    return render(request, 'planner.html', {})
+    if request.method == 'POST':
+        recipe_id_list = request.POST.getlist("recipe_list")
+        recipe_list = []
+        for recipe_id in recipe_id_list:
+            recipe = Recipe.objects.get(id=recipe_id)
+            recipe_list.append(recipe)
+    return render(request, 'planner.html', {
+        'recipe_list': recipe_list
+        })
 
 def shopping_list(request):
-    return render(request, 'shopping_list.html', {})
+    if request.method == 'POST':
+        recipe_id_list = request.POST.getlist("recipe_list")
+        recipe_list = {}
+        for recipe_id in recipe_id_list:
+            recipe = Recipe.objects.get(id=recipe_id)
+            recipe_name = recipe.name
+            ingredient_list = recipe.ingredients.all()
+            recipe_list[recipe_name] = ingredient_list
+        print recipe_list
+    return render(request, 'shopping_list.html', {
+        'recipe_list': recipe_list
+        })
 
 

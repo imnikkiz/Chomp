@@ -1,5 +1,11 @@
-{% extends "base_generic.html" %}
-{% block title %}My Recipes{% endblock %}
-{% block content %}
-    <h1>You've reached the Shopping List!</h1>
-{% endblock %}
+<h1>You've reached the Shopping List!</h1>
+
+<div class="row" id="id_recipe_search_results">
+    {% for recipe_name, ingredients in recipe_list.items %}
+        <div class="col-xs-4">{{ recipe_name }}<br>
+        {% for ingredient in ingredients %}
+            {{ ingredient }}<br>
+        {% endfor %}
+        </div>
+    {% endfor %}
+</div>

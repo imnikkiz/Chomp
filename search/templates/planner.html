@@ -1,9 +1,18 @@
-{% extends "base_generic.html" %}
-{% block title %}My Recipes{% endblock %}
-{% block content %}
-    <h1>You've reached the Planner!</h1>
-    <form action="/shopping_list/" method="POST">
-        <input type="submit" class="btn btn-default" value="Add to Shopping List">
-        {% csrf_token %}
-    </form>
-{% endblock %}
+<h1>You've reached the Planner!</h1>
+
+<form action="/shopping_list/" method="POST">
+    <div class="row" id="id_recipe_list">
+        {% for recipe in recipe_list %}
+        <div class="col-xs-4">
+        <input type="checkbox" 
+               name="recipe_list" 
+               value={{ recipe.id }}>
+               <img src="{{recipe.lil_img}}"><br>
+               <a href="/recipe/{{recipe.id}}/">
+               {{ recipe.name }}</a></div>
+        {% endfor %}
+    </div>
+    <input type="submit" class="btn btn-default" value="Add to Shopping List">
+    {% csrf_token %}
+</form>
+
