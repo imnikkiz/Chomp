@@ -4,6 +4,5 @@ foods = ['tomato', 'tomatoes', 'egg', 'butter', 'garlic',
          'salmon', 'sugar', 'apple', 'pasta', 'oil', 'chicken', 
          'tuna', 'ketchup', 'bread', 'onion', 'potato', 'potatoes', 'chocolate', 
          'cracker', 'seed', 'ginger', 'sauce', 'nut', 'water',
-         'wine', 'carrot', 'cornstarch', ]
-
-plural_foods = [food + 's' for food in foods]
+         'wine', 'carrot', 'cornstarch', 'oat', 'almond', 'milk',
+         'flour', 'syrup']

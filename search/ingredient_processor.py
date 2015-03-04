@@ -1,6 +1,12 @@
-from foods import foods, plural_foods
+from foods import foods
 from measurements import measurements, plural_measurements
 import re
+
+def un_pluralize(food):  
+    split_food = list(food)
+    if split_food[-1] == 's':
+        return "".join(split_food[:-1])
+
 
 def process(line):
     numbers = re.compile('(\d+\s\d+[./]?\d*)|(\d+[./]?\d*)|(\d+)')
@@ -14,6 +20,9 @@ def process(line):
         line = "".join(line)
     else:
         line = line[0]
+
+    line = line.split(",")
+    line = "".join(line)
 
     number_result = numbers.match(line)
     if number_result:
@@ -44,6 +53,11 @@ def process(line):
 
     food_result = next((word for word in modified_line if word in foods), None)
     if not food_result:
-        food_result = next((word for word in modified_line if word in plural_foods), None)
+        for word in modified_line:
+            un_pluralized_word = un_pluralize(word)
+            if un_pluralized_word in foods:
+                food_result = un_pluralized_word
+                break
+
 
     return number_result, measurement_result, food_result

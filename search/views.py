@@ -142,7 +142,6 @@ def shopping_list(request):
             recipe_name = recipe.name
             ingredient_list = recipe.ingredients.all()
             recipe_list[recipe_name] = ingredient_list
-        print recipe_list
     return render(request, 'shopping_list.html', {
         'recipe_list': recipe_list
         })

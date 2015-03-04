@@ -73,12 +73,12 @@ class Recipe(models.Model):
             ingredient.measurement = measurement
             ingredient.food = food
             ingredient.save()
-            # if not amount:
-            #     print "Error in parsing amount for: ", line
-            # if not measurement:
-            #     print "Add measurement for: ", line
-            # if not food:
-            #     print "Add food for: ", line
+            if not amount:
+                print "Error in parsing amount for: ", line
+            if not measurement:
+                print "Add measurement for: ", line
+            if not food:
+                print "Add food for: ", line
 
     def assign_attributes_to_recipe(self):
         holiday_list = self.attributes_dict.get('holiday')
