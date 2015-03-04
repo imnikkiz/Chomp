@@ -129,8 +129,10 @@ def planner(request):
         for recipe_id in recipe_id_list:
             recipe = Recipe.objects.get(id=recipe_id)
             recipe_list.append(recipe)
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     return render(request, 'planner.html', {
-        'recipe_list': recipe_list
+        'recipe_list': recipe_list,
+        'days': days
         })
 
 def shopping_list(request):

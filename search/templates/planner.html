@@ -3,15 +3,18 @@
 <form action="/shopping_list/" method="POST">
     <div class="row" id="id_recipe_list">
         {% for recipe in recipe_list %}
-        <div class="col-xs-4">
-        <input type="checkbox" 
-               name="recipe_list" 
-               value={{ recipe.id }}>
-               <img src="{{recipe.lil_img}}"><br>
-               <a href="/recipe/{{recipe.id}}/">
-               {{ recipe.name }}</a></div>
+          <div class="col-xs-4">
+          <input type="checkbox" 
+                 name="recipe_list" 
+                 value={{ recipe.id }}>
+                 <img src="{{recipe.lil_img}}"><br>
+                 <a href="/recipe/{{recipe.id}}/">
+                 {{ recipe.name }}</a></div>
         {% endfor %}
     </div>
+    {% for day in days %}
+      <div><h2>{{ day }}</h2></div>
+    {% endfor %}
     <input type="submit" class="btn btn-default" value="Add to Shopping List">
     {% csrf_token %}
 </form>
