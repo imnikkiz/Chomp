@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import os, requests
+import ingredient_processor
 
 YUMMLY_APP_ID = os.environ['YUMMLY_APP_ID']
 YUMMLY_APP_KEY = os.environ['YUMMLY_APP_KEY']
@@ -67,7 +68,17 @@ class Recipe(models.Model):
         for line in self.ingredient_lines:
             ingredient = Ingredient.objects.create(recipe_id=self.id)
             ingredient.ingredient_string = line
+            amount, measurement, food = ingredient_processor.process(line)
+            ingredient.amount = amount
+            ingredient.measurement = measurement
+            ingredient.food = food
             ingredient.save()
+            # if not amount:
+            #     print "Error in parsing amount for: ", line
+            # if not measurement:
+            #     print "Add measurement for: ", line
+            # if not food:
+            #     print "Add food for: ", line
 
     def assign_attributes_to_recipe(self):
         holiday_list = self.attributes_dict.get('holiday')
@@ -106,11 +117,20 @@ class Recipe(models.Model):
     def __unicode__(self):
         return self.name
 
+class FoodCategory(models.Model):
+    name = models.CharField(max_length=100, default='')
+
 
 class Ingredient(models.Model):
     ingredient_string = models.CharField(max_length=300, default='', null=True, blank=True)
     recipe = models.ForeignKey(Recipe, 
-                               related_name="ingredients") 
+                               related_name="ingredients")
+    amount = models.IntegerField(null=True)
+    measurement = models.CharField(max_length=100, default='', null=True)
+    food = models.CharField(max_length=200, default='', null=True)
+    food_category = models.ForeignKey(FoodCategory,
+                               related_name="foods",
+                               null = True)
 
     def __unicode__(self):
         return self.ingredient_string
