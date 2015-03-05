@@ -1,23 +1,20 @@
 <h1>You've reached the Shopping List!</h1>
 
-<div class="row" id="id_recipe_search_results">
-    {% for recipe_name, ingredients in recipe_list.items %}
-        <h3><div class="col-xs-4">{{ recipe_name }}</h3>
-        {% for ingredient in ingredients %}
-            {% if ingredient.food %}
-                {% if ingredient.amount %}
-                    <b>{{ ingredient.amount }}</b> 
-                {% endif %}
-                {% if ingredient.measurement %}
-                    <b>{{ ingredient.measurement }}</b>
-                {% endif %}
-                <b>{{ ingredient.food }}</b>
-            {% else %}
-                {{ ingredient }}
-            {% endif %}<br>
-            <!-- on hover -->
-            <!-- <i>Ingredient string: {{ ingredient }}</i><br> -->
-        {% endfor %}<br>
-        </div>
-    {% endfor %}
-</div>
+{% for recipe_name, ingredients in recipe_list.items %}
+    <h3>{{ recipe_name }}</h3>
+    {% for ingredient in ingredients %}
+        {% if ingredient.food %}
+            {% if ingredient.amount %}
+                <b>{{ ingredient.amount }}</b> 
+            {% endif %}
+            {% if ingredient.measurement %}
+                <b>{{ ingredient.measurement }}</b>
+            {% endif %}
+            <b>{{ ingredient.food }}</b>
+        {% else %}
+            {{ ingredient }}
+        {% endif %}<br>
+        <!-- on hover -->
+        <!-- <i>Ingredient string: {{ ingredient }}</i><br> -->
+    {% endfor %}<br>
+{% endfor %}

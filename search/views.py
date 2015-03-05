@@ -1,18 +1,19 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from models import Search, Recipe, UserProfile, Collection
 from forms import UserForm
 
 
 def home_page(request):
-    return render(request, 'home.html', {})
+    """ Home page renders home.html with fully loaded partials"""
+    return render_to_response('home.html')
 
 
 def register(request):
+    """ Register"""
     context = RequestContext(request)
-    registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         if user_form.is_valid():
@@ -21,16 +22,17 @@ def register(request):
             user.save()
             user_profile = UserProfile(user=user)
             user_profile.save()
-            registered = True
-            return render_to_response('login.html', {}, context)
+            new_user = authenticate(username=request.POST['username'],
+                                    password=request.POST['password'])
+            login(request, new_user)
+            return HttpResponseRedirect('/recipe_main')
         else:
             print user_form.errors
     else:
         user_form = UserForm()
     return render_to_response(
         'register.html',
-        {'user_form': user_form,
-         'registered': registered},
+        {'user_form': user_form},
         context)
 
 
@@ -51,17 +53,21 @@ def login_user(request):
     else:
         return render_to_response('login.html', {}, context)
 
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
 def recipe_main(request):
-    return render(request, 'recipe_main.html', {})
+    return render_to_response('recipe_main.html')
 
 def search_page(request):
-    return render(request, 'search.html')
+    return render_to_response('search.html')
 
-
-def results_page(request):   
-    if request.method == 'POST':
-        keyword = request.POST['search_keyword_text']
-
+def results_page(request):  
+    print "Got here" 
+    if request.method == 'GET':
+        keyword = request.GET['search_keyword_text']
+        print keyword
         # Keyword not in database
         search_exists = Search.objects.filter(keyword=keyword).first()
         if search_exists:
@@ -84,14 +90,21 @@ def results_page(request):
                 new_search.recipes.add(new_recipe)
 
         this_search = Search.objects.get(keyword=keyword)
+        # Three objects in a list
         recipe_list = this_search.recipes.all()[:3]
+        # recipe_list = []
+        # for recipe in recipe_data:
+        #     recipe_list.append(model_to_dict(recipe))
 
         # TODO: view more results
         # TODO: after 10th result, option to find more
+        # response = json.dumps([dict(recipe=recipe_list)])
 
-    return render(request, 'search.html', {
-        'recipe_list': recipe_list
-    })    
+        return render_to_response("search_results.html", {
+            'recipe_list': recipe_list})
+
+        # response = json.dumps(recipe_list)
+        # return HttpResponse(response, content_type='application/json')
 
 
 def recipe_details(request, recipe_id):
@@ -123,22 +136,26 @@ def my_recipes(request):
         })
 
 def planner(request):
+    recipe_list = []
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    
     if request.method == 'POST':
         recipe_id_list = request.POST.getlist("recipe_list")
-        recipe_list = []
+
         for recipe_id in recipe_id_list:
             recipe = Recipe.objects.get(id=recipe_id)
             recipe_list.append(recipe)
-        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+
     return render(request, 'planner.html', {
         'recipe_list': recipe_list,
         'days': days
         })
 
 def shopping_list(request):
+    recipe_list = {}
+
     if request.method == 'POST':
         recipe_id_list = request.POST.getlist("recipe_list")
-        recipe_list = {}
         for recipe_id in recipe_id_list:
             recipe = Recipe.objects.get(id=recipe_id)
             recipe_name = recipe.name

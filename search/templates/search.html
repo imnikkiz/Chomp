@@ -1,14 +1,18 @@
-<div>
-    <h1>Search Recipes</h1>
-    <form method="Post" action="results_page">
-        <input name="search_keyword_text" id="id_search_box" placeholder="Search for recipes" />
-        {% csrf_token %}
-    </form> 
+<h1>Search Recipes</h1>
+<form id="search_form">
+    <input name="search_keyword_text" id="search_box" placeholder="Search for recipes">
+    <button type="submit" id="search_button" class="btn btn-primary">Search</button>
+</form> 
 
-    <div class="row" id="id_recipe_search_results">
-        {% for recipe in recipe_list %}
-        <div class="col-xs-4"><img src="{{recipe.lil_img}}"><br><a href="/recipe/{{recipe.id}}/">{{ recipe.name }}</a></div>
-        {% endfor %}
-    </div>
-</div>
+<script>
 
+function showSearchResults(evt) {
+    evt.preventDefault();
+    var params = $("#search_form").serialize();
+    console.log(params);
+    $("#search_results").load("results_page/", params);
+};
+
+$("#search_form").on('submit', showSearchResults);
+
+</script>
