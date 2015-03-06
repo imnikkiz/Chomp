@@ -51,13 +51,27 @@ def process(line):
     if not measurement_result:
         measurement_result = next((word for word in modified_line if word in plural_measurements), None)
 
-    food_result = next((word for word in modified_line if word in foods), None)
+
+    food_result = None
+    category_result = None
+    for word in modified_line:
+        if foods.get(word):
+            food_result = word
+            category_result = foods.get(word)
+            break
+
     if not food_result:
         for word in modified_line:
             un_pluralized_word = un_pluralize(word)
             if un_pluralized_word in foods:
                 food_result = un_pluralized_word
+                category_result = foods.get(food_result)
                 break
 
+    response = {'number': number_result,
+                'measurement': measurement_result,
+                'food': food_result,
+                'category': category_result}
 
-    return number_result, measurement_result, food_result
+    print response
+    return response

@@ -64,17 +64,13 @@ def search_page(request):
     return render_to_response('search.html')
 
 def results_page(request):  
-    print "Got here" 
     if request.method == 'GET':
         keyword = request.GET['search_keyword_text']
-        print keyword
         # Keyword not in database
         search_exists = Search.objects.filter(keyword=keyword).first()
         if search_exists:
             search_has_recipes = search_exists.recipes.first()
-            if search_has_recipes:
-                pass
-            else:
+            if not search_has_recipes:
                 search_exists.delete()
                 search_exists = False
 
@@ -90,21 +86,13 @@ def results_page(request):
                 new_search.recipes.add(new_recipe)
 
         this_search = Search.objects.get(keyword=keyword)
-        # Three objects in a list
+
         recipe_list = this_search.recipes.all()[:3]
-        # recipe_list = []
-        # for recipe in recipe_data:
-        #     recipe_list.append(model_to_dict(recipe))
 
         # TODO: view more results
         # TODO: after 10th result, option to find more
-        # response = json.dumps([dict(recipe=recipe_list)])
-
         return render_to_response("search_results.html", {
             'recipe_list': recipe_list})
-
-        # response = json.dumps(recipe_list)
-        # return HttpResponse(response, content_type='application/json')
 
 
 def recipe_details(request, recipe_id):

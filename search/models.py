@@ -68,17 +68,33 @@ class Recipe(models.Model):
         for line in self.ingredient_lines:
             ingredient = Ingredient.objects.create(recipe_id=self.id)
             ingredient.ingredient_string = line
-            amount, measurement, food = ingredient_processor.process(line)
-            ingredient.amount = amount
-            ingredient.measurement = measurement
-            ingredient.food = food
+            ingredient_info = ingredient_processor.process(line)
+            ingredient.amount = ingredient_info['number']
+            ingredient.measurement = ingredient_info['measurement']
+
+            food = ingredient_info['food']
+            category = ingredient_info['category']
+            if food:
+                food_exists = Food.objects.filter(name=food).first()
+                print "food exists: ", food_exists
+                if not food_exists:
+                    new_food = Food(name = food)
+                    category_exists = Category.objects.filter(name=category).first()
+                    print "category exists: ", category_exists
+                    if not category_exists:
+                        new_category = Category(name=category)
+                        new_category.save()
+                        print "new category added: ", new_category
+                    new_food.category = Category.objects.get(name=category)
+                    print new_food.category
+                    new_food.save() 
+                    print "new food saved: ", new_food
+                ingredient.food = Food.objects.get(name=food)
+
             ingredient.save()
-            if not amount:
-                print "Error in parsing amount for: ", line
-            if not measurement:
-                print "Add measurement for: ", line
-            if not food:
-                print "Add food for: ", line
+            print "saved new ingredient: ", line
+
+
 
     def assign_attributes_to_recipe(self):
         holiday_list = self.attributes_dict.get('holiday')
@@ -117,8 +133,15 @@ class Recipe(models.Model):
     def __unicode__(self):
         return self.name
 
-class FoodCategory(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=100, default='')
+
+
+class Food(models.Model):
+    name = models.CharField(max_length=100, default='')
+    category = models.ForeignKey(Category,
+                                 related_name="foods",
+                                 default='')
 
 
 class Ingredient(models.Model):
@@ -127,10 +150,9 @@ class Ingredient(models.Model):
                                related_name="ingredients")
     amount = models.IntegerField(null=True)
     measurement = models.CharField(max_length=100, default='', null=True)
-    food = models.CharField(max_length=200, default='', null=True)
-    food_category = models.ForeignKey(FoodCategory,
-                               related_name="foods",
-                               null = True)
+    food = models.ForeignKey(Food,
+                             related_name="ingredients", null=True)
+
 
     def __unicode__(self):
         return self.ingredient_string

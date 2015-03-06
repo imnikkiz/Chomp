@@ -10,7 +10,12 @@ function showSearchResults(evt) {
     evt.preventDefault();
     var params = $("#search_form").serialize();
     console.log(params);
-    $("#search_results").load("results_page/", params);
+    // $("#search_results").hide();
+    $("#search_results").load("results_page/", params 
+        // function {
+
+        // $("#search_results").show();
+    );
 };
 
 $("#search_form").on('submit', showSearchResults);
