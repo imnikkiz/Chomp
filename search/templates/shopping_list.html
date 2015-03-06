@@ -4,13 +4,16 @@
     <h3>{{ recipe_name }}</h3>
     {% for ingredient in ingredients %}
         {% if ingredient.food %}
-            {% if ingredient.amount %}
-                <b>{{ ingredient.amount }}</b> 
-            {% endif %}
             {% if ingredient.measurement %}
-                <b>{{ ingredient.measurement }}</b>
+                {% if ingredient.amount %}
+                    <b>{{ ingredient.amount }} {{ ingredient.measurement }}</b> 
+                {% else %}
+                    <b>(1) {{ ingredient.measurement }}</b>
+                {% endif %}
+            {% else %}
+                <b>{{ ingredient.amount }}</b>
             {% endif %}
-            <b>{{ ingredient.food }}</b>
+            <b>{{ ingredient.food.name }}</b>
         {% else %}
             {{ ingredient }}
         {% endif %}<br>

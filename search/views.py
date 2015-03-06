@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from models import Search, Recipe, UserProfile, Collection
 from forms import UserForm
-
+import logging
 
 def home_page(request):
     """ Home page renders home.html with fully loaded partials"""
@@ -78,7 +78,7 @@ def results_page(request):
             new_search = Search.objects.create()
             search_response = new_search.search_by_keyword(keyword=keyword)
 
-            for recipe in search_response['matches']:
+            for recipe in search_response.get('matches'):
                 new_recipe = Recipe.objects.create()
                 new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
                 new_recipe.link_ingredients_to_recipe()

@@ -2,8 +2,8 @@ from foods import foods
 from measurements import measurements, plural_measurements
 import re
 
-def un_pluralize(food):  
-    split_food = list(food)
+def un_pluralize(word):  
+    split_food = list(word)
     if split_food[-1] == 's':
         return "".join(split_food[:-1])
 

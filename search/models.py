@@ -69,16 +69,22 @@ class Recipe(models.Model):
             ingredient = Ingredient.objects.create(recipe_id=self.id)
             ingredient.ingredient_string = line
             ingredient_info = ingredient_processor.process(line)
-            ingredient.amount = ingredient_info['number']
-            ingredient.measurement = ingredient_info['measurement']
+
+            amount = ingredient_info['number']
+            if amount: 
+                ingredient.amount = amount
+
+            measurement = ingredient_info['measurement']
+            if measurement:
+                ingredient.measurement = measurement           
 
             food = ingredient_info['food']
             category = ingredient_info['category']
             if food:
                 food_exists = Food.objects.filter(name=food).first()
-                print "food exists: ", food_exists
+
                 if not food_exists:
-                    new_food = Food(name = food)
+                    new_food = Food(name=food)
                     category_exists = Category.objects.filter(name=category).first()
                     print "category exists: ", category_exists
                     if not category_exists:
