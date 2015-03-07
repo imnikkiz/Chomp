@@ -18,12 +18,27 @@
                 function init() {
                     $('#{{forloop.counter}}').draggable();
                 }
-                </script>
+            </script>
         {% endfor %}
     </div>
+
     {% for day in days %}
-      <div><h2>{{ day }}</h2></div>
+        <div id="{{day}}"><h2>{{ day }}</h2><p></p></div>
+
+        <script>
+            $(function () {
+                $( "#{{day}}" ).droppable({
+                    drop: function( event, ui ) {
+                        $( this )
+                            .find( "p" )
+                                .html( "Added!" );
+                    }
+                });
+            });
+        </script>
+
     {% endfor %}
+
     <input type="submit" class="btn btn-default" value="Add to Shopping List">
     {% csrf_token %}
 </form>
