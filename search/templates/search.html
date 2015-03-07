@@ -3,17 +3,36 @@
     <input name="search_keyword_text" id="search_box" placeholder="Search for recipes">
     <button type="submit" id="search_button" class="btn btn-primary">Search</button>
 </form> 
-<div id="search_results"></div>
+
+<div id="search_results">
+    {% for recipe in recipe_list %}
+        <div class="col-xs-4"><img src="{{recipe.lil_img}}">
+        <button type="submit" class="btn btn-primary" id="{{forloop.counter}}">{{recipe.name}}</input>
+        </div>
+
+        <script>
+
+        function showRecipeDetails(evt) {
+            evt.preventDefault();
+            var recipe_id = "{{recipe.id}}";
+            $("#content").load("/recipe/"+recipe_id);
+        };
+
+        $("#{{forloop.counter}}").on('click', showRecipeDetails);
+
+        </script>
+    {% endfor %}
+</div>
 
 <script>
-
 function showSearchResults(evt) {
     evt.preventDefault();
     var params = $("#search_form").serialize();
-    $("#search_results").load("results_page/", params 
+    $("#content").load("search/", params 
     );
 };
 
 $("#search_form").on('submit', showSearchResults);
-
 </script>
+
+

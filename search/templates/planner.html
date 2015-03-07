@@ -1,6 +1,6 @@
 <h1>Planner</h1>
 
-<form action="/shopping_list/" method="POST">
+<form id="add-to-shopping-list-form">
     <div class="row" id="id_recipe_list">
         {% for recipe in recipe_list %}
           <div class="col-xs-4">
@@ -18,3 +18,16 @@
     <input type="submit" class="btn btn-default" value="Add to Shopping List">
     {% csrf_token %}
 </form>
+
+<script>
+
+function addToShoppingList(evt) {
+    evt.preventDefault();
+    var params = $("#add-to-shopping-list-form").serialize();
+    $("#content").load("shopping_list/", params 
+    );
+};
+
+$("#add-to-shopping-list-form").on('submit', addToShoppingList);
+
+</script>

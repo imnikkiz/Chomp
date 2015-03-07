@@ -60,13 +60,11 @@ def logout_user(request):
 def recipe_main(request):
     return render_to_response('recipe_main.html')
 
-def search_page(request):
-    return render_to_response('search.html')
-
-def results_page(request):  
-    if request.method == 'GET':
-        keyword = request.GET['search_keyword_text']
-        # Keyword not in database
+def search_page(request):  
+    keyword = request.GET.get('search_keyword_text')
+    if not keyword:
+        keyword = request.session.get('search_keyword')
+    if keyword:
         search_exists = Search.objects.filter(keyword=keyword).first()
         if search_exists:
             search_has_recipes = search_exists.recipes.first()
@@ -86,14 +84,16 @@ def results_page(request):
                 new_search.recipes.add(new_recipe)
 
         this_search = Search.objects.get(keyword=keyword)
+        request.session['search_keyword'] = keyword
 
         recipe_list = this_search.recipes.all()[:3]
 
         # TODO: view more results
         # TODO: after 10th result, option to find more
-        return render_to_response("search_results.html", {
+        return render_to_response("search.html", {
             'recipe_list': recipe_list})
-
+    else:
+        return render_to_response('search.html')
 
 def recipe_details(request, recipe_id):
     recipe_id = recipe_id
@@ -110,14 +110,15 @@ def recipe_details(request, recipe_id):
 def my_recipes(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
     if request.method == 'GET':
-        this_recipe_id = request.GET['recipe_id']
-        this_recipe = Recipe.objects.get(id=this_recipe_id)
-        has_recipe = this_user_profile.recipes.filter(id=this_recipe_id).first()
-        if not has_recipe:
-            new_collection = Collection(user_profile=this_user_profile,
-                                        recipe=this_recipe)
-            new_collection.save()
-    recipe_list = this_user_profile.recipes.all()[:10]
+        this_recipe_id = request.GET.get('recipe_id')
+        if this_recipe_id:
+            this_recipe = Recipe.objects.get(id=this_recipe_id)
+            has_recipe = this_user_profile.recipes.filter(id=this_recipe_id).first()
+            if not has_recipe:
+                new_collection = Collection(user_profile=this_user_profile,
+                                            recipe=this_recipe)
+                new_collection.save()
+        recipe_list = this_user_profile.recipes.all()[:10]
 
     return render(request, 'my_recipes.html', {
         'recipe_list': recipe_list
@@ -127,12 +128,12 @@ def planner(request):
     recipe_list = []
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     
-    if request.method == 'POST':
-        recipe_id_list = request.POST.getlist("recipe_list")
-
-        for recipe_id in recipe_id_list:
-            recipe = Recipe.objects.get(id=recipe_id)
-            recipe_list.append(recipe)
+    if request.method == 'GET':
+        recipe_id_list = request.GET.getlist("recipe_list")
+        if recipe_id_list:
+            for recipe_id in recipe_id_list:
+                recipe = Recipe.objects.get(id=recipe_id)
+                recipe_list.append(recipe)
 
     return render(request, 'planner.html', {
         'recipe_list': recipe_list,
@@ -142,8 +143,8 @@ def planner(request):
 def shopping_list(request):
     recipe_list = {}
 
-    if request.method == 'POST':
-        recipe_id_list = request.POST.getlist("recipe_list")
+    if request.method == 'GET':
+        recipe_id_list = request.GET.getlist("recipe_list")
         for recipe_id in recipe_id_list:
             recipe = Recipe.objects.get(id=recipe_id)
             recipe_name = recipe.name

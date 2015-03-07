@@ -14,7 +14,6 @@ urlpatterns = patterns('',
     url(r'^planner/$', 'search.views.planner', name='planner'),
     url(r'^shopping_list/$', 'search.views.shopping_list', name='shopping_list'),
 
-    url(r'^results_page/', 'search.views.results_page', name='results'),
     # url(r'^blog/', include('blog.urls')),
 
     # url(r'^admin/', include(admin.site.urls)),

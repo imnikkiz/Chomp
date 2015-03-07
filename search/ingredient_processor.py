@@ -16,7 +16,8 @@ def process(line):
     if len(line) > 1:
         second_part = line.pop()
         second_part = second_part.split(")")
-        line.append(second_part[1])
+        if len(second_part) > 1:
+            line.append(second_part[1])
         line = "".join(line)
     else:
         line = line[0]
