@@ -109,8 +109,8 @@ def recipe_details(request, recipe_id):
 
 def my_recipes(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
-    if request.method == 'POST':
-        this_recipe_id = request.POST['recipe_id']
+    if request.method == 'GET':
+        this_recipe_id = request.GET['recipe_id']
         this_recipe = Recipe.objects.get(id=this_recipe_id)
         has_recipe = this_user_profile.recipes.filter(id=this_recipe_id).first()
         if not has_recipe:
