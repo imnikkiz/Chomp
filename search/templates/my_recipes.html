@@ -3,12 +3,12 @@
 <form id="add-to-planner-form">
     <div class="row" id="id_all_recipes">
         {% for recipe in recipe_list %}
-        <div class="col-xs-4">
         <input type="checkbox" 
                name="recipe_list" 
                value={{ recipe.id }}>
                <a href="/recipe/{{recipe.id}}/">
-               {{ recipe.name }}</a></div>
+               {{ recipe.name }}</a>
+        <br>
         {% endfor %}
     </div>
     <input type="submit" class="btn btn-default" value="Add to Planner">
