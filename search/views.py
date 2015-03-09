@@ -60,10 +60,12 @@ def logout_user(request):
 def recipe_main(request):
     return render_to_response('recipe_main.html')
 
-def search_page(request):  
+def search_page(request): 
+    page = None 
     keyword = request.GET.get('search_keyword_text')
     if not keyword:
         keyword = request.session.get('search_keyword')
+        page = request.GET.get('page')
     if keyword:
         search_exists = Search.objects.filter(keyword=keyword).first()
         if search_exists:
@@ -86,7 +88,13 @@ def search_page(request):
         this_search = Search.objects.get(keyword=keyword)
         request.session['search_keyword'] = keyword
 
-        recipe_list = this_search.recipes.all()[:3]
+        if not page:
+            recipe_list = this_search.recipes.all()[:3]
+        if page:
+            starts_list = [None, 0, 3, 6, 9]
+            start = starts_list[int(page)]
+            end = int(page) * 3
+            recipe_list = this_search.recipes.all()[start:end]
 
         # TODO: view more results
         # TODO: after 10th result, option to find more
