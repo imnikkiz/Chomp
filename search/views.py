@@ -99,7 +99,8 @@ def search_page(request):
         # TODO: view more results
         # TODO: after 10th result, option to find more
         return render_to_response("search.html", {
-            'recipe_list': recipe_list})
+            'recipe_list': recipe_list},
+            context_instance=RequestContext(request))
     else:
         return render_to_response('search.html')
 
