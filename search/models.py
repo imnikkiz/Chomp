@@ -86,19 +86,14 @@ class Recipe(models.Model):
                 if not food_exists:
                     new_food = Food(name=food)
                     category_exists = Category.objects.filter(name=category).first()
-                    print "category exists: ", category_exists
                     if not category_exists:
                         new_category = Category(name=category)
                         new_category.save()
-                        print "new category added: ", new_category
                     new_food.category = Category.objects.get(name=category)
-                    print new_food.category
                     new_food.save() 
-                    print "new food saved: ", new_food
                 ingredient.food = Food.objects.get(name=food)
 
             ingredient.save()
-            print "saved new ingredient: ", line
 
 
 
@@ -217,6 +212,8 @@ class Search(models.Model):
     def __unicode__(self):
         return self.keyword
 
+class Planner(models.Model):
+    pass
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, 
@@ -224,6 +221,10 @@ class UserProfile(models.Model):
     recipes = models.ManyToManyField(Recipe,
                                      related_name="profiles",
                                      through="Collection")
+    planner = models.OneToOneField(Planner,
+                                   related_name="user_profile", 
+                                   null=True,
+                                   default=None)
 
     def add_recipe_to_profile(self, recipe_id):
         this_recipe = Recipe.objects.get(id=recipe_id)
@@ -232,7 +233,14 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+
 class Collection(models.Model):
     user_profile = models.ForeignKey(UserProfile)
     recipe = models.ForeignKey(Recipe)
     date_planned = models.DateField(null=True, blank=True)
+    planner = models.ForeignKey(Planner,
+                                null=True,
+                                blank=True,
+                                related_name="recipes")
+
+

@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-from models import Search, Recipe, UserProfile, Collection
+from models import Search, Recipe, UserProfile, Collection, Planner
 from forms import UserForm
 import logging
 
@@ -22,6 +22,8 @@ def register(request):
             user.set_password(user.password)
             user.save()
             user_profile = UserProfile(user=user)
+            new_planner = Planner()
+            user_profile.planner = new_planner
             user_profile.save()
             new_user = authenticate(username=request.POST['username'],
                                     password=request.POST['password'])
@@ -154,13 +156,19 @@ def my_recipes(request):
 def planner(request):
     recipe_list = []
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    
+    this_user_profile = UserProfile.objects.get(user=request.user)
+    this_planner = Planner.objects.get(user_profile=this_user_profile)
+
     if request.method == 'GET':
         recipe_id_list = request.GET.getlist("recipe_list")
         if recipe_id_list:
             for recipe_id in recipe_id_list:
-                recipe = Recipe.objects.get(id=recipe_id)
-                recipe_list.append(recipe)
+                this_recipe = Recipe.objects.get(id=recipe_id)
+                this_collection = Collection.objects.filter(user_profile=this_user_profile,
+                                          recipe=this_recipe)
+                this_collection.planner = this_planner
+    
+    recipe_list = this_planner.recipes.all()
 
     return render(request, 'planner.html', {
         'recipe_list': recipe_list,
