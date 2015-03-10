@@ -162,20 +162,14 @@ def planner(request):
             recipe_id_list = request.session[day]
             # look up full recipe object
             for recipe_id in recipe_id_list:
-                print recipe_id
                 recipe = Recipe.objects.filter(id=recipe_id).first()
-                print recipe
                 # if there's already a key for the day
                 if saved_recipes_and_days.get(day):
                     saved_recipes_and_days[day].append(recipe)
                 else:
-                    print "no ", day
                     saved_recipes_and_days[day] = []
                     saved_recipes_and_days[day].append(recipe)
-                    print saved_recipes_and_days[day]
-                print saved_recipes_and_days
         # clear the day from the session
-        request.session[day] = []
 
         #request is empty
         # saved days are stored {day: recipe object} in saved_recipes_and_days
@@ -194,6 +188,20 @@ def planner(request):
         'saved_recipes': saved_recipes_and_days
         })
 
+def clear_planner(request):
+    this_user_profile = UserProfile.objects.get(user=request.user)
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    for day in days:
+        request.session[day] = []
+
+    planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all()
+    for recipe in planned_recipes:
+        recipe.day_planned = None
+        recipe.save()
+
+    return render(request, 'planner.html', {
+        'days': days})
+
 def shopping_list(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -204,36 +212,44 @@ def shopping_list(request):
     if request.method == 'GET':
         # parse recipe_id_list
         recipe_id_list = request.GET.getlist("recipe-order")
-        recipe_id_list = recipe_id_list[0].split(',')
+        if recipe_id_list:
+            recipe_id_list = recipe_id_list[0].split(',')
 
-        # hold days and recipes
-        day_and_recipe_list = []
-        for item in recipe_id_list:
-            # only save days and recipes
-            if item:
-                day_and_recipe_list.append(item)
+            # hold days and recipes
+            day_and_recipe_list = []
+            for item in recipe_id_list:
+                # only save days and recipes
+                if item:
+                    day_and_recipe_list.append(item)
 
-        for item in day_and_recipe_list:
-            #if it's a day
-            if item in days:
-                day = item
-            # if it's a recipe id
-            else:
-                # add the current day and the recipe id to the session
-                if not request.session.get(day):
-                    request.session[day] = []
-                request.session[day].append(item)
+            for item in day_and_recipe_list:
+                #if it's a day
+                if item in days:
+                    day = item
+                # if it's a recipe id
+                else:
+                    # add the current day and the recipe id to the session
+                    if not request.session.get(day):
+                        request.session[day] = []
+                    request.session[day].append(item)
 
-                # find the recipe object
-                recipe = Recipe.objects.filter(id=item).first()
+                    # find the recipe object
+                    recipe = Recipe.objects.filter(id=item).first()
 
-                # find the collection object and add day
-                collection = Collection.objects.get(recipe=recipe,
-                                                    user_profile=this_user_profile)
-                collection.day_planned = day
-                collection.save()
+                    # find the collection object and add day
+                    collection = Collection.objects.get(recipe=recipe,
+                                                        user_profile=this_user_profile)
+                    collection.day_planned = day
+                    collection.save()
 
-                # add {name:ingredients} to ingredient_dict
+                    # add {name:ingredients} to ingredient_dict
+                    recipe_name = recipe.name
+                    ingredient_list = recipe.ingredients.all()
+                    ingredient_dict[recipe_name] = ingredient_list
+        else:
+            planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all()
+            for collection in planned_recipes:
+                recipe = collection.recipe
                 recipe_name = recipe.name
                 ingredient_list = recipe.ingredients.all()
                 ingredient_dict[recipe_name] = ingredient_list

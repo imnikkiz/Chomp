@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^add_recipe/$', 'search.views.add_recipe', name='add_recipe'),
     url(r'^my_recipes/$', 'search.views.my_recipes', name='my_recipes'),
     url(r'^planner/$', 'search.views.planner', name='planner'),
+    url(r'^clear_planner/$', 'search.views.clear_planner', name='clear_planner'),
     url(r'^shopping_list/$', 'search.views.shopping_list', name='shopping_list'),
 
     # url(r'^blog/', include('blog.urls')),
