@@ -1,6 +1,6 @@
 <h1>My Recipes</h1>
 
-<form id="add-to-planner-form">
+<form id="modify-recipes-form">
     <div class="row" id="id_all_recipes">
         {% for recipe in recipe_list %}
         <input type="checkbox" 
@@ -11,7 +11,8 @@
         <br>
         {% endfor %}
     </div>
-    <input type="submit" class="btn btn-default" value="Add to Planner">
+    <button class="btn btn-default" id="add-to-planner-button">Add to Planner</button>
+    <button class="btn btn-default" id="remove-recipes-button">Remove Recipes</button>
     {% csrf_token %}
 </form>
 
@@ -19,11 +20,20 @@
 
 function addToPlanner(evt) {
     evt.preventDefault();
-    var params = $("#add-to-planner-form").serialize();
+    var params = $("#modify-recipes-form").serialize();
     $("#content").load("planner/", params 
     );
 };
 
-$("#add-to-planner-form").on('submit', addToPlanner);
+$("#add-to-planner-button").on('click', addToPlanner);
+
+function removeRecipes(evt) {
+    evt.preventDefault();
+    var params = $("#modify-recipes-form").serialize();
+    $("#content").load("remove_recipes/", params 
+    );
+};
+
+$("#remove-recipes-button").on('click', removeRecipes);
 
 </script>

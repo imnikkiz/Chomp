@@ -50,8 +50,8 @@
 function showMyRecipes(evt) {
     evt.preventDefault();
     var params = $("#add-recipe-form").serialize();
-    $("#content").load("my_recipes/", params 
-    );
+    $.get("add_recipe/", params);
+    $("#recipe-modal").modal('toggle');
 };
 
 $("#add-recipe-form").on('submit', showMyRecipes);
