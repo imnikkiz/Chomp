@@ -1,41 +1,36 @@
 <h1>Planner</h1>
 
 <form id="add-to-shopping-list-form">
+    <input type="hidden" id="recipe-order" name="recipe-order" value="">
     <div class="row" id="id_recipe_list">
+        <ul id="sortable-recipes" class="connected-list">
         {% for recipe in recipe_list %}
-            <div id="{{forloop.counter}}">
-                <input type="checkbox" 
-                       name="recipe_list" 
-                       value={{ recipe.id }}>
+            <li id="{{recipe.id}}">
                 <img src="{{recipe.lil_img}}"><br>
                 <a href="/recipe/{{recipe.id}}/">{{ recipe.name }}</a>
-            </div>
-            <script>
-                $( init );
+            </li>
 
-                function init() {
-                    $('#{{forloop.counter}}').draggable();
-                }
-            </script>
+
         {% endfor %}
-    </div>
 
-    {% for day in days %}
-        <div id="{{day}}"><h2>{{ day }}</h2><p></p></div>
+        </ul>
 
-        <script>
-            $(function () {
-                $( "#{{day}}" ).droppable({
-                    drop: function( event, ui ) {
-                        $( this )
-                            .find( "p" )
-                                .html( "Added!" );
-                    }
-                });
-            });
-        </script>
+        <ul id="sortable-planner" class="connected-list">
+        {% for day in days %}
+            <li id="{{day}}" class="ui-state-disabled"><h2>{{ day }}</h2><p></p></li>
+            {% for recipe_day, recipes in saved_recipes.iteritems %}
+                {% if day == recipe_day %}
+                    {% for recipe in recipes %}
+                        <li id="{{recipe.id}}">
+                        <img src="{{recipe.lil_img}}"><br>
+                        <a href="/recipe/{{recipe.id}}/">{{ recipe.name }}</a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
 
-    {% endfor %}
+        {% endfor %}
+        </ul>
 
     <input type="submit" class="btn btn-default" value="Add to Shopping List">
     {% csrf_token %}
@@ -53,6 +48,24 @@ function addToShoppingList(evt) {
 $("#add-to-shopping-list-form").on('submit', addToShoppingList);
 
 
+$( init );
+
+function init() {
+    $('#sortable-recipes').sortable({
+        connectWith: ".connected-list"
+    });
+}
+
+$(function () {
+    $( "#sortable-planner" ).sortable({ 
+        cancel: ".ui-state-disabled",
+        connectWith: ".connected-list",
+        update: function(event, ui) {
+            var order=$("#sortable-planner").sortable("toArray");
+            $("#recipe-order").val(order.join());
+        }
+    });
+});
 
 
 </script>

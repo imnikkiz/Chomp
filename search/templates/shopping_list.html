@@ -1,6 +1,6 @@
 <h1>You've reached the Shopping List!</h1>
 
-{% for recipe_name, ingredients in recipe_list.items %}
+{% for recipe_name, ingredients in ingredient_dict.items %}
     <h3>{{ recipe_name }}</h3>
     {% for ingredient in ingredients %}
         {% if ingredient.food %}

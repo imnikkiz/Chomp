@@ -212,8 +212,6 @@ class Search(models.Model):
     def __unicode__(self):
         return self.keyword
 
-class Planner(models.Model):
-    pass
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, 
@@ -221,10 +219,7 @@ class UserProfile(models.Model):
     recipes = models.ManyToManyField(Recipe,
                                      related_name="profiles",
                                      through="Collection")
-    planner = models.OneToOneField(Planner,
-                                   related_name="user_profile", 
-                                   null=True,
-                                   default=None)
+
 
     def add_recipe_to_profile(self, recipe_id):
         this_recipe = Recipe.objects.get(id=recipe_id)
@@ -237,10 +232,7 @@ class UserProfile(models.Model):
 class Collection(models.Model):
     user_profile = models.ForeignKey(UserProfile)
     recipe = models.ForeignKey(Recipe)
-    date_planned = models.DateField(null=True, blank=True)
-    planner = models.ForeignKey(Planner,
-                                null=True,
-                                blank=True,
-                                related_name="recipes")
+    day_planned = models.CharField(max_length=100, default='', null=True, blank=True)
+    meal_planned = models.CharField(max_length=100, default='', null=True, blank=True)
 
 
