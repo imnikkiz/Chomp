@@ -1,11 +1,9 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from models import Search, Recipe, UserProfile, Collection
 from forms import UserForm
-import logging
 
 def home_page(request):
     """ Home page renders home.html with fully loaded partials"""
@@ -150,27 +148,24 @@ def remove_recipes(request):
         })
 
 def planner(request):
+    this_user_profile = UserProfile.objects.get(user=request.user)
     new_recipe_list = []
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    saved_recipes_and_days = {'Monday': [],
+            'Tuesday': [], 
+            'Wednesday': [], 
+            'Thursday': [], 
+            'Friday': [], 
+            'Saturday': [], 
+            'Sunday': []
+            }
 
-    saved_recipes_and_days = {}
-    for day in days:
-        # if there's already a day saved to session
-        if request.session.get(day):
-            recipe_id_list = request.session[day]
-            # look up full recipe object
-            for recipe_id in recipe_id_list:
-                recipe = Recipe.objects.filter(id=recipe_id).first()
-                # if there's already a key for the day
-                if saved_recipes_and_days.get(day):
-                    saved_recipes_and_days[day].append(recipe)
-                else:
-                    saved_recipes_and_days[day] = []
-                    saved_recipes_and_days[day].append(recipe)
-        # clear the day from the session
-
-        #request is empty
-        # saved days are stored {day: recipe object} in saved_recipes_and_days
+    user_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all().prefetch_related('recipe')
+    for user_recipe in user_recipes:
+        # WTH why does this need to happen with a new user??
+        if user_recipe.day_planned:
+            print user_recipe.day_planned
+            saved_recipes_and_days[user_recipe.day_planned].append(user_recipe.recipe)
 
     if request.method == 'GET':
         recipe_id_list = request.GET.getlist("recipe_list")
@@ -209,28 +204,18 @@ def shopping_list(request):
 
     if request.method == 'GET':
         # parse recipe_id_list
-        recipe_id_list = request.GET.getlist("recipe-order")
+        recipe_id_list = request.GET.get("recipe-order")
         if recipe_id_list:
-            recipe_id_list = recipe_id_list[0].split(',')
+            recipe_id_list = recipe_id_list.split(',')
+            print recipe_id_list
 
-            # hold days and recipes
-            day_and_recipe_list = []
             for item in recipe_id_list:
-                # only save days and recipes
-                if item:
-                    day_and_recipe_list.append(item)
-
-            for item in day_and_recipe_list:
                 #if it's a day
                 if item in days:
                     day = item
                 # if it's a recipe id
                 else:
                     # add the current day and the recipe id to the session
-                    if not request.session.get(day):
-                        request.session[day] = []
-                    request.session[day].append(item)
-
                     # find the recipe object
                     recipe = Recipe.objects.filter(id=item).first()
 
