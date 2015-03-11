@@ -4,6 +4,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'search.views.home_page', name='home'),
     url(r'^register/$', 'search.views.register', name='register'),
+    url(r'^register_form/$', 'search.views.register_form', name='register_form'),
     url(r'^login/$', 'search.views.login_user', name='login'),
     url(r'^logout/$', 'search.views.logout_user', name='logout'),
     url(r'^recipe_main$', 'search.views.recipe_main', name='recipe_main'),

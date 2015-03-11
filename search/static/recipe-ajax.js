@@ -2,7 +2,7 @@ function showLogin(evt) {
     $("#content").load("login/");
 }
 function showRegister(evt) {
-    $("#content").load("register/");
+    $("#content").load("register_form/");
 }
 function showSearch(evt) {
     $("#content").load("search/");

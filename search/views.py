@@ -6,13 +6,19 @@ from models import Search, Recipe, UserProfile, Collection
 from forms import UserForm
 
 def home_page(request):
-    """ Home page renders home.html with fully loaded partials"""
     return render_to_response('home.html')
 
 
-def register(request):
-    """ Register"""
+def register_form(request):
     context = RequestContext(request)
+    user_form = UserForm()
+    return render_to_response(
+        'register.html',
+        {'user_form': user_form},
+        context)
+
+
+def register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         if user_form.is_valid():
@@ -27,12 +33,6 @@ def register(request):
             return HttpResponseRedirect('/recipe_main')
         else:
             print user_form.errors
-    else:
-        user_form = UserForm()
-    return render_to_response(
-        'register.html',
-        {'user_form': user_form},
-        context)
 
 
 def login_user(request):
