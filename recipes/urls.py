@@ -14,8 +14,10 @@ urlpatterns = patterns('',
 
 
     url(r'^recipe_main$', 'search.views.recipe_main', name='recipe_main'),
+    
     url(r'^search_page/$', 'search.views.search_page', name='search_page'),
     url(r'^new_search/$', 'search.views.new_search', name='new_search'),
+    url(r'^change_search_results_page/$', 'search.views.change_search_results_page', name='change_search_results_page'),
 
     url(r'^recipe/(?P<recipe_id>\d+)/$', 'search.views.recipe_details', name='recipe_details'),
     url(r'^remove_recipes/$', 'search.views.remove_recipes', name='remove_recipes'),    

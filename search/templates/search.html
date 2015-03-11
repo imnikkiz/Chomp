@@ -87,7 +87,7 @@ function showSearchResults(evt) {
 function showMore(evt) {
     evt.preventDefault();
     var page = evt.data.page;
-    $("#content").load("search/?page=" + page);
+    $("#content").load("change_search_results_page/?page=" + page);
 }
 
 $("#search_form").on('submit', showSearchResults);

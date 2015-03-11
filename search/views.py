@@ -94,16 +94,16 @@ def change_search_results_page(request):
     keyword = request.session.get('search_keyword')
     page = request.GET.get('page')
     this_search = Search.objects.get(keyword=keyword)
-    request.session['search_keyword'] = keyword
 
-    if page:
-        starts_list = [None, 0, 3, 6, 9]
-        start = starts_list[int(page)]
-        end = int(page) * 3
-        recipe_list = this_search.recipes.all()[start:end]
+    starts_list = [None, 0, 3, 6, 9]
+    start = starts_list[int(page)]
+    end = int(page) * 3
+    recipe_list = this_search.recipes.all()[start:end]
 
     return render_to_response("search.html", {
-        'recipe_list': recipe_list},
+        'recipe_list': recipe_list,
+        'page': page
+        },
         context_instance=RequestContext(request))
 
 def recipe_details(request, recipe_id):
