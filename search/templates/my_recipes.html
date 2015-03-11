@@ -6,8 +6,20 @@
         <input type="checkbox" 
                name="recipe_list" 
                value={{ recipe.id }}>
-               <a href="/recipe/{{recipe.id}}/">
+               <a href="" id="{{ recipe.id }}">
                {{ recipe.name }}</a>
+        
+               <script>
+                function showRecipeDetails(evt) {
+                    evt.preventDefault();
+                    var recipe_id = "{{recipe.id}}";
+                    $("#recipe-modal").modal();
+                    $("#recipe-modal-body").load("/recipe/"+ recipe_id);
+                };
+
+                $("#{{ recipe.id }}").on(
+                    'click', showRecipeDetails);
+            </script>
         <br>
         {% endfor %}
     </div>
@@ -15,6 +27,21 @@
     <button class="btn btn-default" id="remove-recipes-button">Remove Recipes</button>
     {% csrf_token %}
 </form>
+
+<div class="modal fade" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="recipe-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="recipe-modal-label"></h4>
+                </div>
+                <div class="modal-body" id="recipe-modal-body"></div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 
