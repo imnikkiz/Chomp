@@ -5,7 +5,7 @@ function showRegister(evt) {
     $("#content").load("register_form/");
 }
 function showSearch(evt) {
-    $("#content").load("search/");
+    $("#content").load("search_page/");
 }
 function showMyRecipes(evt) {
     $("#content").load("my_recipes/");

@@ -59,50 +59,52 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+
 def recipe_main(request):
     return render_to_response('recipe_main.html')
 
+
 def search_page(request): 
-    page = None 
+    return render_to_response('search.html')
+
+def new_search(request):
     keyword = request.GET.get('search_keyword_text')
-    if not keyword:
-        keyword = request.session.get('search_keyword')
-        page = request.GET.get('page')
-    if keyword:
-        search_exists = Search.objects.filter(keyword=keyword).first()
-        if search_exists:
-            search_has_recipes = search_exists.recipes.first()
-            if not search_has_recipes:
-                search_exists.delete()
-                search_exists = False
+    search_exists = Search.objects.filter(keyword=keyword).first()
+    if search_exists:
+        print "got here"
+        search_has_recipes = search_exists.recipes.first()
+        if not search_has_recipes:
+            search_exists.delete()
+            search_exists = False
+    if not search_exists:
+        new_search = Search.objects.create()
+        new_search.search_by_keyword(keyword=keyword)
 
-        if not search_exists:
-            new_search = Search.objects.create()
-            search_response = new_search.search_by_keyword(keyword=keyword)
 
-            for recipe in search_response.get('matches'):
-                new_recipe = Recipe.objects.create()
-                new_recipe.get_recipe_by_yummly_id(yummly_id=recipe.get('id'))
-                new_recipe.link_ingredients_to_recipe()
-                new_recipe.assign_attributes_to_recipe()
-                new_search.recipes.add(new_recipe)
+    this_search = Search.objects.get(keyword=keyword)
+    recipe_list = this_search.recipes.all()[:3]
 
-        this_search = Search.objects.get(keyword=keyword)
-        request.session['search_keyword'] = keyword
+    request.session['search_keyword'] = keyword
 
-        if not page:
-            recipe_list = this_search.recipes.all()[:3]
-        if page:
-            starts_list = [None, 0, 3, 6, 9]
-            start = starts_list[int(page)]
-            end = int(page) * 3
-            recipe_list = this_search.recipes.all()[start:end]
+    return render_to_response("search.html", {
+        'recipe_list': recipe_list},
+        context_instance=RequestContext(request)) 
 
-        return render_to_response("search.html", {
-            'recipe_list': recipe_list},
-            context_instance=RequestContext(request))
-    else:
-        return render_to_response('search.html')
+def change_search_results_page(request):  
+    keyword = request.session.get('search_keyword')
+    page = request.GET.get('page')
+    this_search = Search.objects.get(keyword=keyword)
+    request.session['search_keyword'] = keyword
+
+    if page:
+        starts_list = [None, 0, 3, 6, 9]
+        start = starts_list[int(page)]
+        end = int(page) * 3
+        recipe_list = this_search.recipes.all()[start:end]
+
+    return render_to_response("search.html", {
+        'recipe_list': recipe_list},
+        context_instance=RequestContext(request))
 
 def recipe_details(request, recipe_id):
     recipe_id = recipe_id

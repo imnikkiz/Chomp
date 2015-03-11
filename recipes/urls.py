@@ -11,8 +11,12 @@ urlpatterns = patterns('',
     url(r'^login_user/$', 'search.views.login_user', name='login_user'),
 
     url(r'^logout/$', 'search.views.logout_user', name='logout'),
+
+
     url(r'^recipe_main$', 'search.views.recipe_main', name='recipe_main'),
-    url(r'^search/$', 'search.views.search_page', name='search'),
+    url(r'^search_page/$', 'search.views.search_page', name='search_page'),
+    url(r'^new_search/$', 'search.views.new_search', name='new_search'),
+
     url(r'^recipe/(?P<recipe_id>\d+)/$', 'search.views.recipe_details', name='recipe_details'),
     url(r'^remove_recipes/$', 'search.views.remove_recipes', name='remove_recipes'),    
     url(r'^add_recipe/$', 'search.views.add_recipe', name='add_recipe'),

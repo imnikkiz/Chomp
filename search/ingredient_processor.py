@@ -74,5 +74,11 @@ def process(line):
                 'food': food_result,
                 'category': category_result}
 
-    print response
+    if not number_result:
+        print "Couldn't parse number: ", line
+    if not measurement_result:
+        print "Couldn't parse measurement: ", line
+    if not food_result:
+        print "Couldn't parse food: ", line
+
     return response

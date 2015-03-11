@@ -16,6 +16,7 @@ class Recipe(models.Model):
     lil_img = models.CharField(max_length=300, default='', null=True, blank=True)
     big_img = models.CharField(max_length=300, default='', null=True, blank=True)
 
+
     def convert_seconds_int_to_string(self, time_in_seconds):
         minutes, seconds = divmod(time_in_seconds, 60)
         hours, minutes = divmod(minutes, 60)
@@ -23,17 +24,19 @@ class Recipe(models.Model):
             return "%d hr %d min" % (hours, minutes)
         return "%d min" % minutes
 
-    def get_recipe_by_yummly_id(self, yummly_id):
 
-        # Make Yummly API get recipe request
+    def get_recipe_by_yummly_id(self):
+        yummly_id = self.yummly_id
+
         params = {'_app_id': YUMMLY_APP_ID,
-                  '_app_key': YUMMLY_APP_KEY}
+                  '_app_key': YUMMLY_APP_KEY
+                  }
         recipe_response = requests.get(
-            ("http://api.yummly.com/v1/api/recipe/%s" % yummly_id),
-            params=params).json()
+                          ("http://api.yummly.com/v1/api/recipe/%s" % yummly_id),
+                          params=params
+                          ).json()
 
         self.name = recipe_response.get('name')
-        self.yummly_id = yummly_id
 
         # Servings
         self.servings_as_string = recipe_response.get('yield')
@@ -63,6 +66,7 @@ class Recipe(models.Model):
         self.big_img = all_images.get('hostedLargeUrl')
 
         self.save()
+
 
     def link_ingredients_to_recipe(self):
         for line in self.ingredient_lines:
@@ -94,7 +98,6 @@ class Recipe(models.Model):
                 ingredient.food = Food.objects.get(name=food)
 
             ingredient.save()
-
 
 
     def assign_attributes_to_recipe(self):
@@ -130,9 +133,11 @@ class Recipe(models.Model):
                     cuisine = Cuisine(name=cuisine)
                     cuisine.save()
                     cuisine.recipes.add(self)
+
                     
     def __unicode__(self):
         return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -207,7 +212,16 @@ class Search(models.Model):
         recipes_from_yummly = requests.get(
             "http://api.yummly.com/v1/api/recipes",
             params=params).json()
-        return recipes_from_yummly
+
+        for recipe in recipes_from_yummly.get('matches'):
+            yummly_id = recipe.get('id')
+            new_recipe = Recipe(yummly_id=yummly_id)
+            new_recipe.get_recipe_by_yummly_id()
+            new_recipe.link_ingredients_to_recipe()
+            new_recipe.assign_attributes_to_recipe()
+            new_recipe.save()
+
+            self.recipes.add(new_recipe)
 
     def __unicode__(self):
         return self.keyword
