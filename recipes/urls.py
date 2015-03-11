@@ -3,9 +3,13 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'search.views.home_page', name='home'),
-    url(r'^register/$', 'search.views.register', name='register'),
+
     url(r'^register_form/$', 'search.views.register_form', name='register_form'),
-    url(r'^login/$', 'search.views.login_user', name='login'),
+    url(r'^register/$', 'search.views.register', name='register'),
+
+    url(r'^login_form/$', 'search.views.login_form', name='login_form'),
+    url(r'^login_user/$', 'search.views.login_user', name='login_user'),
+
     url(r'^logout/$', 'search.views.logout_user', name='logout'),
     url(r'^recipe_main$', 'search.views.recipe_main', name='recipe_main'),
     url(r'^search/$', 'search.views.search_page', name='search'),

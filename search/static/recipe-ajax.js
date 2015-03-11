@@ -1,5 +1,5 @@
 function showLogin(evt) {
-    $("#content").load("login/");
+    $("#content").load("login_form/");
 }
 function showRegister(evt) {
     $("#content").load("register_form/");

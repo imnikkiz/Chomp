@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from models import Search, Recipe, UserProfile, Collection
 from forms import UserForm
 
+
 def home_page(request):
     return render_to_response('home.html')
 
@@ -34,9 +35,12 @@ def register(request):
         else:
             print user_form.errors
 
+def login_form(request):
+    context = RequestContext(request)
+    return render_to_response('login.html', {}, context)
+
 
 def login_user(request):
-    context = RequestContext(request)
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -49,8 +53,7 @@ def login_user(request):
                 return HttpResponse("Your account is disabled.")
         else:
             return HttpResponse("Invalid username or password.")
-    else:
-        return render_to_response('login.html', {}, context)
+
 
 def logout_user(request):
     logout(request)
