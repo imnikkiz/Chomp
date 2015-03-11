@@ -56,3 +56,21 @@ class RecipeModelTest(TestCase):
 
         self.assertEqual(new_recipe.name, 'Cucumber Fries')
         self.assertEqual(new_recipe.yummly_id, 'Cucumber-Fries-603764')
+        # TODO:
+        # servings
+        # time
+        # ingredients_lines
+        # attributes_dict
+        # images
+
+
+    # TODO:
+    # def test_convert_seconds_int_to_string
+    # def test_link_ingredients_to_recipe
+    # def test_assign_attributes_to_recipe
+
+# TODO:
+# class UserProfileModelTest
+# def test_add_recipe_to_profile
+# other classes: Category, Food, Ingredient, Holiday, 
+# Course, Cuisine, Collection

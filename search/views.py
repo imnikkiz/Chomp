@@ -97,8 +97,6 @@ def search_page(request):
             end = int(page) * 3
             recipe_list = this_search.recipes.all()[start:end]
 
-        # TODO: view more results
-        # TODO: after 10th result, option to find more
         return render_to_response("search.html", {
             'recipe_list': recipe_list},
             context_instance=RequestContext(request))
@@ -129,6 +127,14 @@ def add_recipe(request):
     return render_to_response("search.html",
             context_instance=RequestContext(request))
 
+def my_recipes(request):
+    this_user_profile = UserProfile.objects.get(user=request.user)
+    recipe_list = this_user_profile.recipes.all()[:10]
+
+    return render(request, 'my_recipes.html', {
+        'recipe_list': recipe_list
+        })
+
 def remove_recipes(request):
     recipe_id_list = request.GET.getlist("recipe_list")
     this_user_profile = UserProfile.objects.get(user=request.user)
@@ -139,14 +145,6 @@ def remove_recipes(request):
                                             recipe=this_recipe).delete()
     
     recipe_list = this_user_profile.recipes.all()[:10]
-    return render(request, 'my_recipes.html', {
-        'recipe_list': recipe_list
-        })
-
-def my_recipes(request):
-    this_user_profile = UserProfile.objects.get(user=request.user)
-    recipe_list = this_user_profile.recipes.all()[:10]
-
     return render(request, 'my_recipes.html', {
         'recipe_list': recipe_list
         })
@@ -246,6 +244,7 @@ def shopping_list(request):
                     recipe_name = recipe.name
                     ingredient_list = recipe.ingredients.all()
                     ingredient_dict[recipe_name] = ingredient_list
+        
         else:
             planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all()
             for collection in planned_recipes:
