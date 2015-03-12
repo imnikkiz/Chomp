@@ -197,46 +197,31 @@ def clear_planner(request):
 
 def shopping_list(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
+    
     ingredient_dict = {}
-    day = None
+    category_dict = {
+        'baking': [],
+        'beverages': [],
+        'condiments': [],
+        'dairy': [],
+        'fish': [],
+        'grains': [],
+        'grocery': [],
+        'meat': [],
+        'nuts': [],
+        'produce': [],
+        'spices': []
+    }
 
-    # if request.method == 'GET':
-    #     # parse recipe_id_list
-    #     recipe_id_list = request.GET.get("recipe-order")
-    #     if recipe_id_list:
-    #         recipe_id_list = recipe_id_list.split(',')
-    #         print recipe_id_list
-
-    #         for item in recipe_id_list:
-    #             #if it's a day
-    #             if item in days:
-    #                 day = item
-    #             # if it's a recipe id
-    #             else:
-    #                 # add the current day and the recipe id to the session
-    #                 # find the recipe object
-    #                 recipe = Recipe.objects.filter(id=item).first()
-
-    #                 # find the collection object and add day
-    #                 collection = Collection.objects.get(recipe=recipe,
-    #                                                     user_profile=this_user_profile)
-    #                 collection.day_planned = day
-    #                 collection.save()
-
-    #                 # add {name:ingredients} to ingredient_dict
-    #                 recipe_name = recipe.name
-    #                 ingredient_list = recipe.ingredients.all()
-    #                 ingredient_dict[recipe_name] = ingredient_list
-        
-        # else:
     planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).exclude(day_planned='planning').all()
     for collection in planned_recipes:
         recipe = collection.recipe
         recipe_name = recipe.name
         ingredient_list = recipe.ingredients.all()
         ingredient_dict[recipe_name] = ingredient_list
+
+
+
 
     return render(request, 'shopping_list.html', {
         'ingredient_dict': ingredient_dict,
