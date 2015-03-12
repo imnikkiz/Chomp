@@ -11,7 +11,7 @@
 
 </ul>
 
-<ul id="monday-recipes" class="connected-list">
+<ul id="monday" class="connected-list">
     <lh class="cancel-sort">Monday</lh>
     {% for recipe in recipes.monday %}
         <li id="{{recipe.id}}" class="connected-list-item">
@@ -21,7 +21,7 @@
     {% endfor %}
 </ul>
 
-<ul id="tuesday-recipes" class="connected-list">
+<ul id="tuesday" class="connected-list">
     <lh class="cancel-sort">Tuesday</lh>
     {% for recipe in recipes.tuesday %}
         <li id="{{recipe.id}}" class="connected-list-item">
@@ -31,7 +31,7 @@
     {% endfor %}
 </ul>
 
-<ul id="wednesday-recipes" class="connected-list">
+<ul id="wednesday" class="connected-list">
     <lh class="cancel-sort">Wednesday</lh>
     {% for recipe in recipes.wednesday %}
         <li id="{{recipe.id}}" class="connected-list-item">
@@ -42,7 +42,7 @@
     <li style="visibility:hidden;"></li>
 </ul>
 
-<ul id="thursday-recipes" class="connected-list">
+<ul id="thursday" class="connected-list">
     <lh class="cancel-sort">Thursday</lh>
     {% for recipe in recipes.thursday %}
         <li id="{{recipe.id}}" class="connected-list-item">
@@ -52,7 +52,7 @@
     {% endfor %}
 </ul>
 
-<ul id="friday-recipes" class="connected-list">
+<ul id="friday" class="connected-list">
     <lh class="cancel-sort">Friday</lh>
     {% for recipe in recipes.friday %}
         <li id="{{recipe.id}}" class="connected-list-item">
@@ -62,7 +62,7 @@
     {% endfor %}
 </ul>
 
-<ul id="saturday-recipes" class="connected-list">
+<ul id="saturday" class="connected-list">
     <lh class="cancel-sort">Saturday</lh>
     {% for recipe in recipes.saturday %}
         <li id="{{recipe.id}}" class="connected-list-item">
@@ -72,7 +72,7 @@
     {% endfor %}
 </ul>
 
-<ul id="sunday-recipes" class="connected-list">
+<ul id="sunday" class="connected-list">
     <lh class="cancel-sort">Sunday</lh>
     {% for recipe in recipes.sunday %}
         <li id="{{recipe.id}}" class="connected-list-item">
@@ -84,55 +84,20 @@
 
 <script>
 $(function () {
-    $("#recipes-to-plan").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
-    $("#monday-recipes").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
-    $("#tuesday-recipes").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
-    $("#wednesday-recipes").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
-    $("#thursday-recipes").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
-    $("#friday-recipes").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
-    $("#saturday-recipes").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
-    $("#sunday-recipes").sortable({ 
-        connectWith: ".connected-list",
-        items: "li",
-        placeholder: "connected-list-item"
-    });
+    var sections = ['recipes-to-plan', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    for (var i = 0; i < sections.length; i++) {
+        var selector = '#' + sections[i];
+        $(selector).sortable({
+            connectWith: '.connected-list',
+            items: 'li',
+            placeholder: 'connected-list-item',
+            update: function(event, ui) {
+                var recipe_id = ui.item.attr('id');
+                var day = ui.item.parent().attr('id');
+                $.get("/update_planner/?recipe_id=" + recipe_id + "&day=" + day);
+            }
+        });
+    }
 });
 
 </script>
-
-<!-- "#tuesday-recipes", "#wednesday-recipes", "#thursday-recipes", "#friday-recipes", 
-        "#saturday-recipes", "#sunday-recipes")
-
-
-                    update: function(event, ui) {
-                // var order=$("#sortable-planner").sortable("toArray");
-                // $("#recipe-order").val(order.join());
-            } -->

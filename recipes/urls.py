@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     
     url(r'^add_to_planner/$', 'search.views.add_to_planner', name='planner'),
     url(r'^planner/$', 'search.views.planner', name='planner'),
+    url(r'^update_planner/$', 'search.views.update_planner', name='update_planner'),
+
+
     url(r'^clear_planner/$', 'search.views.clear_planner', name='clear_planner'),
     url(r'^shopping_list/$', 'search.views.shopping_list', name='shopping_list'),
 

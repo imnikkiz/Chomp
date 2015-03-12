@@ -148,18 +148,29 @@ def add_to_planner(request):
     user_recipe.save()
     return redirect("/my_recipes/")
 
+def update_planner(request):
+    recipe_id = request.GET.get("recipe_id")
+    this_recipe = Recipe.objects.get(id=recipe_id)
+    this_user_profile = UserProfile.objects.get(user=request.user)
+    user_recipe = Collection.objects.filter(user_profile=this_user_profile,
+                                            recipe=this_recipe).first()
+    day = request.GET.get("day")
+    user_recipe.day_planned = day
+    user_recipe.save()
+
+
 
 def planner(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
     recipe_planning_dict = {
             'planning': [],
-            'Monday': [],
-            'Tuesday': [], 
-            'Wednesday': [], 
-            'Thursday': [], 
-            'Friday': [], 
-            'Saturday': [], 
-            'Sunday': []
+            'monday': [],
+            'tuesday': [], 
+            'wednesday': [], 
+            'thursday': [], 
+            'friday': [], 
+            'saturday': [], 
+            'sunday': []
             }
 
     user_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all().prefetch_related('recipe')
