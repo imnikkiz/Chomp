@@ -1,33 +1,39 @@
 <h1>Shopping List</h1>
 
-{% for category, ingredients in category_dict.iteritems %}
+{% for category, foods in category_dict.items %}
     {% if category != 'other' %}
-        {% if ingredients %}
+        {% if foods %}
             <h3>{{ category }}</h3>
-            {% for ingredient in ingredients %}
-                <div id="{{ingredient.id}}">
-                    <span class="{{ingredient.id}}-span">
-                    {% if ingredient.measurement %}
-                        {% if ingredient.amount %}
-                            <b>{{ ingredient.amount }} {{ ingredient.measurement }}</b> 
-                        {% else %}
-                            <b>(1) {{ ingredient.measurement }}</b>
+            <div>
+                {% for food_name, food_info in foods.items %}
+                    <span class="{{food_name}}-span ingredient-parsed">
+                        {% for measurement, amount in food_info.measurements.items %}
+                            {% if measurement != 'other' %}
+                            <span>{{ amount }} {{ measurement }}</span>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if food_info.measurements.other %}
+                            <span>{{ food_info.measurements.other }}</span>
                         {% endif %}
-                    {% else %}
-                        <b>{{ ingredient.amount }}</b>
-                    {% endif %}
-                    <b>{{ ingredient.food.name }}</b>
+                        <span>{{ food_name }}</span>
                     </span>
-                    <span class="{{ingredient.id}}-span" style="display: none">{{ingredient}}</span>
+                    <span class="{{food_name}}-span ingredient-string" style="display: none">
+                        {% for ingredient in food_info.ingredients %}
+                        <i>{{ingredient}}</i><br>
+                        {% endfor %}
+                    </span><br>
                     <script>
-                        $("#{{ingredient.id}}").hover(function() {
-                            $(".{{ingredient.id}}-span").toggle();
+                        $(".{{food_name}}-span").hover(function() {
+
+                            $(".{{food_name}}-span").toggle();
+                        }).click(function() {
+                            $(".{{food_name}}-span").toggle();
                         });
                     </script>
-                </div>
-            <!-- on hover -->
-            <!-- <i>Ingredient string: {{ ingredient }}</i><br> -->
-            {% endfor %}<br>
+                {% endfor %}
+            </div>
+            <br>
         {% endif %}
     {% endif %}
 {% endfor %}

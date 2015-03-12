@@ -198,39 +198,61 @@ def clear_planner(request):
 def shopping_list(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
     
-    ingredient_dict = {}
     category_dict = {
-        'baking': [],
-        'beverages': [],
-        'condiments': [],
-        'dairy': [],
-        'fish': [],
-        'grains': [],
-        'grocery': [],
-        'meat': [],
-        'nuts': [],
-        'produce': [],
-        'spices': [],
+        'baking': {},
+        'beverages': {},
+        'condiments': {},
+        'dairy': {},
+        'fish': {},
+        'grains': {},
+        'grocery': {},
+        'meat': {},
+        'nuts': {},
+        'produce': {},
+        'spices': {},
         'other': []
     }
 
     planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).exclude(day_planned='planning').all()
     for collection in planned_recipes:
         recipe = collection.recipe
-        recipe_name = recipe.name
         ingredient_list = recipe.ingredients.all()
-        ingredient_dict[recipe_name] = ingredient_list
+
         for ingredient in ingredient_list:
             if ingredient.food:
-                category_dict[ingredient.food.category.name].append(ingredient)
+                food_name = ingredient.food.name
+                category_name = ingredient.food.category.name
+                amount = ingredient.amount
+                measurement = ingredient.measurement
+
+                if food_name not in category_dict[category_name]:
+                    category_dict[category_name][food_name] = {
+                        'measurements': {
+                            'other': 0
+                        },
+                        'ingredients': []
+                    }
+                if measurement:
+                    if amount:
+                        category_dict[category_name][food_name]['measurements'][measurement] = (
+                            category_dict[category_name][food_name]['measurements'].get(measurement, 0) + amount)
+                    else:
+                        category_dict[category_name][food_name]['measurements'][measurement] = (
+                            category_dict[category_name][food_name]['measurements'].get(measurement, 0) + 1)
+                else:
+                    if amount:
+                        category_dict[category_name][food_name]['measurements']['other']=(
+                            category_dict[category_name][food_name]['measurements'].get('other') + amount)
+                    else:
+                        category_dict[category_name][food_name]['measurements']['other']=(
+                            category_dict[category_name][food_name]['measurements'].get('other') + 1)
+
+                category_dict[category_name][food_name]['ingredients'].append(ingredient)
+                print ingredient
             else:
                 category_dict['other'].append(ingredient)
-    print category_dict
-
-
 
     return render(request, 'shopping_list.html', {
-        'ingredient_dict': ingredient_dict,
         'category_dict': category_dict
         })
 

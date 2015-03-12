@@ -47,7 +47,7 @@
     box-shadow: 10px 10px 10px #CCC;
 /*    float: left;*/
     margin: 10px;
-    cursor: move;
+    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -64,4 +64,12 @@
 
 .planning-list {
     width: 100%;
+}
+
+.ingredient-parsed {
+    cursor: pointer;
+}
+
+.ingredient-string {
+    cursor: pointer;
 }

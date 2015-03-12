@@ -1,6 +1,6 @@
 from foods import foods
-from measurements import measurements, plural_measurements
-import re
+from measurements import measurements
+import re, unicodedata
 
 def un_pluralize(word):  
     split_food = list(word)
@@ -25,38 +25,61 @@ def process(line):
     line = line.split(",")
     line = "".join(line)
 
-    number_result = numbers.match(line)
-    if number_result:
-        number_result = number_result.group()
-        if "/" in list(number_result):
-            mixed_num = number_result.split(" ")
-            if "/" in list(mixed_num[0]):
-                fraction = mixed_num[0].split("/")
-                numerator = float(fraction[0])
-                number_result = numerator/float(fraction[1])
-            else:
-                fraction = mixed_num[1].split("/")
-                numerator = float(fraction[0])
-                decimal = numerator/float(fraction[1])
-                whole_num = float(mixed_num[0])
-                number_result = whole_num + decimal
-        else:
-            try:
-                number_result = float(number_result)
-            except ValueError:
-                number_result = None
-
     modified_line = line.lower().split()
+    for word in modified_line:
+        for character in word:
+            number_result = unicodedata.numeric(character, None)
+            print character
+            print number_result
+            if number_result:
+                break
 
-    measurement_result = next((word for word in modified_line if word in measurements), None)
+    if not number_result:
+        number_result = numbers.match(line)
+        if number_result:
+            number_result = number_result.group()
+            if "/" in list(number_result):
+                mixed_num = number_result.split(" ")
+                if "/" in list(mixed_num[0]):
+                    fraction = mixed_num[0].split("/")
+                    numerator = float(fraction[0])
+                    number_result = numerator/float(fraction[1])
+                else:
+                    fraction = mixed_num[1].split("/")
+                    numerator = float(fraction[0])
+                    decimal = numerator/float(fraction[1])
+                    whole_num = float(mixed_num[0])
+                    number_result = whole_num + decimal
+            else:
+                try:
+                    number_result = float(number_result)
+                except ValueError:
+                    number_result = None
+
+
+
+    measurement_result = None
+    for word in modified_line:
+        if word in measurements:
+            measurement_result = word
+            break
     if not measurement_result:
-        measurement_result = next((word for word in modified_line if word in plural_measurements), None)
-
+        for word in modified_line:
+            un_pluralized_word = un_pluralize(word)
+            if un_pluralized_word in measurements:
+                measurement_result = un_pluralized_word
+                break
 
     food_result = None
     category_result = None
     for word in modified_line:
-        if foods.get(word):
+        if word == 'tomatoes':
+            food_result = 'tomato'
+            category_result = 'produce'
+        elif word == 'potatoes':
+            food_result = 'potato'
+            category_result = 'produce'
+        elif foods.get(word):
             food_result = word
             category_result = foods.get(word)
             break
@@ -74,11 +97,11 @@ def process(line):
                 'food': food_result,
                 'category': category_result}
 
-    if not number_result:
-        print "Couldn't parse number: ", line
-    if not measurement_result:
-        print "Couldn't parse measurement: ", line
-    if not food_result:
-        print "Couldn't parse food: ", line
+    # if not number_result:
+    #     print "Couldn't parse number: ", line
+    # if not measurement_result:
+    #     print "Couldn't parse measurement: ", line
+    # if not food_result:
+    #     print "Couldn't parse food: ", line
 
     return response
