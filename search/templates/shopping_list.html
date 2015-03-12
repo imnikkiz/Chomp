@@ -1,23 +1,39 @@
-<h1>You've reached the Shopping List!</h1>
+<h1>Shopping List</h1>
 
-{% for recipe_name, ingredients in ingredient_dict.items %}
-    <h3>{{ recipe_name }}</h3>
-    {% for ingredient in ingredients %}
-        {% if ingredient.food %}
-            {% if ingredient.measurement %}
-                {% if ingredient.amount %}
-                    <b>{{ ingredient.amount }} {{ ingredient.measurement }}</b> 
-                {% else %}
-                    <b>(1) {{ ingredient.measurement }}</b>
-                {% endif %}
-            {% else %}
-                <b>{{ ingredient.amount }}</b>
-            {% endif %}
-            <b>{{ ingredient.food.name }}</b>
-        {% else %}
-            {{ ingredient }}
-        {% endif %}<br>
-        <!-- on hover -->
-        <!-- <i>Ingredient string: {{ ingredient }}</i><br> -->
-    {% endfor %}<br>
+{% for category, ingredients in category_dict.iteritems %}
+    {% if category != 'other' %}
+        {% if ingredients %}
+            <h3>{{ category }}</h3>
+            {% for ingredient in ingredients %}
+                <div id="{{ingredient.id}}">
+                    <span class="{{ingredient.id}}-span">
+                    {% if ingredient.measurement %}
+                        {% if ingredient.amount %}
+                            <b>{{ ingredient.amount }} {{ ingredient.measurement }}</b> 
+                        {% else %}
+                            <b>(1) {{ ingredient.measurement }}</b>
+                        {% endif %}
+                    {% else %}
+                        <b>{{ ingredient.amount }}</b>
+                    {% endif %}
+                    <b>{{ ingredient.food.name }}</b>
+                    </span>
+                    <span class="{{ingredient.id}}-span" style="display: none">{{ingredient}}</span>
+                    <script>
+                        $("#{{ingredient.id}}").hover(function() {
+                            $(".{{ingredient.id}}-span").toggle();
+                        });
+                    </script>
+                </div>
+            <!-- on hover -->
+            <!-- <i>Ingredient string: {{ ingredient }}</i><br> -->
+            {% endfor %}<br>
+        {% endif %}
+    {% endif %}
 {% endfor %}
+
+<h3>Other</h3>
+{% for ingredient in category_dict.other %}
+    {{ ingredient }}<br>
+{% endfor %}
+

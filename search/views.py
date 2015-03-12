@@ -210,7 +210,8 @@ def shopping_list(request):
         'meat': [],
         'nuts': [],
         'produce': [],
-        'spices': []
+        'spices': [],
+        'other': []
     }
 
     planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).exclude(day_planned='planning').all()
@@ -219,12 +220,18 @@ def shopping_list(request):
         recipe_name = recipe.name
         ingredient_list = recipe.ingredients.all()
         ingredient_dict[recipe_name] = ingredient_list
-
+        for ingredient in ingredient_list:
+            if ingredient.food:
+                category_dict[ingredient.food.category.name].append(ingredient)
+            else:
+                category_dict['other'].append(ingredient)
+    print category_dict
 
 
 
     return render(request, 'shopping_list.html', {
         'ingredient_dict': ingredient_dict,
+        'category_dict': category_dict
         })
 
 
