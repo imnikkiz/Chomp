@@ -35,7 +35,6 @@
 .connected-list > lh {
     display: block;
     text-align: center;
-
 }
 
 .connected-list-item {
@@ -72,4 +71,8 @@
 
 .ingredient-string {
     cursor: pointer;
+}
+
+.planning-list > li {
+    display: inline-table;
 }

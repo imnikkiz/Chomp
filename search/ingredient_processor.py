@@ -29,8 +29,6 @@ def process(line):
     for word in modified_line:
         for character in word:
             number_result = unicodedata.numeric(character, None)
-            print character
-            print number_result
             if number_result:
                 break
 
