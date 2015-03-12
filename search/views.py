@@ -113,12 +113,11 @@ def add_recipe(request):
         new_collection = Collection(user_profile=this_user_profile,
                                     recipe=this_recipe)
         new_collection.save()
-    return render_to_response("search.html",
-            context_instance=RequestContext(request))
+
 
 def my_recipes(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
-    recipe_list = this_user_profile.recipes.all()[:10]
+    recipe_list = this_user_profile.recipes.all()
 
     return render(request, 'my_recipes.html', {
         'recipe_list': recipe_list
@@ -133,7 +132,7 @@ def remove_recipes(request):
             Collection.objects.filter(user_profile=this_user_profile,
                                             recipe=this_recipe).delete()
     
-    recipe_list = this_user_profile.recipes.all()[:10]
+    recipe_list = this_user_profile.recipes.all()
     return render(request, 'my_recipes.html', {
         'recipe_list': recipe_list
         })
@@ -146,7 +145,6 @@ def add_to_planner(request):
                                             recipe=this_recipe).first()
     user_recipe.day_planned = "planning"
     user_recipe.save()
-    return redirect("/my_recipes/")
 
 def update_planner(request):
     recipe_id = request.GET.get("recipe_id")

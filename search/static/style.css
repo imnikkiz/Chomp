@@ -27,7 +27,15 @@
     list-style-type: none;
     display: inline-block;
     vertical-align: top;
+    min-width: 120px;
     min-height: 120px;
+    padding: 0;
+}
+
+.connected-list > lh {
+    display: block;
+    text-align: center;
+
 }
 
 .connected-list-item {
@@ -40,7 +48,13 @@
 /*    float: left;*/
     margin: 10px;
     cursor: move;
-    border-radius: 10px
+    border-radius: 10px;
+}
+
+.connected-list-item > span {
+    overflow: hidden;
+    max-height: 55px;
+    display: block;
 }
 
 .connected-list-item img {
@@ -48,3 +62,6 @@
     border-radius: 10px;
 }
 
+.planning-list {
+    width: 100%;
+}
