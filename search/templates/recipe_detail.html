@@ -38,22 +38,3 @@
         {% endfor %}
     {% endif %}
 </p>
-
-<form id="add-recipe-form">
-    <input type="hidden" name="recipe_id" value={{ recipe.id }}>
-    <input type="submit" class="btn btn-default" value="Add to My Recipes">
-    {% csrf_token %}
-</form>
-
-<script>
-
-function showMyRecipes(evt) {
-    evt.preventDefault();
-    var params = $("#add-recipe-form").serialize();
-    $.get("add_recipe/", params);
-    $("#recipe-modal").modal('toggle');
-};
-
-$("#add-recipe-form").on('submit', showMyRecipes);
-
-</script>

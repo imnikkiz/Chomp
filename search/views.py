@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -65,13 +65,15 @@ def recipe_main(request):
 
 
 def search_page(request): 
-    return render_to_response('search.html')
+    if request.session.get('search_keyword'):
+        return redirect('/new_search/')
+    else:
+        return render_to_response('search.html')
 
 def new_search(request):
-    keyword = request.GET.get('search_keyword_text')
+    keyword = request.GET.get('search_keyword_text') or request.session.get('search_keyword')
     search_exists = Search.objects.filter(keyword=keyword).first()
     if search_exists:
-        print "got here"
         search_has_recipes = search_exists.recipes.first()
         if not search_has_recipes:
             search_exists.delete()
@@ -82,29 +84,13 @@ def new_search(request):
 
 
     this_search = Search.objects.get(keyword=keyword)
-    recipe_list = this_search.recipes.all()[:3]
+    recipe_list = this_search.recipes.all()[:9]
 
     request.session['search_keyword'] = keyword
 
     return render_to_response("search.html", {
         'recipe_list': recipe_list},
         context_instance=RequestContext(request)) 
-
-def change_search_results_page(request):  
-    keyword = request.session.get('search_keyword')
-    page = request.GET.get('page')
-    this_search = Search.objects.get(keyword=keyword)
-
-    starts_list = [None, 0, 3, 6, 9]
-    start = starts_list[int(page)]
-    end = int(page) * 3
-    recipe_list = this_search.recipes.all()[start:end]
-
-    return render_to_response("search.html", {
-        'recipe_list': recipe_list,
-        'page': page
-        },
-        context_instance=RequestContext(request))
 
 def recipe_details(request, recipe_id):
     recipe_id = recipe_id
@@ -152,11 +138,22 @@ def remove_recipes(request):
         'recipe_list': recipe_list
         })
 
+def add_to_planner(request):
+    recipe_id = request.GET.get("recipe_id")
+    this_recipe = Recipe.objects.get(id=recipe_id)
+    this_user_profile = UserProfile.objects.get(user=request.user)
+    user_recipe = Collection.objects.filter(user_profile=this_user_profile,
+                                            recipe=this_recipe).first()
+    user_recipe.day_planned = "planning"
+    user_recipe.save()
+    return redirect("/my_recipes/")
+
+
 def planner(request):
     this_user_profile = UserProfile.objects.get(user=request.user)
-    new_recipe_list = []
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    saved_recipes_and_days = {'Monday': [],
+    recipe_planning_dict = {
+            'planning': [],
+            'Monday': [],
             'Tuesday': [], 
             'Wednesday': [], 
             'Thursday': [], 
@@ -169,21 +166,10 @@ def planner(request):
     for user_recipe in user_recipes:
         # WTH why does this need to happen with a new user??
         if user_recipe.day_planned:
-            print user_recipe.day_planned
-            saved_recipes_and_days[user_recipe.day_planned].append(user_recipe.recipe)
-
-    if request.method == 'GET':
-        recipe_id_list = request.GET.getlist("recipe_list")
-        if recipe_id_list:
-            for recipe_id in recipe_id_list:
-                recipe = Recipe.objects.get(id=recipe_id)
-                new_recipe_list.append(recipe)
-
+            recipe_planning_dict[user_recipe.day_planned].append(user_recipe.recipe)
 
     return render(request, 'planner.html', {
-        'recipe_list': new_recipe_list,
-        'days': days,
-        'saved_recipes': saved_recipes_and_days
+        'recipes': recipe_planning_dict
         })
 
 def clear_planner(request):

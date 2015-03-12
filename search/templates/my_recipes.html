@@ -1,32 +1,27 @@
 <h1>My Recipes</h1>
-
-<form id="modify-recipes-form">
-    <div class="row" id="id_all_recipes">
-        {% for recipe in recipe_list %}
-        <input type="checkbox" 
-               name="recipe_list" 
-               value={{ recipe.id }}>
-               <a href="" id="{{ recipe.id }}">
-               {{ recipe.name }}</a>
-        
-               <script>
-                function showRecipeDetails(evt) {
-                    evt.preventDefault();
-                    var recipe_id = "{{recipe.id}}";
-                    $("#recipe-modal").modal();
-                    $("#recipe-modal-body").load("/recipe/"+ recipe_id);
-                };
-
-                $("#{{ recipe.id }}").on(
-                    'click', showRecipeDetails);
-            </script>
-        <br>
-        {% endfor %}
+<div class="row" id="id_all_recipes">
+    {% for recipe in recipe_list %}
+    <div class='recipe-card' id= {{recipe.id}} >
+        <img src="{{recipe.big_img}}">
+        <br>{{recipe.name}}<br>
     </div>
-    <button class="btn btn-default" id="add-to-planner-button">Add to Planner</button>
-    <button class="btn btn-default" id="remove-recipes-button">Remove Recipes</button>
-    {% csrf_token %}
-</form>
+
+    <script>
+    function showRecipeDetails(evt) {
+        evt.preventDefault();
+        var recipe_id = "{{recipe.id}}";
+        $("#recipe-modal").modal();
+        $("#recipe-id-value").val("{{recipe.id}}");
+        $("#recipe-modal-body").load("/recipe/"+ recipe_id);
+    };
+
+    $("#{{ recipe.id }}").on(
+        'click', showRecipeDetails);
+    </script>
+    {% endfor %}
+</div>
+
+
 
 <div class="modal fade" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="recipe-modal-label" aria-hidden="true">
     <div class="modal-dialog">
@@ -37,7 +32,12 @@
                 </div>
                 <div class="modal-body" id="recipe-modal-body"></div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <form id="modify-recipes-form">
+                    <input type="hidden" name="recipe_id" value="" id="recipe-id-value">
+                    <button class="btn btn-default" id="add-to-planner-button" >Add to Planner</button>
+                    <button class="btn btn-default" id="remove-recipes-button">Remove Recipes</button>
+                    {% csrf_token %}
+                </form>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
 function addToPlanner(evt) {
     evt.preventDefault();
     var params = $("#modify-recipes-form").serialize();
-    $("#content").load("planner/", params 
+    $("#content").load("add_to_planner/", params 
     );
 };
 
@@ -56,7 +56,7 @@ $("#add-to-planner-button").on('click', addToPlanner);
 
 function removeRecipes(evt) {
     evt.preventDefault();
-    var params = $("#modify-recipes-form").serialize();
+    var params = $("#recipe-id-value").serialize();
     $("#content").load("remove_recipes/", params 
     );
 };
