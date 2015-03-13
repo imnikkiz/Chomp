@@ -74,7 +74,7 @@ function addToMyRecipes(evt) {
     evt.preventDefault();
     var params = $("#add-recipe-form").serialize();
     $.get("add_recipe/", params);
-    $("#recipe-modal").toggle();
+    $("#recipe-modal").modal('toggle');
     $("#added-recipe").slideDown(function() {
         setTimeout(function() {
             $("#added-recipe").slideUp();

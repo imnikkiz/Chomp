@@ -9,27 +9,29 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="static/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 
     {% block style %}{% endblock %}
 </head>
 
 
-<body>
-    <div class='header'>
-        <div class='container-fluid'>
+<body class="home-page-body">
+    <div class="container-fluid">
+        <div class='header'>
             <ul class="nav nav-tabs">
-                <li role="navigation" class="pull-right"><button id="login_button" class="btn btn-primary">Login</button></li>
-                <li role="navigation" class="pull-right"><button id="register_button" class="btn btn-primary">Register</button></li>
+                <li class="logo">Chomp</li>
+                <li id="login_button" role="navigation" class="pull-right link-button">Login</li>
+                <li id="register_button" role="navigation" class="pull-right link-button">Register</li>
             </ul>
         </div>
-    </div>
 
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+        <div class="home-page-content">
+            {% block content %}{% endblock %}
+        </div>
 
-    <div class='footer'>
-        <div class='container-fluid'>
+        <div class='footer'>
+            <div class='container-fluid'>
         </div>
     </div>
     

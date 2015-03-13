@@ -58,7 +58,7 @@ function addToPlanner(evt) {
     evt.preventDefault();
     var params = $("#modify-recipes-form").serialize();
     $.get("add_to_planner/", params);
-    $("#recipe-modal").toggle();
+    $("#recipe-modal").modal('toggle');
     $("#added-recipe").slideDown(function() {
         setTimeout(function() {
             $("#added-recipe").slideUp();

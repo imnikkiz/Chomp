@@ -1,3 +1,45 @@
+.home-page-body {
+    background-image: url(./cutting_board.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}
+
+.link-button {
+    border: 1px solid white;
+    padding: 10px;
+    float: left;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #4E0308;
+    color: white;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 30px;
+}
+
+.logo {
+    border: 1px solid white;
+    padding: 10px;
+    float: left;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #4E0308;
+    color: white;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 50px;
+    cursor: default;
+}
+
+.nav {
+    border: none;
+}
+
 .centered-content {
     text-align: center;
 }
@@ -39,12 +81,16 @@
 }
 
 .connected-list {
+    border: 1px solid gray;
+    box-shadow: 10px 10px 10px #CCC;
+    border-radius: 10px;
     list-style-type: none;
     display: inline-block;
     vertical-align: top;
     min-width: 150px;
     min-height: 190px;
-    padding: 0;
+    padding: 10px;
+    margin: 10px;
 }
 
 .connected-list > lh {
