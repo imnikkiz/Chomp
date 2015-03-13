@@ -1,5 +1,5 @@
-<div id="added-recipe" class="success-message">
-    Recipe added to My Recipes!
+<div id="added-recipe" class="alert alert-success success-message">
+    Recipe added to <a href="" id="my-recipes-link">My Recipes</a>!
 </div>
 
 <div class='row'>
@@ -84,4 +84,7 @@ function addToMyRecipes(evt) {
 
 $("#add-recipe-form").on('submit', addToMyRecipes);
 
+$("#my-recipes-link").on('click', showMyRecipes);
+
 </script>
+

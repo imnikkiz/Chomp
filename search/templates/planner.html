@@ -1,14 +1,26 @@
+<div id="removed-recipe" class="alert alert-success success-message">
+    Recipe removed.
+</div>
+
 <h1 class="centered-content">Planner</h1>
 
-<ul id="planning" class="connected-list planning-list">
-    <lh class="cancel-sort">To Plan</lh>
-    {% for recipe in recipes.planning %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-</ul>
+<div class="row">
+    <div class="col-xs-9">
+        <ul id="planning" class="connected-list planning-list">
+            <lh class="cancel-sort">To Plan</lh>
+            {% for recipe in recipes.planning %}
+                <li id="{{recipe.id}}" class="connected-list-item">
+                <img src="{{recipe.lil_img}}"><br>
+                <span>{{ recipe.name }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-xs-3">
+        <ul id="deleted" class="connected-list deleted-list">
+            <lh class="cancel-sort">Remove Recipe</lh>
+        </ul>
+    </div>
 
 <div class="week-lists-container">
 
@@ -87,7 +99,7 @@
 
 <script>
 $(function () {
-    var sections = ['planning', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    var sections = ['deleted', 'planning', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     for (var i = 0; i < sections.length; i++) {
         var selector = '#' + sections[i];
         $(selector).sortable({
@@ -97,7 +109,17 @@ $(function () {
             update: function(event, ui) {
                 var recipe_id = ui.item.attr('id');
                 var day = ui.item.parent().attr('id');
-                $.get("/update_planner/?recipe_id=" + recipe_id + "&day=" + day);
+                if (day == 'deleted') {
+                    $("#content").load("/update_planner/?recipe_id=" + recipe_id + "&day=" + day, function() {
+                        $("#removed-recipe").slideDown(function() {
+                            setTimeout(function() {
+                                $("#removed-recipe").slideUp();
+                            }, 3000);
+                        });
+                    });
+                } else {
+                    $.get("/update_planner/?recipe_id=" + recipe_id + "&day=" + day);
+                };
             }
         });
     }

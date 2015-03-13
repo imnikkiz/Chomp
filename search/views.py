@@ -123,14 +123,12 @@ def my_recipes(request):
         'recipe_list': recipe_list
         })
 
-def remove_recipes(request):
-    recipe_id_list = request.GET.getlist("recipe_list")
+def remove_recipe(request):
+    recipe_id = request.GET.get("recipe_id")
     this_user_profile = UserProfile.objects.get(user=request.user)
-    if recipe_id_list:
-        for recipe_id in recipe_id_list:
-            this_recipe = Recipe.objects.get(id=recipe_id)
-            Collection.objects.filter(user_profile=this_user_profile,
-                                            recipe=this_recipe).delete()
+    this_recipe = Recipe.objects.get(id=recipe_id)
+    Collection.objects.filter(user_profile=this_user_profile,
+                                    recipe=this_recipe).delete()
     
     recipe_list = this_user_profile.recipes.all()
     return render(request, 'my_recipes.html', {
@@ -153,10 +151,13 @@ def update_planner(request):
     user_recipe = Collection.objects.filter(user_profile=this_user_profile,
                                             recipe=this_recipe).first()
     day = request.GET.get("day")
-    user_recipe.day_planned = day
-    user_recipe.save()
-
-    print user_recipe.day_planned
+    if day == 'deleted':
+        user_recipe.day_planned = None
+        user_recipe.save()
+        return redirect("/planner/")
+    else:    
+        user_recipe.day_planned = day
+        user_recipe.save()
 
 
 

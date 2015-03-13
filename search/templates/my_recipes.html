@@ -1,5 +1,9 @@
-<div id="added-recipe" class="success-message">
-    Recipe added to Planner!
+<div id="added-recipe" class="alert alert-success success-message">
+    Recipe added to <a href="" id="planner-link">Planner</a>!
+</div>
+
+<div id="deleted-recipe" class="alert alert-success success-message">
+    Recipe deleted.
 </div>
 
 <h1 class="centered-content">My Recipes</h1>
@@ -40,7 +44,7 @@
                 <form id="modify-recipes-form">
                     <input type="hidden" name="recipe_id" value="" id="recipe-id-value">
                     <button class="btn btn-default" id="add-to-planner-button" >Add to Planner</button>
-                    <button class="btn btn-default" id="remove-recipes-button">Remove Recipes</button>
+                    <button class="btn btn-default" id="remove-recipe-button">Remove Recipe</button>
                     {% csrf_token %}
                 </form>
             </div>
@@ -64,13 +68,20 @@ function addToPlanner(evt) {
 
 $("#add-to-planner-button").on('click', addToPlanner);
 
-function removeRecipes(evt) {
+function removeRecipe(evt) {
     evt.preventDefault();
-    var params = $("#recipe-id-value").serialize();
-    $("#content").load("remove_recipes/", params 
-    );
+    var params = $("#modify-recipes-form").serialize();
+    $("#content").load("remove_recipe/", params, function() {
+        $("#deleted-recipe").slideDown(function() {
+            setTimeout(function() {
+                $("#deleted-recipe").slideUp();
+            }, 3000);
+        });
+    });
 };
 
-$("#remove-recipes-button").on('click', removeRecipes);
+$("#remove-recipe-button").on('click', removeRecipe);
+
+$("#planner-link").on('click', showPlanner);
 
 </script>

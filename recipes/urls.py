@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^new_search/$', 'search.views.new_search', name='new_search'),
 
     url(r'^recipe/(?P<recipe_id>\d+)/$', 'search.views.recipe_details', name='recipe_details'),
-    url(r'^remove_recipes/$', 'search.views.remove_recipes', name='remove_recipes'),    
+    url(r'^remove_recipe/$', 'search.views.remove_recipe', name='remove_recipe'),    
     url(r'^add_recipe/$', 'search.views.add_recipe', name='add_recipe'),
     url(r'^my_recipes/$', 'search.views.my_recipes', name='my_recipes'),
     
