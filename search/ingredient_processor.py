@@ -45,6 +45,7 @@ def process(line):
 
     modified_line = line.lower().split()
 
+    # convert vulgar fractions
     for i, word in enumerate(modified_line):
         if word in fractions:
             modified_line[i] = fractions[word]
@@ -55,6 +56,8 @@ def process(line):
     number_result = numbers.match(line)
     if number_result:
         number_result = number_result.group()
+
+        # convert mixed fractions
         if "/" in list(number_result):
             mixed_num = number_result.split(" ")
             if "/" in list(mixed_num[0]):
@@ -76,13 +79,13 @@ def process(line):
     measurement_result = None
     for word in modified_line:
         if word in measurements:
-            measurement_result = word
+            measurement_result = measurements[word]
             break
     if not measurement_result:
         for word in modified_line:
             un_pluralized_word = un_pluralize(word)
             if un_pluralized_word in measurements:
-                measurement_result = un_pluralized_word
+                measurement_result = measurements[un_pluralized_word]
                 break
 
     food_result = None
@@ -112,11 +115,18 @@ def process(line):
                 'food': food_result,
                 'category': category_result}
 
-    # # if not number_result:
-    # #     print "Couldn't parse number: ", line
-    # # if not measurement_result:
-    # #     print "Couldn't parse measurement: ", line
-    # # if not food_result:
-    # #     print "Couldn't parse food: ", line
+    cant_parse = {
+        'measurement': [],
+        'amount': [],
+        'food': []
+    }
+    if not number_result:
+        cant_parse['amount'].append(line)
+    if not measurement_result:
+        cant_parse['measurement_result'].append(line)
+    if not food_result:
+        cant_parse['food'].append(line)
+
+    print cant_parse
 
     return response

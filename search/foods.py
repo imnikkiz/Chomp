@@ -5,6 +5,8 @@ foods = {'oil': 'baking',
          'flour': 'baking',
          'shortening': 'baking',
          'vanilla': 'baking',
+         'honey': 'baking',
+         'yeast': 'yeast',
 
          'water': 'beverages',
          'wine': 'beverages', 
@@ -40,6 +42,7 @@ foods = {'oil': 'baking',
          'seed': 'nuts', 
          'nut': 'nuts', 
          'almond': 'nuts',
+         'walnut': 'nuts',
 
          'tomato': 'produce',
          'lemon': 'produce', 
@@ -62,5 +65,7 @@ foods = {'oil': 'baking',
          'paprika': 'spices',
          'thyme': 'spices',
          'allspice': 'spices',
-         'cumin': 'spices'
+         'cumin': 'spices',
+         'cinnamon': 'spices',
+         'nutmeg': 'spices'
 }

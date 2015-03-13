@@ -1,3 +1,33 @@
-measurements = ['cup', 'tablespoon', 'ounce', 'tbs', 'tbs.', 'tbsp', 
-                'teaspoon', 'clove', 'pound', 'tsp', 'tsp.', 'can',
-                'stalk', 'oz.', 'oz', 'stick', 'pinch']
+measurements = {
+                'cup': 'cup(s)',
+                'c': 'cup(s)',
+                'c.': 'cup(s)', 
+
+                'tablespoon': 'tablespoons(s)', 
+                'tbs': 'tablespoons(s)', 
+                'tbs.': 'tablespoons(s)', 
+                'tbsp': 'tablespoons(s)',
+                'tbsp.': 'tablespoons(s)',
+
+                'ounce': 'ounce(s)', 
+                'oz.': 'ounce(s)', 
+                'oz': 'ounce(s)',
+
+                'teaspoon': 'teaspoon(s)', 
+                'tsp': 'teaspoon(s)', 
+                'tsp.': 'teaspoon(s)',                
+
+                'pound': 'pound(s)', 
+                'lb': 'pound(s)',
+                'lb.': 'pound(s)',
+                'lbs': 'pound(s)',
+                'lbs.': 'pound(s)',
+
+                'can': 'can(s)',
+                'clove': 'clove(s)',
+                'stalk': 'stalk(s)', 
+                'stick': 'stick(s)', 
+                'pinch': 'pinch(es)',
+                'box': 'box(es)',
+                'ml': 'ml'
+                }
