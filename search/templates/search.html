@@ -1,3 +1,7 @@
+<div id="added-recipe" class="success-message">
+    Recipe added to My Recipes!
+</div>
+
 <div class='row'>
     <div class='col-xs-12'>
         <h1 class="centered-content">Search Recipes</h1>
@@ -66,12 +70,18 @@ function showSearchResults(evt) {
 
 $("#search_form").on('submit', showSearchResults);
 
-function showMyRecipes(evt) {
+function addToMyRecipes(evt) {
     evt.preventDefault();
     var params = $("#add-recipe-form").serialize();
     $.get("add_recipe/", params);
+    $("#recipe-modal").toggle();
+    $("#added-recipe").slideDown(function() {
+        setTimeout(function() {
+            $("#added-recipe").slideUp();
+        }, 5000);
+    });
 };
 
-$("#add-recipe-form").on('submit', showMyRecipes);
+$("#add-recipe-form").on('submit', addToMyRecipes);
 
 </script>

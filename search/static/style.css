@@ -93,3 +93,23 @@
     display: inline-table;
     text-align: center;
 }
+
+.shopping-list-container {
+    width: 100%;
+    text-align: center;
+}
+
+.shopping-list-card {
+    border: 1px solid gray;
+    padding: 10px;
+    box-shadow: 10px 10px 10px #CCC;
+    margin: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    vertical-align: top;
+    width: 200px;
+}
+
+.success-message {
+    display: none;
+}

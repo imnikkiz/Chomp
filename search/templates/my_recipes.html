@@ -1,4 +1,9 @@
+<div id="added-recipe" class="success-message">
+    Recipe added to Planner!
+</div>
+
 <h1 class="centered-content">My Recipes</h1>
+
 <div class="row" id="id_all_recipes">
     {% for recipe in recipe_list %}
     <div class='recipe-card' id= {{recipe.id}} >
@@ -48,8 +53,13 @@
 function addToPlanner(evt) {
     evt.preventDefault();
     var params = $("#modify-recipes-form").serialize();
-    $("#content").load("add_to_planner/", params 
-    );
+    $.get("add_to_planner/", params);
+    $("#recipe-modal").toggle();
+    $("#added-recipe").slideDown(function() {
+        setTimeout(function() {
+            $("#added-recipe").slideUp();
+        }, 5000);
+    });
 };
 
 $("#add-to-planner-button").on('click', addToPlanner);

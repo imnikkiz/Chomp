@@ -1,46 +1,53 @@
 <h1 class="centered-content">Shopping List</h1>
 
+<div class="row">
 {% for category, foods in category_dict.items %}
     {% if category != 'other' %}
         {% if foods %}
-            <h3>{{ category|capfirst }}</h3>
-            <div>
-                {% for food_name, food_info in foods.items %}
-                    <span class="{{food_name}}-span ingredient-parsed">
-                        {% for measurement, amount in food_info.measurements.items %}
-                            {% if measurement != 'other' %}
-                            <span>{{ amount|floatformat }} {{ measurement }}</span>
+            <div class="shopping-list-card">
+                <h3>{{ category|capfirst }}</h3>
+                <div>
+                    {% for food_name, food_info in foods.items %}
+                        <span class="{{food_name}}-span ingredient-parsed">
+                            {% for measurement, amount in food_info.measurements.items %}
+                                {% if measurement != 'other' %}
+                                <span>{{ amount|floatformat:"-2" }} {{ measurement }}</span>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if food_info.measurements.other %}
+                                <span>{{ food_info.measurements.other }}</span>
                             {% endif %}
-                        {% endfor %}
+                            <span>{{ food_name }}</span>
+                        </span>
+                        <span class="{{food_name}}-span ingredient-string" style="display: none">
+                            {% for ingredient in food_info.ingredients %}
+                            <i>{{ingredient}}</i><br>
+                            {% endfor %}
+                        </span><br>
+                        <script>
+                            $(".{{food_name}}-span").hover(function() {
 
-                        {% if food_info.measurements.other %}
-                            <span>{{ food_info.measurements.other }}</span>
-                        {% endif %}
-                        <span>{{ food_name }}</span>
-                    </span>
-                    <span class="{{food_name}}-span ingredient-string" style="display: none">
-                        {% for ingredient in food_info.ingredients %}
-                        <i>{{ingredient}}</i><br>
-                        {% endfor %}
-                    </span><br>
-                    <script>
-                        $(".{{food_name}}-span").hover(function() {
-
-                            $(".{{food_name}}-span").toggle();
-                        }).click(function() {
-                            $(".{{food_name}}-span").toggle();
-                        });
-                    </script>
-                {% endfor %}
+                                $(".{{food_name}}-span").toggle();
+                            }).click(function() {
+                                $(".{{food_name}}-span").toggle();
+                            });
+                        </script>
+                    {% endfor %}
+                </div>
             </div>
         {% endif %}
     {% endif %}
 {% endfor %}
+</div>
 
+<div class="row">
 {% if category_dict.other %}
-    <h3>Other</h3>
-    {% for ingredient in category_dict.other %}
-        {{ ingredient }}<br>
-    {% endfor %}
+    <div class="shopping-list-card">
+        <h3>Other</h3>
+        {% for ingredient in category_dict.other %}
+            {{ ingredient }}<br>
+        {% endfor %}
+    </div>
 {% endif %}
-
+</div>
