@@ -7,6 +7,19 @@
     background-color: #464646;
 }
 
+.home-page-content {
+    color: white;
+    text-shadow: 1px 1px black;
+    background: rgba(78,3,8,.25);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.home-page-content input { 
+    color: #4E0308; 
+}
+
 .link-button {
     border: 1px solid white;
     padding: 10px;
@@ -26,14 +39,12 @@
     padding: 10px;
     float: left;
     margin: 10px;
-    cursor: pointer;
     border-radius: 10px;
     background-color: #4E0308;
     color: white;
     text-align: center;
     font-family: 'Lobster', cursive;
     font-size: 50px;
-    cursor: default;
 }
 
 .nav {

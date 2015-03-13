@@ -1,7 +1,9 @@
-<h1 class="centered-content">Register</h1>
-<form id="user_form" method="POST" action="/register/">
-    {{ user_form.as_p }}
-    <input type="submit" name="submit" value="Register" id=
-"id_register">
-    {% csrf_token %}
-</form>
+<div class="home-page-content">    
+    <h1 class="centered-content">Register</h1>
+    <form id="user_form" method="POST" action="/register/">
+        {{ user_form.as_p }}
+        <input type="submit" name="submit" value="Register" id=
+    "id_register">
+        {% csrf_token %}
+    </form>
+</div>
