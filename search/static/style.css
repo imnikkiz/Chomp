@@ -23,12 +23,16 @@
     background-color: #dddddd;
 }
 
+.week-lists-container {
+    text-align: center;
+}
+
 .connected-list {
     list-style-type: none;
     display: inline-block;
     vertical-align: top;
-    min-width: 120px;
-    min-height: 120px;
+    min-width: 150px;
+    min-height: 190px;
     padding: 0;
 }
 
@@ -48,6 +52,7 @@
     margin: 10px;
     cursor: pointer;
     border-radius: 10px;
+    box-sizing: content-box;
 }
 
 .connected-list-item > span {
@@ -61,10 +66,6 @@
     border-radius: 10px;
 }
 
-.planning-list {
-    width: 100%;
-}
-
 .ingredient-parsed {
     cursor: pointer;
 }
@@ -73,6 +74,12 @@
     cursor: pointer;
 }
 
-.planning-list > li {
+.planning-list {
+    width: 100%;
+    text-align: center;
+}
+
+.planning-list li{
     display: inline-table;
+    text-align: center;
 }

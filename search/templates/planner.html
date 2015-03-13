@@ -8,79 +8,82 @@
         <span>{{ recipe.name }}</span>
         </li>
     {% endfor %}
-
 </ul>
 
-<ul id="monday" class="connected-list">
-    <lh class="cancel-sort">Monday</lh>
-    {% for recipe in recipes.monday %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-</ul>
+<div class="week-lists-container">
 
-<ul id="tuesday" class="connected-list">
-    <lh class="cancel-sort">Tuesday</lh>
-    {% for recipe in recipes.tuesday %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-</ul>
+    <ul id="monday" class="connected-list">
+        <lh class="cancel-sort">Monday</lh>
+        {% for recipe in recipes.monday %}
+            <li id="{{recipe.id}}" class="connected-list-item">
+            <img src="{{recipe.lil_img}}"><br>
+            <span>{{ recipe.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 
-<ul id="wednesday" class="connected-list">
-    <lh class="cancel-sort">Wednesday</lh>
-    {% for recipe in recipes.wednesday %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-    <li style="visibility:hidden;"></li>
-</ul>
+    <ul id="tuesday" class="connected-list">
+        <lh class="cancel-sort">Tuesday</lh>
+        {% for recipe in recipes.tuesday %}
+            <li id="{{recipe.id}}" class="connected-list-item">
+            <img src="{{recipe.lil_img}}"><br>
+            <span>{{ recipe.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 
-<ul id="thursday" class="connected-list">
-    <lh class="cancel-sort">Thursday</lh>
-    {% for recipe in recipes.thursday %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-</ul>
+    <ul id="wednesday" class="connected-list">
+        <lh class="cancel-sort">Wednesday</lh>
+        {% for recipe in recipes.wednesday %}
+            <li id="{{recipe.id}}" class="connected-list-item">
+            <img src="{{recipe.lil_img}}"><br>
+            <span>{{ recipe.name }}</span>
+            </li>
+        {% endfor %}
+        <li style="visibility:hidden;"></li>
+    </ul>
 
-<ul id="friday" class="connected-list">
-    <lh class="cancel-sort">Friday</lh>
-    {% for recipe in recipes.friday %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-</ul>
+    <ul id="thursday" class="connected-list">
+        <lh class="cancel-sort">Thursday</lh>
+        {% for recipe in recipes.thursday %}
+            <li id="{{recipe.id}}" class="connected-list-item">
+            <img src="{{recipe.lil_img}}"><br>
+            <span>{{ recipe.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 
-<ul id="saturday" class="connected-list">
-    <lh class="cancel-sort">Saturday</lh>
-    {% for recipe in recipes.saturday %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-</ul>
+    <ul id="friday" class="connected-list">
+        <lh class="cancel-sort">Friday</lh>
+        {% for recipe in recipes.friday %}
+            <li id="{{recipe.id}}" class="connected-list-item">
+            <img src="{{recipe.lil_img}}"><br>
+            <span>{{ recipe.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 
-<ul id="sunday" class="connected-list">
-    <lh class="cancel-sort">Sunday</lh>
-    {% for recipe in recipes.sunday %}
-        <li id="{{recipe.id}}" class="connected-list-item">
-        <img src="{{recipe.lil_img}}"><br>
-        <span>{{ recipe.name }}</span>
-        </li>
-    {% endfor %}
-</ul>
+    <ul id="saturday" class="connected-list">
+        <lh class="cancel-sort">Saturday</lh>
+        {% for recipe in recipes.saturday %}
+            <li id="{{recipe.id}}" class="connected-list-item">
+            <img src="{{recipe.lil_img}}"><br>
+            <span>{{ recipe.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <ul id="sunday" class="connected-list">
+        <lh class="cancel-sort">Sunday</lh>
+        {% for recipe in recipes.sunday %}
+            <li id="{{recipe.id}}" class="connected-list-item">
+            <img src="{{recipe.lil_img}}"><br>
+            <span>{{ recipe.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+
+</div>
 
 <script>
 $(function () {

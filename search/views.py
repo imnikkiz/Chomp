@@ -84,7 +84,7 @@ def new_search(request):
 
 
     this_search = Search.objects.get(keyword=keyword)
-    recipe_list = this_search.recipes.all()[:9]
+    recipe_list = this_search.recipes.all()
 
     request.session['search_keyword'] = keyword
 

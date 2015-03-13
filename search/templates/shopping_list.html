@@ -3,7 +3,7 @@
 {% for category, foods in category_dict.items %}
     {% if category != 'other' %}
         {% if foods %}
-            <h3>{{ category }}</h3>
+            <h3>{{ category|capfirst }}</h3>
             <div>
                 {% for food_name, food_info in foods.items %}
                     <span class="{{food_name}}-span ingredient-parsed">
@@ -33,7 +33,6 @@
                     </script>
                 {% endfor %}
             </div>
-            <br>
         {% endif %}
     {% endif %}
 {% endfor %}
