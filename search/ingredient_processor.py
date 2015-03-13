@@ -1,6 +1,6 @@
 from foods import foods
 from measurements import measurements
-import re, unicodedata
+import re
 
 def un_pluralize(word):  
     split_food = list(word)
@@ -10,8 +10,25 @@ def un_pluralize(word):
 
 def process(line):
     numbers = re.compile('(\d+\s\d+[./]?\d*)|(\d+[./]?\d*)|(\d+)')
+    fractions = {
+        u'\u00BD' : u'1/2',
+        u'\u00BC' : u'1/4',
+        u'\u00BE' : u'3/4',
+        u'\u2153' : u'1/3',
+        u'\u2154' : u'2/3',
+        u'\u2155' : u'1/5',
+        u'\u2156' : u'2/5',
+        u'\u2157' : u'3/5',
+        u'\u2158' : u'4/5',
+        u'\u2159' : u'1/6',
+        u'\u215A' : u'5/6',
+        u'\u215B' : u'1/8',
+        u'\u215C' : u'3/8',
+        u'\u215D' : u'5/8',
+        u'\u215E' : u'7/8',
+    }
 
-
+    # remove parentheses
     line = line.split("(")
     if len(line) > 1:
         second_part = line.pop()
@@ -22,39 +39,39 @@ def process(line):
     else:
         line = line[0]
 
+    # remove commas
     line = line.split(",")
     line = "".join(line)
 
     modified_line = line.lower().split()
-    for word in modified_line:
-        for character in word:
-            number_result = unicodedata.numeric(character, None)
-            if number_result:
-                break
 
-    if not number_result:
-        number_result = numbers.match(line)
-        if number_result:
-            number_result = number_result.group()
-            if "/" in list(number_result):
-                mixed_num = number_result.split(" ")
-                if "/" in list(mixed_num[0]):
-                    fraction = mixed_num[0].split("/")
-                    numerator = float(fraction[0])
-                    number_result = numerator/float(fraction[1])
-                else:
-                    fraction = mixed_num[1].split("/")
-                    numerator = float(fraction[0])
-                    decimal = numerator/float(fraction[1])
-                    whole_num = float(mixed_num[0])
-                    number_result = whole_num + decimal
+    for i, word in enumerate(modified_line):
+        if word in fractions:
+            modified_line[i] = fractions[word]
+
+    line = " ".join(modified_line)
+
+
+    number_result = numbers.match(line)
+    if number_result:
+        number_result = number_result.group()
+        if "/" in list(number_result):
+            mixed_num = number_result.split(" ")
+            if "/" in list(mixed_num[0]):
+                fraction = mixed_num[0].split("/")
+                numerator = float(fraction[0])
+                number_result = numerator/float(fraction[1])
             else:
-                try:
-                    number_result = float(number_result)
-                except ValueError:
-                    number_result = None
-
-
+                fraction = mixed_num[1].split("/")
+                numerator = float(fraction[0])
+                decimal = numerator/float(fraction[1])
+                whole_num = float(mixed_num[0])
+                number_result = whole_num + decimal
+        else:
+            try:
+                number_result = float(number_result)
+            except ValueError:
+                number_result = None
 
     measurement_result = None
     for word in modified_line:
@@ -95,11 +112,11 @@ def process(line):
                 'food': food_result,
                 'category': category_result}
 
-    # if not number_result:
-    #     print "Couldn't parse number: ", line
-    # if not measurement_result:
-    #     print "Couldn't parse measurement: ", line
-    # if not food_result:
-    #     print "Couldn't parse food: ", line
+    # # if not number_result:
+    # #     print "Couldn't parse number: ", line
+    # # if not measurement_result:
+    # #     print "Couldn't parse measurement: ", line
+    # # if not food_result:
+    # #     print "Couldn't parse food: ", line
 
     return response

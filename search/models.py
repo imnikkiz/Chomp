@@ -154,7 +154,7 @@ class Ingredient(models.Model):
     ingredient_string = models.CharField(max_length=300, default='', null=True, blank=True)
     recipe = models.ForeignKey(Recipe, 
                                related_name="ingredients")
-    amount = models.IntegerField(null=True)
+    amount = models.FloatField(null=True)
     measurement = models.CharField(max_length=100, default='', null=True)
     food = models.ForeignKey(Food,
                              related_name="ingredients", null=True)

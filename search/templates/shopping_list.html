@@ -9,7 +9,7 @@
                     <span class="{{food_name}}-span ingredient-parsed">
                         {% for measurement, amount in food_info.measurements.items %}
                             {% if measurement != 'other' %}
-                            <span>{{ amount }} {{ measurement }}</span>
+                            <span>{{ amount|floatformat }} {{ measurement }}</span>
                             {% endif %}
                         {% endfor %}
 
@@ -38,8 +38,10 @@
     {% endif %}
 {% endfor %}
 
-<h3>Other</h3>
-{% for ingredient in category_dict.other %}
-    {{ ingredient }}<br>
-{% endfor %}
+{% if category_dict.other %}
+    <h3>Other</h3>
+    {% for ingredient in category_dict.other %}
+        {{ ingredient }}<br>
+    {% endfor %}
+{% endif %}
 

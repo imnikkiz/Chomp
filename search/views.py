@@ -156,6 +156,8 @@ def update_planner(request):
     user_recipe.day_planned = day
     user_recipe.save()
 
+    print user_recipe.day_planned
+
 
 
 def planner(request):
@@ -214,6 +216,7 @@ def shopping_list(request):
     }
 
     planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).exclude(day_planned='planning').all()
+    print planned_recipes
     for collection in planned_recipes:
         recipe = collection.recipe
         ingredient_list = recipe.ingredients.all()
@@ -248,9 +251,11 @@ def shopping_list(request):
                             category_dict[category_name][food_name]['measurements'].get('other') + 1)
 
                 category_dict[category_name][food_name]['ingredients'].append(ingredient)
-                print ingredient
             else:
                 category_dict['other'].append(ingredient)
+
+        
+            
 
     return render(request, 'shopping_list.html', {
         'category_dict': category_dict
