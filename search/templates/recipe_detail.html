@@ -1,5 +1,7 @@
-<h1>{{ recipe.name }}</h1>
-<img src='{{ recipe.big_img }}'>
+<h1 class="centered-content">{{ recipe.name }}</h1>
+<div class="recipe-detail-modal">
+    <img src='{{ recipe.big_img }}'>
+</div>
 <p>Servings:<br>
     {% if recipe.servings_as_string %}
     {{ recipe.servings_as_string }}

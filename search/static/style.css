@@ -1,5 +1,16 @@
-.pagination {
-    margin: 0;
+.centered-content {
+    text-align: center;
+}
+
+.recipe-detail-modal {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.recipe-detail-modal img {
+    width: 100%;
+    border-radius: 10px;
 }
 
 .recipe-card {
@@ -48,7 +59,6 @@
     width: 100px;
     height: 120px;
     box-shadow: 10px 10px 10px #CCC;
-/*    float: left;*/
     margin: 10px;
     cursor: pointer;
     border-radius: 10px;

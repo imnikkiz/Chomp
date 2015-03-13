@@ -123,7 +123,7 @@ def process(line):
     if not number_result:
         cant_parse['amount'].append(line)
     if not measurement_result:
-        cant_parse['measurement_result'].append(line)
+        cant_parse['measurement'].append(line)
     if not food_result:
         cant_parse['food'].append(line)
 
