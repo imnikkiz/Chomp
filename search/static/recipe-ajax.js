@@ -1,10 +1,13 @@
 function showLogin(evt) {
     evt.preventDefault();
-    $("#content").load("login_form/");
+    $("#auth-modal").modal();
+    $("#auth-modal-body").load("/login_form/");
 }
+
 function showRegister(evt) {
-    evt.preventDefault();    
-    $("#content").load("register_form/");
+    evt.preventDefault();
+    $("#auth-modal").modal();
+    $("#auth-modal-body").load("register_form/");
 }
 function showSearch(evt) {
     evt.preventDefault();

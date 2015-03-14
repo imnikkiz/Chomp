@@ -10,31 +10,30 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="static/style.css">
-    <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
     {% block style %}{% endblock %}
 </head>
 
 
-<body>
-    <div class='header'>
-        <div class='container-fluid'>
+<body class="recipe-page-body">
+    <div class="container-fluid">
+        <div class='header'>
             <ul class="nav nav-tabs">
-                <li role="navigation"><button id="search_button" class="btn btn-primary">Search</button></li>
-                <li role="navigation"><button id="my_recipes_button" class="btn btn-primary">My Recipes</button></li>
-                <li role="navigation"><button id="planner_button" class="btn btn-primary">Planner</button></li>
-                <li role="navigation"><button id="shopping_list_button" class="btn btn-primary">Shopping List</button></li>
-                <li role="navigation" class="pull-right"><form action="logout/"><button type="submit" class="btn btn-primary">Log Out</button></form></li>
+                <li role="navigation" id="search_button" class="recipe-link-button">Search</li>
+                <li role="navigation" id="my_recipes_button" class="recipe-link-button">My Recipes</li>
+                <li role="navigation" id="planner_button" class="recipe-link-button">Planner</li>
+                <li role="navigation" id="shopping_list_button" class="recipe-link-button">Shopping List</li>
+                <li role="navigation" id="logout_button" class="pull-right recipe-link-button">Log Out</li>
             </ul>
         </div>
-    </div>
 
-    <div class="container-fluid">
-        {% block content %}{% endblock %}
-    </div>
+        <div>
+            {% block content %}{% endblock %}
+        </div>
 
-    <div class='footer'>
-        <div class='container-fluid'>
+        <div class='footer'>
         </div>
     </div>
 

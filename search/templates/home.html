@@ -3,7 +3,17 @@
 {% block content %}
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2">
-        <div id='content'></div>
+        <div id='content'>
+
+            <div class="modal fade" id="auth-modal" tabindex="-1" role="dialog" aria-labelledby="auth-modal-label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" id="auth-modal-body"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 {% endblock %}

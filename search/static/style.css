@@ -7,27 +7,37 @@
     background-color: #464646;
 }
 
-.home-page-content {
-    color: white;
-    text-shadow: 1px 1px black;
-    background: rgba(78,3,8,.25);
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-}
-
-.home-page-content input { 
-    color: #4E0308; 
+.recipe-page-body {
+    background-image: url(./limes.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
 }
 
 .link-button {
-    border: 1px solid white;
+    border: 2px solid white;
     padding: 10px;
     float: left;
     margin: 10px;
     cursor: pointer;
     border-radius: 10px;
     background-color: #4E0308;
+    color: white;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 30px;
+}
+
+.recipe-link-button {
+    border: 2px solid #3F6421;
+    padding: 10px;
+    float: left;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #A7AC46;
     color: white;
     text-align: center;
     font-family: 'Lobster', cursive;
@@ -55,6 +65,11 @@
     text-align: center;
 }
 
+.recipe-content {
+    color: #3F6421;
+    font-family: 'Raleway', sans-serif;
+}
+
 .recipe-detail-modal {
     padding: 10px;
     margin: 10px;
@@ -67,15 +82,17 @@
 }
 
 .recipe-card {
-    border: 1px solid gray;
+    border: 2px solid #3F6421;
     padding: 10px;
     width: 250px;
     height: 230px;
-    box-shadow: 10px 10px 10px #CCC;
+    box-shadow: 10px 10px 10px #3E111B;
     float: left;
     margin: 10px;
     cursor: pointer;
-    border-radius: 10px
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
 }
 
 .recipe-card img {
@@ -92,8 +109,8 @@
 }
 
 .connected-list {
-    border: 1px solid gray;
-    box-shadow: 10px 10px 10px #CCC;
+    border: 2px solid #3F6421;
+    box-shadow: 10px 10px 10px #3E111B;
     border-radius: 10px;
     list-style-type: none;
     display: inline-block;
@@ -102,6 +119,7 @@
     min-height: 190px;
     padding: 10px;
     margin: 10px;
+    background-color: #FAEBEE;
 }
 
 .connected-list > lh {
@@ -115,11 +133,12 @@
     padding: 10px;
     width: 100px;
     height: 120px;
-    box-shadow: 10px 10px 10px #CCC;
+    box-shadow: 10px 10px 10px #3E111B;
     margin: 10px;
     cursor: pointer;
     border-radius: 10px;
     box-sizing: content-box;
+    background-color: white;
 }
 
 .connected-list-item > span {
@@ -157,14 +176,15 @@
 }
 
 .shopping-list-card {
-    border: 1px solid gray;
+    border: 2px solid #3F6421;
     padding: 10px;
-    box-shadow: 10px 10px 10px #CCC;
+    box-shadow: 10px 10px 10px #3E111B;
     margin: 10px;
     border-radius: 10px;
     display: inline-block;
     vertical-align: top;
     width: 200px;
+    background-color: #FAEBEE;
 }
 
 .success-message {
