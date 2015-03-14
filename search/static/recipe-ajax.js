@@ -25,6 +25,10 @@ function showShoppingList(evt) {
     evt.preventDefault();
     $("#content").load("shopping_list/");
 }
+function logout(evt) {
+    evt.preventDefault();
+    $.get("logout_user/");
+}
 
 
 $("#login_button").on('click', showLogin);
@@ -33,22 +37,4 @@ $("#search_button").on('click', showSearch);
 $("#my_recipes_button").on('click', showMyRecipes);
 $("#planner_button").on('click', showPlanner);
 $("#shopping_list_button").on('click', showShoppingList);
-
-$("#login_button").hover(
-    function () {
-        $(this).removeClass("link-button");
-        $(this).addClass("link-button-inverse");
-    }, function() {
-        $(this).removeClass("link-button-inverse");
-        $(this).addClass("link-button");
-    });
-
-$("#register_button").hover(
-    function () {
-        $(this).removeClass("link-button");
-        $(this).addClass("link-button-inverse");
-    }, function() {
-        $(this).removeClass("link-button-inverse");
-        $(this).addClass("link-button");
-    });
-
+$("#logout_button").on('click', logout);

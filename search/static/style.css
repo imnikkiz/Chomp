@@ -8,12 +8,17 @@
 }
 
 .recipe-page-body {
-    background-image: url(./limes.jpg);
-    background-position: center center;
+    background-color: white;
+    margin: 0;
+}
+
+.recipe-page-body .header {
+    overflow: hidden;
+    background-image: url('./limeheader_green.png');
+    background-size: auto 100%;
     background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-color: #464646;
+    background-position: 100% center;
+    background-color: #C2C57E;
 }
 
 .link-button {
@@ -28,9 +33,10 @@
     text-align: center;
     font-family: 'Lobster', cursive;
     font-size: 30px;
+
 }
 
-.link-button-inverse {
+.link-button:hover {
     border: 2px solid white;
     padding: 10px;
     float: left;
@@ -45,17 +51,21 @@
 }
 
 .recipe-link-button {
-    border: 2px solid #3F6421;
     padding: 10px;
     float: left;
     margin: 10px;
     cursor: pointer;
-    border-radius: 10px;
-    background-color: #A7AC46;
     color: white;
     text-align: center;
     font-family: 'Lobster', cursive;
     font-size: 30px;
+    border: 2px solid transparent;
+}
+
+.recipe-link-button:hover {
+    border: 2px solid #3F6421;
+    background-color: #A7AC46;
+    border-radius: 10px;
 }
 
 .logo {
@@ -73,6 +83,7 @@
 
 .nav {
     border: none;
+    list-style-type: none
 }
 
 .centered-content {
