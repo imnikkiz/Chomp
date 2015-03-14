@@ -108,12 +108,10 @@ $(function () {
             items: 'li',
             placeholder: 'connected-list-item',
             receive: function(event, ui) {
-                alert('i"m updating yo');
                 var recipe_id = ui.item.attr('id');
                 var day = ui.item.parent().attr('id');
                 if (day == 'deleted') {
                     $("#content").load("/update_planner/?recipe_id=" + recipe_id + "&day=" + day, function() {
-                        alert("IM BAAAAACK");
                         $("#removed-recipe").slideDown(function() {
                             setTimeout(function() {
                                 $("#removed-recipe").slideUp();
