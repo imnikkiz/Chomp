@@ -17,6 +17,20 @@
 }
 
 .link-button {
+    border: 2px solid transparent;
+    padding: 10px;
+    float: left;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #4E0308;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 30px;
+}
+
+.link-button-inverse {
     border: 2px solid white;
     padding: 10px;
     float: left;
