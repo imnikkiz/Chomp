@@ -29,5 +29,8 @@ measurements = {
                 'stick': 'stick(s)', 
                 'pinch': 'pinch(es)',
                 'box': 'box(es)',
-                'ml': 'ml'
+                'ml': 'ml',
+                'pkg.': 'package(s)',
+                'pkg': 'package(s)',
+                'taste': 'taste'
                 }

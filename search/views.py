@@ -217,42 +217,46 @@ def shopping_list(request):
     }
 
     planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).exclude(day_planned='planning').all()
-    print planned_recipes
-    for collection in planned_recipes:
-        recipe = collection.recipe
-        ingredient_list = recipe.ingredients.all()
+    if planned_recipes:
+        for collection in planned_recipes:
+            recipe = collection.recipe
+            ingredient_list = recipe.ingredients.all()
 
-        for ingredient in ingredient_list:
-            if ingredient.food:
-                food_name = ingredient.food.name
-                category_name = ingredient.food.category.name
-                amount = ingredient.amount
-                measurement = ingredient.measurement
-
-                if food_name not in category_dict[category_name]:
-                    category_dict[category_name][food_name] = {
-                        'measurements': {},
-                        'ingredients': []
-                    }
-                if measurement:
+            for ingredient in ingredient_list:
+                if ingredient.food:
+                    food_name = ingredient.food.name
+                    category_name = ingredient.food.category.name
+                    amount = ingredient.amount
                     if amount:
-                        category_dict[category_name][food_name]['measurements'][measurement] = (
-                            category_dict[category_name][food_name]['measurements'].get(measurement, 0) + amount)
+                        if amount.is_integer():
+                            amount = int(amount)
+                    measurement = ingredient.measurement
+
+                    if food_name not in category_dict[category_name]:
+                        category_dict[category_name][food_name] = {
+                            'measurements': {},
+                            'ingredients': []
+                        }
+                    if measurement:
+                        if amount:
+                            category_dict[category_name][food_name]['measurements'][measurement] = (
+                                category_dict[category_name][food_name]['measurements'].get(measurement, 0) + amount)
+                        else:
+                            category_dict[category_name][food_name]['measurements'][measurement] = (
+                                category_dict[category_name][food_name]['measurements'].get(measurement, 0) + 1)
                     else:
-                        category_dict[category_name][food_name]['measurements'][measurement] = (
-                            category_dict[category_name][food_name]['measurements'].get(measurement, 0) + 1)
+                        if amount:
+                            category_dict[category_name][food_name]['other']=(
+                                category_dict[category_name][food_name].get('other', 0) + amount)
+                        else:
+                            category_dict[category_name][food_name]['other']=(
+                                category_dict[category_name][food_name].get('other', 0) + 1)
+
+                    category_dict[category_name][food_name]['ingredients'].append(ingredient)
                 else:
-                    if amount:
-                        category_dict[category_name][food_name]['measurements']['other']=(
-                            category_dict[category_name][food_name]['measurements'].get('other', 0) + amount)
-                    else:
-                        category_dict[category_name][food_name]['measurements']['other']=(
-                            category_dict[category_name][food_name]['measurements'].get('other', 0) + 1)
-
-                category_dict[category_name][food_name]['ingredients'].append(ingredient)
-            else:
-                category_dict['other'].append(ingredient)
-
+                    category_dict['other'].append(ingredient)
+    else: 
+        category_dict = None
         
             
 
