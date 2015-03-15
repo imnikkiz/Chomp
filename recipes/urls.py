@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     url(r'^login_form/$', 'search.views.login_form', name='login_form'),
     url(r'^login_user/$', 'search.views.login_user', name='login_user'),
 
-    url(r'^logout/$', 'search.views.logout_user', name='logout'),
+    url(r'^logout_user/$', 'search.views.logout_user', name='logout_user'),
 
 
     url(r'^recipe_main$', 'search.views.recipe_main', name='recipe_main'),

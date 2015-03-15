@@ -4,8 +4,7 @@
 
 <h1 class="centered-content">Planner</h1>
 
-<div class="row">
-    <div class="col-xs-8 col-xs-offset-1">
+<div class="week-lists-container">
         <ul id="planning" class="connected-list planning-list">
             <lh class="cancel-sort">To Plan</lh>
             {% for recipe in recipes.planning %}
@@ -15,12 +14,10 @@
                 </li>
             {% endfor %}
         </ul>
-    </div>
-    <div class="col-xs-3">
+
         <ul id="deleted" class="connected-list deleted-list">
             <lh class="cancel-sort">Remove Recipe</lh>
         </ul>
-    </div>
 </div>
 
 <div class="week-lists-container">

@@ -165,7 +165,6 @@
     width: 100px;
     height: 120px;
     box-shadow: 10px 10px 10px #ddd;
-    margin: 10px;
     cursor: pointer;
     border-radius: 10px;
     box-sizing: content-box;
@@ -192,7 +191,7 @@
 }
 
 .planning-list {
-    width: 100%;
+    width: 1020px;
     text-align: center;
 }
 
