@@ -231,9 +231,7 @@ def shopping_list(request):
 
                 if food_name not in category_dict[category_name]:
                     category_dict[category_name][food_name] = {
-                        'measurements': {
-                            'other': 0
-                        },
+                        'measurements': {},
                         'ingredients': []
                     }
                 if measurement:
@@ -246,10 +244,10 @@ def shopping_list(request):
                 else:
                     if amount:
                         category_dict[category_name][food_name]['measurements']['other']=(
-                            category_dict[category_name][food_name]['measurements'].get('other') + amount)
+                            category_dict[category_name][food_name]['measurements'].get('other', 0) + amount)
                     else:
                         category_dict[category_name][food_name]['measurements']['other']=(
-                            category_dict[category_name][food_name]['measurements'].get('other') + 1)
+                            category_dict[category_name][food_name]['measurements'].get('other', 0) + 1)
 
                 category_dict[category_name][food_name]['ingredients'].append(ingredient)
             else:

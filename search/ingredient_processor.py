@@ -115,18 +115,4 @@ def process(line):
                 'food': food_result,
                 'category': category_result}
 
-    cant_parse = {
-        'measurement': [],
-        'amount': [],
-        'food': []
-    }
-    if not number_result:
-        cant_parse['amount'].append(line)
-    if not measurement_result:
-        cant_parse['measurement'].append(line)
-    if not food_result:
-        cant_parse['food'].append(line)
-
-    print cant_parse
-
     return response

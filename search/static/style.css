@@ -1,3 +1,7 @@
+.container-fluid {
+    padding: 0;
+}
+
 .home-page-body {
     background-image: url(./cutting_board.jpg);
     background-position: center center;
@@ -19,6 +23,7 @@
     background-repeat: no-repeat;
     background-position: 100% center;
     background-color: #C2C57E;
+    padding: 10px;
 }
 
 .link-button {
@@ -93,6 +98,7 @@
 .recipe-content {
     color: #3F6421;
     font-family: 'Raleway', sans-serif;
+    padding: 30px;
 }
 
 .recipe-detail-modal {
@@ -111,7 +117,7 @@
     padding: 10px;
     width: 250px;
     height: 230px;
-    box-shadow: 10px 10px 10px #3E111B;
+    box-shadow: 10px 10px 10px #ddd;
     float: left;
     margin: 10px;
     cursor: pointer;
@@ -135,7 +141,7 @@
 
 .connected-list {
     border: 2px solid #3F6421;
-    box-shadow: 10px 10px 10px #3E111B;
+    box-shadow: 10px 10px 10px #ddd;
     border-radius: 10px;
     list-style-type: none;
     display: inline-block;
@@ -144,7 +150,7 @@
     min-height: 190px;
     padding: 10px;
     margin: 10px;
-    background-color: #FAEBEE;
+    background-color: white;
 }
 
 .connected-list > lh {
@@ -158,7 +164,7 @@
     padding: 10px;
     width: 100px;
     height: 120px;
-    box-shadow: 10px 10px 10px #3E111B;
+    box-shadow: 10px 10px 10px #ddd;
     margin: 10px;
     cursor: pointer;
     border-radius: 10px;
@@ -196,20 +202,18 @@
 }
 
 .shopping-list-container {
-    width: 100%;
     text-align: center;
 }
 
 .shopping-list-card {
+    text-align: left;
     border: 2px solid #3F6421;
-    padding: 10px;
-    box-shadow: 10px 10px 10px #3E111B;
-    margin: 10px;
+    box-shadow: 10px 10px 10px #ddd;
     border-radius: 10px;
+    background-color: white;
+    width: 50%;
     display: inline-block;
-    vertical-align: top;
-    width: 200px;
-    background-color: #FAEBEE;
+    padding: 10px 100px;
 }
 
 .success-message {
