@@ -43,16 +43,8 @@
 
 .link-button:hover {
     border: 2px solid white;
-    padding: 10px;
-    float: left;
-    margin: 10px;
-    cursor: pointer;
     border-radius: 10px;
     background-color: #4E0308;
-    color: white;
-    text-align: center;
-    font-family: 'Lobster', cursive;
-    font-size: 30px;
 }
 
 .recipe-link-button {
@@ -71,6 +63,31 @@
     border: 2px solid #3F6421;
     background-color: #A7AC46;
     border-radius: 10px;
+}
+
+.search-button {
+    border: 2px solid transparent;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #3F6421;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 30px;
+}
+
+.search-button:hover {
+    color: white;
+    border: 2px solid #3F6421;
+    background-color: #A7AC46;
+    border-radius: 10px;
+}
+
+.spinner {
+    text-align:center;
+    overflow: auto;
 }
 
 .logo {
@@ -132,7 +149,7 @@
 }
 
 .recipe-card:hover {
-    background-color: #dddddd;
+    background-color: #E0E2BE;
 }
 
 .week-lists-container {
@@ -170,6 +187,11 @@
     box-sizing: content-box;
     background-color: white;
 }
+
+.connected-list-item:hover {
+    background-color: #E0E2BE;
+}
+    
 
 .connected-list-item > span {
     overflow: hidden;

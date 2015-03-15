@@ -33,3 +33,5 @@ $("#search_button").on('click', showSearch);
 $("#my_recipes_button").on('click', showMyRecipes);
 $("#planner_button").on('click', showPlanner);
 $("#shopping_list_button").on('click', showShoppingList);
+
+

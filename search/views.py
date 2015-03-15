@@ -85,10 +85,15 @@ def new_search(request):
 
     this_search = Search.objects.get(keyword=keyword)
     recipe_list = this_search.recipes.all()
-
     request.session['search_keyword'] = keyword
 
+    if keyword and not recipe_list:
+        print "yup"
+        recipe_list = "error"
+        request.session['search_keyword'] = None
+
     return render_to_response("search.html", {
+        'keyword': keyword,
         'recipe_list': recipe_list},
         context_instance=RequestContext(request)) 
 

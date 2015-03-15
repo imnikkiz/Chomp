@@ -11,35 +11,52 @@
 <div class='row'>
     <div class='col-xs-12'>
         <form id="search_form" class="centered-content">
-            <input name="search_keyword_text" id="search_box" placeholder="Search for recipes">
-            <button type="submit" id="search_button" class="btn btn-primary">Search</button>
+            {% if keyword %}
+                <input name="search_keyword_text" id="search_box" placeholder="{{keyword}}">
+            {% else %}
+                <input name="search_keyword_text" id="search_box" placeholder="Search for recipes">
+            {% endif %}
+            <button type="submit" id="search_button" class="search-button">Search</button>
         </form> 
     </div>
 </div>
 
-<div class='row'>
-    <div id="search_results">
-        {% for recipe in recipe_list %}
-            <div class='recipe-card' id="{{ recipe.id }}">
-                <img src="{{recipe.big_img}}"><br>
-                <div>{{recipe.name}}</div><br>
-            </div>
-            <script>
-
-            function showRecipeDetails(evt) {
-                evt.preventDefault();
-                var recipe_id = "{{recipe.id}}";
-                $("#recipe-modal").modal();
-                $("#recipe-id-value").val("{{recipe.id}}");
-                $("#recipe-modal-body").load("/recipe/"+recipe_id);
-            };
-
-            $("#{{recipe.id}}").on('click', showRecipeDetails);
-
-            </script>
-        {% endfor %}
-    </div>
+<div id="spinner" class="spinner" style="display:none;">
+    <img id="img-spinner" src="static/loading_spinner.gif" alt="Loading"/>
 </div>
+
+
+{% if recipe_list == "error" %}
+    <div id="search-message" style="text-align:center">
+        <div id="search-failed" class="alert alert-danger" style="width:50%; display:inline-block">
+            Could not find any recipes matching "{{ keyword }}". Please try a new search keyword.
+        </div>
+    </div>
+{% else %}
+    <div class='row'>
+        <div id="search_results">
+            {% for recipe in recipe_list %}
+                <div class='recipe-card' id="{{ recipe.id }}">
+                    <img src="{{recipe.big_img}}"><br>
+                    <div>{{recipe.name}}</div><br>
+                </div>
+                <script>
+
+                function showRecipeDetails(evt) {
+                    evt.preventDefault();
+                    var recipe_id = "{{recipe.id}}";
+                    $("#recipe-modal").modal();
+                    $("#recipe-id-value").val("{{recipe.id}}");
+                    $("#recipe-modal-body").load("/recipe/"+recipe_id);
+                };
+
+                $("#{{recipe.id}}").on('click', showRecipeDetails);
+
+                </script>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
 
 <div class="modal fade" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="recipe-modal-label" aria-hidden="true">
     <div class="modal-dialog">
@@ -63,6 +80,9 @@
 <script>
 function showSearchResults(evt) {
     evt.preventDefault();
+    $('#search-message').hide();
+    $('#search_results').hide();
+    $('#spinner').show()
     var params = $("#search_form").serialize();
     $("#content").load("new_search/", params 
     );
@@ -82,9 +102,19 @@ function addToMyRecipes(evt) {
     });
 };
 
+
+
 $("#add-recipe-form").on('submit', addToMyRecipes);
 
 $("#my-recipes-link").on('click', showMyRecipes);
+
+$('input').focus(function(){
+   $(this).data('placeholder',$(this).attr('placeholder'))
+   $(this).attr('placeholder','');
+});
+$('input').blur(function(){
+   $(this).attr('placeholder',$(this).data('placeholder'));
+});
 
 </script>
 
