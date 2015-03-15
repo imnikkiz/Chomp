@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import jsonfield.fields
 from django.conf import settings
 
 
@@ -53,12 +52,6 @@ class Migration(migrations.Migration):
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='recipe',
-            name='response',
-            field=jsonfield.fields.JSONField(),
-            preserve_default=True,
         ),
         migrations.CreateModel(
             name='UserProfile',

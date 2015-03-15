@@ -26,6 +26,41 @@
     padding: 10px;
 }
 
+.logo {
+    border: 1px solid white;
+    padding: 10px;
+    float: left;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #4E0308;
+    color: white;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 50px;
+}
+
+.recipe-logo {
+    padding: 10px;
+    float: left;
+    margin: 10px;
+    color: white;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 30px;
+    border: 2px solid #3F6421;
+    background-color: #A7AC46;
+    border-radius: 10px;
+}
+
+.nav {
+    border: none;
+    list-style-type: none
+}
+
+.centered-content {
+    text-align: center;
+}
+
 .link-button {
     border: 2px solid transparent;
     padding: 10px;
@@ -34,7 +69,7 @@
     cursor: pointer;
     border-radius: 10px;
     background-color: transparent;
-    color: #4E0308;
+    color: white;
     text-align: center;
     font-family: 'Lobster', cursive;
     font-size: 30px;
@@ -45,6 +80,7 @@
     border: 2px solid white;
     border-radius: 10px;
     background-color: #4E0308;
+    color: white;
 }
 
 .recipe-link-button {
@@ -88,28 +124,6 @@
 .spinner {
     text-align:center;
     overflow: auto;
-}
-
-.logo {
-    border: 1px solid white;
-    padding: 10px;
-    float: left;
-    margin: 10px;
-    border-radius: 10px;
-    background-color: #4E0308;
-    color: white;
-    text-align: center;
-    font-family: 'Lobster', cursive;
-    font-size: 50px;
-}
-
-.nav {
-    border: none;
-    list-style-type: none
-}
-
-.centered-content {
-    text-align: center;
 }
 
 .recipe-content {
@@ -234,7 +248,7 @@
     background-color: white;
     width: 50%;
     display: inline-block;
-    padding: 10px 100px;
+    padding: 10px 50px;
 }
 
 .success-message {
