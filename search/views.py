@@ -7,12 +7,15 @@ from forms import UserForm
 
 
 def home_page(request):
+    """ Displays app front page. """
     return render_to_response('home.html')
 
 
 def register_form(request):
+    """ Provides user registration form. """
     context = RequestContext(request)
     user_form = UserForm()
+
     return render_to_response(
         'register.html',
         {'user_form': user_form},
@@ -20,59 +23,73 @@ def register_form(request):
 
 
 def register(request):
-    if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
-        if user_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            user_profile = UserProfile(user=user)
-            user_profile.save()
-            new_user = authenticate(username=request.POST['username'],
-                                    password=request.POST['password'])
-            login(request, new_user)
-            return HttpResponseRedirect('/recipe_main')
-        else:
-            print user_form.errors
+    """ Registers user and user profile; logs in user; redirects to welcome page."""
+    user_form = UserForm(data=request.POST)
+    if user_form.is_valid():
+        user = user_form.save()
+        user.set_password(user.password)
+        user.save()
+        user_profile = UserProfile(user=user)
+        user_profile.save()
+        new_user = authenticate(username=request.POST['username'],
+                                password=request.POST['password'])
+        login(request, new_user)
+        return HttpResponseRedirect('/recipe_main')
+    else:
+        print user_form.errors
+
 
 def login_form(request):
+    """ Provides user login form."""
     context = RequestContext(request)
     return render_to_response('login.html', {}, context)
 
 
 def login_user(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/recipe_main')
-            else:
-                return HttpResponse("Your account is disabled.")
+    """ Logs in returning user; redirects to welcome page."""
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user:
+        if user.is_active:
+            login(request, user)
+            return HttpResponseRedirect('/recipe_main')
         else:
-            return HttpResponse("Invalid username or password.")
+            return HttpResponse("Your account is disabled.")
+    else:
+        return HttpResponse("Invalid username or password.")
 
 
 def logout_user(request):
+    """ Logs out user; displays app front page."""
     logout(request)
     return HttpResponseRedirect('/')
 
 
 def recipe_main(request):
+    """ User logged in; displays welcome page. """
     return render_to_response('recipe_main.html')
 
 
 def search_page(request): 
+    """ Redirects to last search results or displays blank search page."""
     if request.session.get('search_keyword'):
         return redirect('/new_search/')
     else:
         return render_to_response('search.html')
 
+
 def new_search(request):
+    """ Retrieves and displays search results for keyword input.
+
+    Assigns new input or last stored input to keyword.
+    Queries database for search results; if no results, instantiates new search. 
+    Assigns all (10) search results to recipe_list and stores keyword in user's session.
+    Handles error if keyword cannot produce search results.
+    """
     keyword = request.GET.get('search_keyword_text') or request.session.get('search_keyword')
     search_exists = Search.objects.filter(keyword=keyword).first()
+
     if search_exists:
         search_has_recipes = search_exists.recipes.first()
         if not search_has_recipes:
@@ -88,7 +105,6 @@ def new_search(request):
     request.session['search_keyword'] = keyword
 
     if keyword and not recipe_list:
-        print "yup"
         recipe_list = "error"
         request.session['search_keyword'] = None
 
@@ -97,10 +113,10 @@ def new_search(request):
         'recipe_list': recipe_list},
         context_instance=RequestContext(request)) 
 
-def recipe_details(request, recipe_id):
-    recipe_id = recipe_id
-    this_recipe = Recipe.objects.get(id=recipe_id)
 
+def recipe_details(request, recipe_id):
+    """ Queries database and displays recipe information and ingredient list."""
+    this_recipe = Recipe.objects.get(id=recipe_id)
     ingredient_list = this_recipe.ingredients.all()
 
     return render(request, 'recipe_detail.html', {
@@ -110,6 +126,7 @@ def recipe_details(request, recipe_id):
 
 
 def add_recipe(request):
+    """ Adds recipe to user's collection. """
     this_user_profile = UserProfile.objects.get(user=request.user)
     this_recipe_id = request.GET.get('recipe_id')
     this_recipe = Recipe.objects.get(id=this_recipe_id)
@@ -121,6 +138,7 @@ def add_recipe(request):
 
 
 def my_recipes(request):
+    """ Queries database and displays all user's recipes."""
     this_user_profile = UserProfile.objects.get(user=request.user)
     recipe_list = this_user_profile.recipes.all()
 
@@ -128,7 +146,9 @@ def my_recipes(request):
         'recipe_list': recipe_list
         })
 
+
 def remove_recipe(request):
+    """ Removes recipe from user's collection."""
     recipe_id = request.GET.get("recipe_id")
     this_user_profile = UserProfile.objects.get(user=request.user)
     this_recipe = Recipe.objects.get(id=recipe_id)
@@ -140,7 +160,12 @@ def remove_recipe(request):
         'recipe_list': recipe_list
         })
 
+
 def add_to_planner(request):
+    """ Adds 'planning' to day_planned attribute for the user's collection of this recipe.
+
+    All recipes with day_planned assigned will be displayed in Planner.
+    """
     recipe_id = request.GET.get("recipe_id")
     this_recipe = Recipe.objects.get(id=recipe_id)
     this_user_profile = UserProfile.objects.get(user=request.user)
@@ -149,7 +174,12 @@ def add_to_planner(request):
     user_recipe.day_planned = "planning"
     user_recipe.save()
 
+
 def update_planner(request):
+    """ Updates day_planned attribute for the user's collection of this recipe.
+
+    'deleted' will clear the attribute and the recipe will no longer be displayed in the Planner.
+    """
     recipe_id = request.GET.get("recipe_id")
     this_recipe = Recipe.objects.get(id=recipe_id)
     this_user_profile = UserProfile.objects.get(user=request.user)
@@ -167,6 +197,7 @@ def update_planner(request):
 
 
 def planner(request):
+    """ Queries database and displays recipes able to be planned. """
     this_user_profile = UserProfile.objects.get(user=request.user)
     recipe_planning_dict = {
             'planning': [],
@@ -181,9 +212,7 @@ def planner(request):
 
     user_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all().prefetch_related('recipe')
     for user_recipe in user_recipes:
-        # WTH why does this need to happen with a new user??
-        if user_recipe.day_planned:
-            recipe_planning_dict[user_recipe.day_planned].append(user_recipe.recipe)
+        recipe_planning_dict[user_recipe.day_planned].append(user_recipe.recipe)
 
     return render(request, 'planner.html', {
         'recipes': recipe_planning_dict

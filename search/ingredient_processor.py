@@ -102,6 +102,15 @@ def check_foods(line):
             return (un_pluralized_word, foods.get(un_pluralized_word))
 
 def process(line):
+    """ Processes an ingredient string (line) to return dictionary of ingredient info.
+
+    Cleans up line (remove parentheses, punctuation, vulgar fractions).
+    Finds numbers and renders mixed fractions as floats.
+    Checks for measurement match.
+    Checks for food and category match. 
+    Returns none for number, measurement, and/or food and category if not available
+    or not parsed successfully. 
+    """
     line = remove_parentheses(line)
     line = remove_punctuation(line)
     line = convert_vulgar_fractions(line)

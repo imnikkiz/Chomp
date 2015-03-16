@@ -246,7 +246,7 @@ class UserProfile(models.Model):
 class Collection(models.Model):
     user_profile = models.ForeignKey(UserProfile)
     recipe = models.ForeignKey(Recipe)
-    day_planned = models.CharField(max_length=100, default='', null=True, blank=True)
+    day_planned = models.CharField(max_length=100, default=None, null=True, blank=True)
     meal_planned = models.CharField(max_length=100, default='', null=True, blank=True)
 
 
