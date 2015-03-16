@@ -209,6 +209,11 @@
     border-radius: 10px;
 }
 
+.recipe-card-title {
+    margin:20px;
+    font-size: 15px;
+}
+
 .recipe-card:hover {
     background-color: #E0E2BE;
 }
