@@ -1,37 +1,31 @@
-function showLogin(evt) {
+$("#login_button").on('click', function(evt) {
     evt.preventDefault();
     $("#auth-modal").modal();
     $("#auth-modal-body").load("/login_form/");
-}
+});
 
-function showRegister(evt) {
+$('#register_button').on('click', function(evt) {
     evt.preventDefault();
     $("#auth-modal").modal();
     $("#auth-modal-body").load("register_form/");
-}
-function showSearch(evt) {
+});
+
+$("#search_button").on('click', function(evt) {
     evt.preventDefault();
     $("#content").load("search_page/");
-}
-function showMyRecipes(evt) {
+});
+
+$("#my_recipes_button").on('click', function(evt) {
     evt.preventDefault();
     $("#content").load("my_recipes/");
-}
-function showPlanner(evt) {
+});
+
+$("#planner_button").on('click', function(evt) {
     evt.preventDefault();
     $("#content").load("planner/");
-}
-function showShoppingList(evt) {
+});
+
+$("#shopping_list_button").on('click', function(evt) {
     evt.preventDefault();
     $("#content").load("shopping_list/");
-}
-
-
-$("#login_button").on('click', showLogin);
-$('#register_button').on('click', showRegister);
-$("#search_button").on('click', showSearch);
-$("#my_recipes_button").on('click', showMyRecipes);
-$("#planner_button").on('click', showPlanner);
-$("#shopping_list_button").on('click', showShoppingList);
-
-
+});
