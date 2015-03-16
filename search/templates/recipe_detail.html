@@ -1,4 +1,5 @@
 <h1 class="centered-content">{{ recipe.name }}</h1>
+<p class="centered-content">from <a href="{{recipe.recipe_url}}">{{recipe.display_name}}</a></p>
 <div class="recipe-detail-modal">
     <img src='{{ recipe.big_img }}'>
 </div>
@@ -48,3 +49,4 @@
     {% endfor %}
     </p>
 {% endif %}
+<p class="centered-content">{{recipe.attribution|safe}}</p>

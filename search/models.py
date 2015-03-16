@@ -15,7 +15,9 @@ class Recipe(models.Model):
     time_string = models.CharField(max_length=100, default='', null=True, blank=True)
     lil_img = models.CharField(max_length=300, default='', null=True, blank=True)
     big_img = models.CharField(max_length=300, default='', null=True, blank=True)
-
+    attribution = models.CharField(max_length=300, default='')
+    recipe_url = models.CharField(max_length=300, default='')
+    display_name = models.CharField(max_length=300, default='')
 
     def convert_seconds_int_to_string(self, time_in_seconds):
         minutes, seconds = divmod(time_in_seconds, 60)
@@ -64,6 +66,13 @@ class Recipe(models.Model):
         self.lil_img = all_images.get('hostedSmallUrl')
         self.med_img = all_images.get('hostedMediumUrl')
         self.big_img = all_images.get('hostedLargeUrl')
+
+        # Attribution
+        attribution = recipe_response.get('attribution')
+        self.attribution = attribution['html']
+        source = recipe_response.get('source')
+        self.recipe_url = source['sourceRecipeUrl']
+        self.display_name = source['sourceDisplayName']
 
         self.save()
 
