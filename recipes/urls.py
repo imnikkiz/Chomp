@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
-    # Examples:
     url(r'^$', 'search.views.home_page', name='home'),
 
     url(r'^register_form/$', 'search.views.register_form', name='register_form'),
@@ -9,9 +8,7 @@ urlpatterns = patterns('',
 
     url(r'^login_form/$', 'search.views.login_form', name='login_form'),
     url(r'^login_user/$', 'search.views.login_user', name='login_user'),
-
     url(r'^logout_user/$', 'search.views.logout_user', name='logout_user'),
-
 
     url(r'^recipe_main$', 'search.views.recipe_main', name='recipe_main'),
     
@@ -26,12 +23,7 @@ urlpatterns = patterns('',
     url(r'^add_to_planner/$', 'search.views.add_to_planner', name='planner'),
     url(r'^planner/$', 'search.views.planner', name='planner'),
     url(r'^update_planner/$', 'search.views.update_planner', name='update_planner'),
-
-
     url(r'^clear_planner/$', 'search.views.clear_planner', name='clear_planner'),
+    
     url(r'^shopping_list/$', 'search.views.shopping_list', name='shopping_list'),
-
-    # url(r'^blog/', include('blog.urls')),
-
-    # url(r'^admin/', include(admin.site.urls)),
 )

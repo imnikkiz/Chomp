@@ -32,5 +32,10 @@ measurements = {
                 'ml': 'ml',
                 'pkg.': 'package(s)',
                 'pkg': 'package(s)',
-                'taste': 'taste'
+                'taste': 'taste(s)',
+                'dash': 'dash(es)',
+
+                'filet': 'filet(s)',
+                'breast': 'breast(s)',
+                'thigh': 'thigh(s)'
                 }
