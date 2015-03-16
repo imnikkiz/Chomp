@@ -71,11 +71,10 @@ def convert_mixed_fractions(number_result):
             decimal = numerator/float(fraction[1])
             whole_num = float(mixed_num[0])
             number_result = whole_num + decimal
-    else:
-        try:
-            number_result = float(number_result)
-        except ValueError:
-            number_result = None
+    else: 
+        number_result = number_result.split(" ")[0]
+    return number_result
+        
 
 def check_measurements(line):
     split_line = line.lower().split()
@@ -117,7 +116,8 @@ def process(line):
 
     number_result = NUMBERS.match(line)
     if number_result:
-        number_result = convert_mixed_fractions(number_result.group())
+        number_result = number_result.group()
+        number_result = convert_mixed_fractions(number_result)
 
     food_result = None
     category_result = None
