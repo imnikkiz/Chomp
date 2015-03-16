@@ -1,9 +1,10 @@
-<div class="home-page-content">    
+<div class="front-page-modal">    
     <h1 class="centered-content">Register</h1>
     <form id="user_form" method="POST" action="/register/">
         {{ user_form.as_p }}
-        <input type="submit" name="submit" value="Register" id=
-    "id_register">
+        <div style="text-align:center">
+            <input type="submit" name="submit" value="Submit" id="id_register" class="submit-button">
+        </div>
         {% csrf_token %}
     </form>
 </div>

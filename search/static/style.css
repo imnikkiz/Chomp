@@ -12,8 +12,9 @@
 }
 
 .recipe-page-body {
-    background-color: white;
     margin: 0;
+    background-image: url(./wavegrid.png);
+    background-repeat: repeat;
 }
 
 .recipe-page-body .header {
@@ -24,6 +25,7 @@
     background-position: 100% center;
     background-color: #C2C57E;
     padding: 10px;
+    border-bottom: 2px solid #3F6421;
 }
 
 .logo {
@@ -31,12 +33,39 @@
     padding: 10px;
     float: left;
     margin: 10px;
-    border-radius: 10px;
+    border-radius: 20px;
     background-color: #4E0308;
     color: white;
     text-align: center;
     font-family: 'Lobster', cursive;
-    font-size: 50px;
+    font-size: 6vw;
+    width: 20%;
+}
+
+.front-page-modal {
+    font-family: 'Raleway', sans-serif;
+}
+
+.front-page-modal > h1 {
+    font-family: 'Lobster', cursive;
+    color: #4E0308;    
+}
+
+.submit-button {
+    border: 2px solid transparent;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #4E0308;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 30px;
+}
+
+.submit-button:hover {
+    color: white;
+    background-color: #4E0308;
+    border-radius: 10px;
 }
 
 .recipe-logo {
@@ -64,7 +93,6 @@
 .link-button {
     border: 2px solid transparent;
     padding: 10px;
-    float: left;
     margin: 10px;
     cursor: pointer;
     border-radius: 10px;
@@ -72,11 +100,32 @@
     color: white;
     text-align: center;
     font-family: 'Lobster', cursive;
-    font-size: 30px;
-
+    font-size: 4vw;
+    width: 15%;
 }
 
 .link-button:hover {
+    border: 2px solid white;
+    border-radius: 10px;
+    background-color: #4E0308;
+    color: white;
+}
+
+.about-link-button {
+    border: 2px solid transparent;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #4E0308;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 5vw;
+    width: 20%;
+}
+
+.about-link-button:hover {
     border: 2px solid white;
     border-radius: 10px;
     background-color: #4E0308;
@@ -103,8 +152,6 @@
 
 .search-button {
     border: 2px solid transparent;
-    padding: 10px;
-    margin: 10px;
     cursor: pointer;
     border-radius: 10px;
     background-color: transparent;
@@ -150,7 +197,7 @@
     height: 230px;
     box-shadow: 10px 10px 10px #ddd;
     float: left;
-    margin: 10px;
+    margin: 7px;
     cursor: pointer;
     border-radius: 10px;
     background-color: white;

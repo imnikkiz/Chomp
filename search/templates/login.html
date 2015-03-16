@@ -1,9 +1,12 @@
-<div>
+<div class="front-page-modal">
     <h1 class="centered-content">Login</h1>
     <form id="login_form" method="POST" action="/login_user/">
         Username: <input type="text" name="username" value="" size="50" id="id_username"><br>
         Password: <input type="password" name="password" value="" size="50" id="id_password"><br>
-        <input type="submit" value="submit" id="id_submit">
+        <br>
+        <div style="text-align:center">
+            <input type="submit" value="Submit" id="id_submit" class="submit-button">
+        </div>
         {% csrf_token %}
     </form>
 </div>

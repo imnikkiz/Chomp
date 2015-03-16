@@ -65,10 +65,21 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+def about_page(request):
+    """ Provides app about page."""
+    return render_to_response('about.html')
 
 def recipe_main(request):
     """ User logged in; displays welcome page. """
     return render_to_response('recipe_main.html')
+
+def landing_page(request):
+    this_user_profile = UserProfile.objects.get(user=request.user)
+    recipe_list = this_user_profile.recipes.all()
+    if recipe_list:
+        return HttpResponseRedirect('/my_recipes/')
+    else:
+        return HttpResponseRedirect('/search_page/')
 
 
 def search_page(request): 

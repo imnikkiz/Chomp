@@ -10,6 +10,18 @@ $('#register_button').on('click', function(evt) {
     $("#auth-modal-body").load("register_form/");
 });
 
+$('#about-button').on('click', function(evt) {
+    evt.preventDefault();
+    $("#auth-modal").modal();
+    $("#auth-modal-body").load("about_page/");
+});
+
+$('#register_button').on('click', function(evt) {
+    evt.preventDefault();
+    $("#auth-modal").modal();
+    $("#auth-modal-body").load("register_form/");
+});
+
 $("#search_button").on('click', function(evt) {
     evt.preventDefault();
     $("#content").load("search_page/");

@@ -10,8 +10,12 @@ urlpatterns = patterns('',
     url(r'^login_user/$', 'search.views.login_user', name='login_user'),
     url(r'^logout_user/$', 'search.views.logout_user', name='logout_user'),
 
+    url(r'^about_page/$', 'search.views.about_page', name='about_page'),
+
     url(r'^recipe_main$', 'search.views.recipe_main', name='recipe_main'),
-    
+    url(r'^landing_page/$', 'search.views.landing_page', name='landing_page'),
+
+
     url(r'^search_page/$', 'search.views.search_page', name='search_page'),
     url(r'^new_search/$', 'search.views.new_search', name='new_search'),
 
