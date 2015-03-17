@@ -81,7 +81,6 @@ def check_measurements(line):
     for word in split_line:
         if word in measurements:
             return measurements[word]
-    for word in split_line:
         un_pluralized_word = un_pluralize(word)
         if un_pluralized_word in measurements:
             return measurements[un_pluralized_word]
@@ -95,7 +94,6 @@ def check_foods(line):
             return ('potato', 'produce')
         elif foods.get(word):
             return (word, foods.get(word))
-    for word in split_line:
         un_pluralized_word = un_pluralize(word)
         if un_pluralized_word in foods:
             return (un_pluralized_word, foods.get(un_pluralized_word))
