@@ -12,6 +12,9 @@ Recipe management app powered by the Yummly API
 
 ## Introduction
 
+![home page]
+(/screen_shots/home.png)
+
 ## Technologies
 
 Python, Django, Yummly API, Javascript, JQuery, Bootstrap
