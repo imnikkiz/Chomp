@@ -64,8 +64,8 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model,),
         ),
-        migrations.RemoveField(
-            model_name='recipe',
-            name='response',
-        ),
+        # migrations.RemoveField(
+        #     model_name='recipe',
+        #     # name='response',
+        # ),
     ]

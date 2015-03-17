@@ -89,14 +89,14 @@ def check_foods(line):
     split_line = line.lower().split()
     for word in split_line:
         if word == 'tomatoes':
-            return ('tomato', 'produce')
+            return 'tomato'
         elif word == 'potatoes':
-            return ('potato', 'produce')
+            return 'potato'
         elif foods.get(word):
-            return (word, foods.get(word))
+            return word
         un_pluralized_word = un_pluralize(word)
         if un_pluralized_word in foods:
-            return (un_pluralized_word, foods.get(un_pluralized_word))
+            return un_pluralized_word
 
 def process(line):
     """ Processes an ingredient string (line) to return dictionary of ingredient info.
@@ -117,12 +117,9 @@ def process(line):
         number_result = number_result.group()
         number_result = convert_mixed_fractions(number_result)
 
-    food_result = None
-    category_result = None
     measurement_result = check_measurements(line)
-    food_check = check_foods(line)
-    if food_check:
-        food_result, category_result = food_check
+    food_result = check_foods(line)
+    category_result = foods.get(food_result)
 
     return {'number': number_result,
             'measurement': measurement_result,
