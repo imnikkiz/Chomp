@@ -10,13 +10,13 @@
 
 <div class='row'>
     <div class='col-xs-12'>
-        <form id="search_form" class="centered-content">
+        <form id="search-form" class="centered-content">
             {% if keyword %}
-                <input name="search_keyword_text" id="search_box" placeholder="{{keyword}}">
+                <input name="search-keyword-text" id="search-box" placeholder="{{keyword}}">
             {% else %}
-                <input name="search_keyword_text" id="search_box" placeholder="Search for recipes">
+                <input name="search-keyword-text" id="search-box" placeholder="Search for recipes">
             {% endif %}
-            <button type="submit" id="search_button" class="search-button">Search</button>
+            <button type="submit" id="search-recipes-button" class="search-button">Search</button>
         </form> 
     </div>
 </div>
@@ -34,7 +34,7 @@
     </div>
 {% else %}
     <div class='row'>
-        <div id="search_results">
+        <div id="search-results">
             {% for recipe in recipe_list %}
                 <div class='recipe-card' id="{{ recipe.id }}">
                     <img src="{{recipe.big_img}}"><br>
@@ -81,14 +81,14 @@
 function showSearchResults(evt) {
     evt.preventDefault();
     $('#search-message').hide();
-    $('#search_results').hide();
+    $('#search-results').hide();
     $('#spinner').show()
-    var params = $("#search_form").serialize();
+    var params = $("#search-form").serialize();
     $("#content").load("new_search/", params 
     );
 };
 
-$("#search_form").on('submit', showSearchResults);
+$("#search-form").on('submit', showSearchResults);
 
 function addToMyRecipes(evt) {
     evt.preventDefault();

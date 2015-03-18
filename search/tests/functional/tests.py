@@ -1,88 +1,113 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver 
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 
 
-class NewUserTest(LiveServerTestCase): 
+class FunctionalTest(StaticLiveServerTestCase): 
     
     def setUp(self): 
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(1)
-
 
     def tearDown(self): 
         self.browser.quit()
 
-
-    def test_user_can_register_and_login(self):
+    def test_user_can_register(self):
         self.browser.get(self.live_server_url)
-        self.assertIn('Home', self.browser.title)
-
-
-    #     # new user can register
-    #     register_button = self.browser.find_element_by_id('register_button')
-    #     register_button.click()
-
-    #     self.browser.find_element_by_id('id_username').send_keys('Username')
-    #     self.browser.find_element_by_id('id_email').send_keys('email@email.com')
-    #     self.browser.find_element_by_id('id_password').send_keys('Password')  
-    #     register_button = self.browser.find_element_by_id('id_register')
-    #     register_button.click()
-
-    #     next_page_text = self.browser.find_element_by_id('content').text
-    #     self.assertIn('Thank you for registering!', next_page_text)
-
-    #     home_link = self.browser.find_element_by_link_text('Return to the homepage.')
-    #     home_link.click()
-
-    #     self.assertIn('Home', self.browser.title)
-    #     self.browser.implicitly_wait(1)
-
-
-    #     # new user can login
-    #     login_link = self.browser.find_element_by_link_text('Login')
-    #     login_link.click()
-
-    #     self.assertIn('Login', self.browser.title)
-
-    #     self.browser.find_element_by_id('id_username').send_keys('Username')
-    #     self.browser.find_element_by_id('id_password').send_keys('Password')  
-    #     submit_button = self.browser.find_element_by_id('id_submit')
-    #     submit_button.click()
-
-    #     self.assertIn('Search Recipes', self.browser.title)
-    #     self.browser.implicitly_wait(1)
-
+        self.browser.implicitly_wait(1)
+        self.browser.find_element_by_id('register-button').click()
         
-    #     # User can search for 'chicken soup'
-    #     inputbox = self.browser.find_element_by_id('id_search_box')      
-    #     inputbox.send_keys('chicken soup')
-    #     inputbox.send_keys(Keys.ENTER)
+        username_field = self.browser.find_element_by_id('id_username')
+        username_field.send_keys("testuser123")
+        email_field = self.browser.find_element_by_id('id_email')
+        email_field.send_keys("test@user.com")
+        password_field = self.browser.find_element_by_id('id_password')
+        password_field.send_keys("password")
+        self.browser.find_element_by_id('id-register').click()
 
-    #     recipe_results = self.browser.find_elements_by_class_name('col-xs-4')
-    #     for recipe in recipe_results:
-    #         self.assertIn('Chicken', recipe.text)
-    #     self.browser.implicitly_wait(1)
+        # check for user in db
+        # check is logged in
 
-    #     self.fail('Finish the test!')
+        heading = self.browser.find_element_by_tag_name('h1')
+        self.assertEquals(heading.text, 'Search Recipes')
 
-    # User can select a recipe and view all ingredients and instructions
+        # self.browser.find_element_by_id('my-recipes-button').click()
 
-    # User can save recipe to recipe book
+        # heading = self.browser.find_element_by_tag_name('h1')
+        # self.browser.implicitly_wait(1)
+        # self.assertEquals(heading.text, 'My Recipes')
 
-    # User can filter recipes by:
-        # ingredient
-        # course
-        # cuisine 
-        # holiday
+        # self.browser.find_element_by_id('planner-button').click()
 
-    # User can delete recipes
+        # heading = self.browser.find_element_by_tag_name('h1')
+        # self.browser.implicitly_wait(1)
+        # self.assertEquals(heading.text, 'Planner')
 
-    # User can add recipes to planner
+        # self.browser.find_element_by_id('shopping-list-button').click()
 
-    # User can create a shopping list from planner
+        # heading = self.browser.find_element_by_tag_name('h1')
+        # self.browser.implicitly_wait(1)
+        # self.assertEquals(heading.text, 'Shopping List')
 
-    # User can export shopping list 
-        # via email
-        # via SMS
+        # self.browser.find_element_by_id('search-button').click()
 
+        # heading = self.browser.find_element_by_tag_name('h1')
+        # self.browser.implicitly_wait(1)
+        # self.assertEquals(heading.text, 'Search Recipes')
+
+        search_field = self.browser.find_element_by_id('search-box')
+        search_field.send_keys("apple pie")
+        self.browser.find_element_by_id('search-recipes-button').click()
+
+        try:
+            element = WebDriverWait(self.browser, 10).until(ec.presence_of_element_located(By.CLASS_NAME('recipe-card')))
+        finally:
+            self.browser.quit()
+
+        # check if search exists
+        # check if recipes exist
+
+        recipe_results_list = self.browser.find_elements_by_class_name('recipe-card')
+        self.assertEqual(len(recipe_results_list), 10)
+
+        # find a recipe
+
+        # select recipes
+
+        # check for modal
+        # check for certain details within modal
+
+    # user_can_add_recipe_to_my_recipes(self):
+
+    # user_can_view_all_recipes(self):
+
+    # user_can_delete_recipe(self):
+
+    # user_can_add_same_recipe_to_my_recipes(self):
+
+    # user_can_add_recipe_to_planner(self):
+
+    # user_can_view_planner(self):
+
+    # user_can_remove_recipe(self):
+
+    # user_can_plan_recipe(self):
+
+    # user_can_view_shopping_list(self):
+
+    # user_can_logout(self):
+
+    # returning_user_can_login(self):
+
+        # enter username, password
+        # submit form
+            
+        # check is logged in
+        # check brought to search
+
+    # user_can_view_saved_recipes(self):
+
+    # user_can_view_saved_planner(self):
+
+    # user_can_view_saved_shopping_list(self):

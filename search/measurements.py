@@ -15,7 +15,9 @@ measurements = {
 
                 'teaspoon': 'teaspoon(s)', 
                 'tsp': 'teaspoon(s)', 
-                'tsp.': 'teaspoon(s)',                
+                'tsp.': 'teaspoon(s)',
+
+                'pint':'pint(s)',                
 
                 'pound': 'pound(s)', 
                 'lb': 'pound(s)',

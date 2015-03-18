@@ -98,24 +98,26 @@ def new_search(request):
     Assigns all (10) search results to recipe_list and stores keyword in user's session.
     Handles error if keyword cannot produce search results.
     """
-    keyword = request.GET.get('search_keyword_text') or request.session.get('search_keyword')
-    search_exists = Search.objects.filter(keyword=keyword).first()
+    keyword = request.GET.get('search-keyword-text') or request.session.get('search_keyword')
+    if keyword:
+        search_exists = Search.objects.filter(keyword=keyword).first()
 
-    if search_exists:
-        search_has_recipes = search_exists.recipes.first()
-        if not search_has_recipes:
-            search_exists.delete()
-            search_exists = False
-    if not search_exists:
-        new_search = Search.objects.create()
-        new_search.search_by_keyword(keyword=keyword)
+        if search_exists:
+            search_has_recipes = search_exists.recipes.first()
+            if not search_has_recipes:
+                search_exists.delete()
+                search_exists = False
+        if not search_exists:
+
+                new_search = Search.objects.create()
+                new_search.search_by_keyword(keyword=keyword)
 
 
-    this_search = Search.objects.get(keyword=keyword)
-    recipe_list = this_search.recipes.all()
-    request.session['search_keyword'] = keyword
+        this_search = Search.objects.get(keyword=keyword)
+        recipe_list = this_search.recipes.all()
+        request.session['search_keyword'] = keyword
 
-    if keyword and not recipe_list:
+    if (keyword and not recipe_list) or not keyword:
         recipe_list = "error"
         request.session['search_keyword'] = None
 
