@@ -1,6 +1,8 @@
 # *chomp!*
 A recipe management app powered by the Yummly API
 
+Developed by [Nicole Ziemlak](https://www.linkedin.com/in/nicoleziemlak)
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Technologies](#technologies)
