@@ -306,3 +306,7 @@
 .success-message {
     display: none;
 }
+
+.modal {
+    position: absolute;
+}
