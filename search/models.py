@@ -8,18 +8,24 @@ YUMMLY_APP_KEY = os.environ['YUMMLY_APP_KEY']
 
 
 class Recipe(models.Model):
+    """ Stores all Yummly API information about an individual recipe."""
     name = models.CharField(max_length=200, default='')
     yummly_id = models.CharField(max_length=300, default='')
-    servings_as_string = models.CharField(max_length=100, default='', null=True, blank=True)
+    servings_as_string = models.CharField(max_length=100, default='', 
+                                          null=True, blank=True)
     number_of_servings = models.IntegerField(null=True, blank=True)
-    time_string = models.CharField(max_length=100, default='', null=True, blank=True)
-    lil_img = models.CharField(max_length=300, default='', null=True, blank=True)
-    big_img = models.CharField(max_length=300, default='', null=True, blank=True)
+    time_string = models.CharField(max_length=100, default='',
+                                   null=True, blank=True)
+    lil_img = models.CharField(max_length=300, default='', 
+                               null=True, blank=True)
+    big_img = models.CharField(max_length=300, default='', 
+                               null=True, blank=True)
     attribution = models.CharField(max_length=300, default='')
     recipe_url = models.CharField(max_length=300, default='')
     display_name = models.CharField(max_length=300, default='')
 
     def convert_seconds_int_to_string(self, time_in_seconds):
+        """ Returns human readable string for int of time in seconds."""
         minutes, seconds = divmod(time_in_seconds, 60)
         hours, minutes = divmod(minutes, 60)
         if hours:
@@ -28,6 +34,11 @@ class Recipe(models.Model):
 
 
     def get_recipe_by_yummly_id(self):
+        """ Uses yummly_id returned from Search to query Yummly API.
+        
+        Converts and stores time, as well as servings, ingredients, attributes,
+        images, and attribution. 
+        """
         yummly_id = self.yummly_id
 
         params = {'_app_id': YUMMLY_APP_ID,
@@ -35,8 +46,7 @@ class Recipe(models.Model):
                   }
         recipe_response = requests.get(
                           ("http://api.yummly.com/v1/api/recipe/%s" % yummly_id),
-                          params=params
-                          ).json()
+                          params=params).json()
 
         self.name = recipe_response.get('name')
 
@@ -78,6 +88,14 @@ class Recipe(models.Model):
 
 
     def link_ingredients_to_recipe(self):
+        """ Takes stores ingredient_lines and creates individual ingredients.
+        
+        Processes each line and stores the ingredient with its amount, 
+        measurement, food, and category, if applicable. Creates new Food and
+        Category, if needed.
+        
+        See ingredient_processor.process.
+        """
         for line in self.ingredient_lines:
             ingredient = Ingredient.objects.create(recipe_id=self.id)
             ingredient.ingredient_string = line
@@ -98,7 +116,8 @@ class Recipe(models.Model):
 
                 if not food_exists:
                     new_food = Food(name=food)
-                    category_exists = Category.objects.filter(name=category).first()
+                    category_exists = Category.objects.filter(
+                            name=category).first()
                     if not category_exists:
                         new_category = Category(name=category)
                         new_category.save()
@@ -110,6 +129,7 @@ class Recipe(models.Model):
 
 
     def assign_attributes_to_recipe(self):
+        """ Creates and relates Holiday, Course, and Cuisine to Recipe."""
         holiday_list = self.attributes_dict.get('holiday')
         if holiday_list:
             for holiday in holiday_list:
@@ -149,10 +169,12 @@ class Recipe(models.Model):
 
 
 class Category(models.Model):
+    """ Category for each Food."""
     name = models.CharField(max_length=100, default='')
 
 
 class Food(models.Model):
+    """ Food for each Ingredient. """ 
     name = models.CharField(max_length=100, default='')
     category = models.ForeignKey(Category,
                                  related_name="foods",
@@ -160,7 +182,9 @@ class Food(models.Model):
 
 
 class Ingredient(models.Model):
-    ingredient_string = models.CharField(max_length=300, default='', null=True, blank=True)
+    """ Ingredient, as related to Recipe, with Amount, Measurement, and Food."""
+    ingredient_string = models.CharField(max_length=300, default='', 
+                                         null=True, blank=True)
     recipe = models.ForeignKey(Recipe, 
                                related_name="ingredients")
     amount = models.FloatField(null=True)
@@ -201,17 +225,20 @@ class Cuisine(models.Model):
 
 
 class Search(models.Model):
-    # TODO: docstring
-
+    """ Stores Search by Keyword and relevant Recipes."""
     keyword = models.CharField(max_length=200, default='')
     recipes = models.ManyToManyField(Recipe, 
                                      related_name="searches")
 
     def search_by_keyword(self, keyword):
+        """ Adds keyword to Search; Queries Yummly API for Recipes.
+        
+        Creates up to 10 new Recipes, calls Recipe methods for Yummly API query
+        and creating related Ingredients and attributes.
+        """
         self.keyword = keyword
         self.save()
 
-        # Make Yummly API search request
         api_keyword = keyword.strip()
         api_keyword = api_keyword.split(' ')
         api_keyword = '+'.join(api_keyword)
@@ -237,6 +264,7 @@ class Search(models.Model):
 
 
 class UserProfile(models.Model):
+    """ Relates user to Recipes."""
     user = models.OneToOneField(User, 
                                 related_name="user_profile")
     recipes = models.ManyToManyField(Recipe,
@@ -253,9 +281,12 @@ class UserProfile(models.Model):
 
 
 class Collection(models.Model):
+    """ Saves planned Recipes related to UserProfile."""
     user_profile = models.ForeignKey(UserProfile)
     recipe = models.ForeignKey(Recipe)
-    day_planned = models.CharField(max_length=100, default=None, null=True, blank=True)
-    meal_planned = models.CharField(max_length=100, default='', null=True, blank=True)
+    day_planned = models.CharField(max_length=100, default=None, 
+                                   null=True, blank=True)
+    meal_planned = models.CharField(max_length=100, default='', 
+                                    null=True, blank=True)
 
 

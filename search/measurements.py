@@ -1,3 +1,7 @@
+"""
+Data for most common ingredient's measurements and equivalencies.
+"""
+
 measurements = {
                 'cup': 'cup(s)',
                 'c': 'cup(s)',

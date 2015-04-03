@@ -23,7 +23,9 @@ def register_form(request):
 
 
 def register(request):
-    """ Registers user and user profile; logs in user; redirects to welcome page."""
+    """ Registers user and user profile; 
+    logs in user; redirects to welcome page.
+    """
     user_form = UserForm(data=request.POST)
     if user_form.is_valid():
         user = user_form.save()
@@ -95,10 +97,12 @@ def new_search(request):
 
     Assigns new input or last stored input to keyword.
     Queries database for search results; if no results, instantiates new search. 
-    Assigns all (10) search results to recipe_list and stores keyword in user's session.
+    Assigns all (10) search results to recipe_list and stores keyword 
+        in user's session.
     Handles error if keyword cannot produce search results.
     """
-    keyword = request.GET.get('search-keyword-text') or request.session.get('search_keyword')
+    keyword = (request.GET.get('search-keyword-text') or 
+              request.session.get('search_keyword'))
     if keyword:
         search_exists = Search.objects.filter(keyword=keyword).first()
 
@@ -175,7 +179,8 @@ def remove_recipe(request):
 
 
 def add_to_planner(request):
-    """ Adds 'planning' to day_planned attribute for the user's collection of this recipe.
+    """ Adds 'planning' to day_planned attribute for the user's collection 
+        of this recipe.
 
     All recipes with day_planned assigned will be displayed in Planner.
     """
@@ -191,7 +196,8 @@ def add_to_planner(request):
 def update_planner(request):
     """ Updates day_planned attribute for the user's collection of this recipe.
 
-    'deleted' will clear the attribute and the recipe will no longer be displayed in the Planner.
+    'deleted' will clear the attribute and the recipe will no longer be 
+        displayed in the Planner.
     """
     recipe_id = request.GET.get("recipe_id")
     this_recipe = Recipe.objects.get(id=recipe_id)
@@ -223,7 +229,9 @@ def planner(request):
             'sunday': []
             }
 
-    user_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all().prefetch_related('recipe')
+    user_recipes = Collection.objects.filter(
+            user_profile=this_user_profile).exclude(
+            day_planned__isnull=True).all().prefetch_related('recipe')
     for user_recipe in user_recipes:
         recipe_planning_dict[user_recipe.day_planned].append(user_recipe.recipe)
 
@@ -231,21 +239,9 @@ def planner(request):
         'recipes': recipe_planning_dict
         })
 
-def clear_planner(request):
-    this_user_profile = UserProfile.objects.get(user=request.user)
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    for day in days:
-        request.session[day] = []
-
-    planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).all()
-    for recipe in planned_recipes:
-        recipe.day_planned = None
-        recipe.save()
-
-    return render(request, 'planner.html', {
-        'days': days})
 
 def shopping_list(request):
+    """ Queries database and displays planned recipes' ingredients in categories."""
     this_user_profile = UserProfile.objects.get(user=request.user)
     
     category_dict = {
@@ -263,7 +259,9 @@ def shopping_list(request):
         'other': []
     }
 
-    planned_recipes = Collection.objects.filter(user_profile=this_user_profile).exclude(day_planned__isnull=True).exclude(day_planned='planning').all()
+    planned_recipes = Collection.objects.filter(
+            user_profile=this_user_profile).exclude(
+            day_planned__isnull=True).exclude(day_planned='planning').all()
     if planned_recipes:
         for collection in planned_recipes:
             recipe = collection.recipe
@@ -287,17 +285,21 @@ def shopping_list(request):
                     if measurement:
                         if amount:
                             category_dict[category_name][food_name]['measurements'][measurement] = (
-                                category_dict[category_name][food_name]['measurements'].get(measurement, 0) + amount)
+                                category_dict[category_name][food_name]['measurements'].get(
+                                        measurement, 0) + amount)
                         else:
                             category_dict[category_name][food_name]['measurements'][measurement] = (
-                                category_dict[category_name][food_name]['measurements'].get(measurement, 0) + 1)
+                                category_dict[category_name][food_name]['measurements'].get(
+                                        measurement, 0) + 1)
                     else:
                         if amount:
                             category_dict[category_name][food_name]['other']=(
-                                category_dict[category_name][food_name].get('other', 0) + amount)
+                                category_dict[category_name][food_name].get(
+                                        'other', 0) + amount)
                         else:
                             category_dict[category_name][food_name]['other']=(
-                                category_dict[category_name][food_name].get('other', 0) + 1)
+                                category_dict[category_name][food_name].get(
+                                        'other', 0) + 1)
 
                     category_dict[category_name][food_name]['ingredients'].append(ingredient)
                 else:
@@ -310,5 +312,3 @@ def shopping_list(request):
     return render(request, 'shopping_list.html', {
         'category_dict': category_dict
         })
-
-

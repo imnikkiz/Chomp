@@ -1,3 +1,7 @@
+"""
+Data for most common ingredient's foods and categories.
+"""
+
 foods = {'oil': 'baking', 
          'chocolate': 'baking', 
          'cornstarch': 'baking', 

@@ -1,3 +1,7 @@
+"""
+Processes each ingredient string. 
+"""
+
 from foods import foods
 from measurements import measurements
 import re
@@ -50,6 +54,7 @@ def remove_punctuation(line):
     return line
 
 def convert_vulgar_fractions(line):
+    """ E.g. '½' -> '1/2' """
     split_line = line.lower().split()
     for i, word in enumerate(split_line):
         if word in FRACTIONS:
@@ -59,6 +64,7 @@ def convert_vulgar_fractions(line):
 
 
 def convert_mixed_fractions(number_result):
+    """ E.g. '1 1/2' -> '1.5' """
     if "/" in list(number_result):
         mixed_num = number_result.split(" ")
         if "/" in list(mixed_num[0]):
